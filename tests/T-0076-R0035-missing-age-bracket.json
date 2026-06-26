@@ -1,0 +1,22 @@
+{
+  "id": "T-0076",
+  "title": "R-0035: old_regime, self_premium present but age_bracket missing → INCOMPLETE",
+  "target_type": "rule",
+  "target_ref": "R-0035",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "deduction_80d_self_premium": 20000
+  },
+  "expected_output": {
+    "deduction_80d_evidence_status": {
+      "status": "INCOMPLETE",
+      "missing_fields": ["age_bracket"]
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Self premium declared but taxpayer age bracket missing — cannot determine applicable limit (25K vs 50K)."
+}

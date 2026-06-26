@@ -1,0 +1,20 @@
+{
+  "id": "T-0086",
+  "title": "R-0038: COMPLETE, self ₹25K + parents ₹25K = ₹50K (under ₹1L aggregate cap)",
+  "target_type": "rule",
+  "target_ref": "R-0038",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "deduction_80d_self": 25000,
+    "deduction_80d_parents": 25000
+  },
+  "expected_output": {
+    "deduction_80D": 50000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Sum 50K is well under ₹1L aggregate cap."
+}

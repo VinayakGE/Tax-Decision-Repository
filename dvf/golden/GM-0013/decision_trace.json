@@ -110,22 +110,18 @@
   "rule_outputs": {
     "R-0029": {
       "hra_evidence_status": {
-        "status": "INCOMPLETE",
-        "missing_fields": [
-          "city_type"
-        ],
-        "suggested_questions": [
-          "Is your rented accommodation in a metro city (Delhi, Mumbai, Kolkata, or Chennai)?"
-        ]
+        "status": "NOT_APPLICABLE",
+        "reason": "No HRA received from employer",
+        "missing_fields": [],
+        "suggested_questions": []
       }
     },
     "R-0024": {
-      "deduction_80C": 100000
+      "deduction_80C": 0
     },
     "R-0035": {
       "deduction_80d_evidence_status": {
-        "status": "NOT_APPLICABLE",
-        "reason": "No 80D health insurance premium declared",
+        "status": "COMPLETE",
         "missing_fields": [],
         "suggested_questions": []
       }
@@ -140,57 +136,49 @@
       "hra_candidate_1": 0
     },
     "R-0036": {
-      "deduction_80d_self": 0
+      "deduction_80d_self": 50000
     },
     "R-0037": {
-      "deduction_80d_parents": 0
+      "deduction_80d_parents": 50000
     },
     "R-0033": {
       "hra_exemption": 0,
       "hra_limiting_candidate": null
     },
     "R-0038": {
-      "deduction_80D": 0
+      "deduction_80D": 100000
     },
     "R-0034": {
       "total_salary_sec10_exemption": 0,
       "adjustment_breakdown": {},
-      "adjustment_trace": [
-        {
-          "section": "10(13A)",
-          "type": "HRA",
-          "evidence_status": "INCOMPLETE",
-          "exemption": 0,
-          "limiting_candidate": null
-        }
-      ],
-      "adjustment_status": "INCOMPLETE"
+      "adjustment_trace": [],
+      "adjustment_status": "NOT_APPLICABLE"
     },
     "R-0015": {
-      "taxable_income_new_regime": 925000,
-      "taxable_income_old_pre_deductions": 950000,
-      "gross_total_income": 1000000,
-      "total_income": 1000000
+      "taxable_income_new_regime": 1425000,
+      "taxable_income_old_pre_deductions": 1450000,
+      "gross_total_income": 1500000,
+      "total_income": 1500000
     },
     "R-0017": {
-      "slab_tax_new_regime": 42500,
-      "total_before_rebate_new_regime": 42500
+      "slab_tax_new_regime": 125000,
+      "total_before_rebate_new_regime": 125000
     },
     "R-0028": {
-      "taxable_income_old_regime": 850000,
+      "taxable_income_old_regime": 1350000,
       "total_deductions_old": 100000,
       "deduction_breakdown": {
-        "80C": 100000
+        "80D": 100000
       }
     },
     "R-0016": {
-      "slab_tax_old_regime": 82500,
-      "total_before_rebate_old_regime": 82500
+      "slab_tax_old_regime": 215000,
+      "total_before_rebate_old_regime": 215000
     },
     "R-0019": {
-      "tax_after_rebate_new_regime": 0,
-      "tax_after_rebate_old_regime": 82500,
-      "rebate_applied": true
+      "tax_after_rebate_new_regime": 125000,
+      "tax_after_rebate_old_regime": 215000,
+      "rebate_applied": false
     },
     "R-0021": {
       "surcharge_new_regime": 0,
@@ -198,24 +186,24 @@
       "surcharge_amount": 0
     },
     "R-0020": {
-      "total_tax_new_regime": 0,
-      "total_tax_old_regime": 85800,
-      "cess_new_regime": 0,
-      "cess_old_regime": 3300
+      "total_tax_new_regime": 130000,
+      "total_tax_old_regime": 223600,
+      "cess_new_regime": 5000,
+      "cess_old_regime": 8600
     },
     "R-0018": {
       "regime_recommendation": "new_regime",
-      "tax_saving_amount": 85800,
+      "tax_saving_amount": 93600,
       "new_regime_is_better": true
     },
     "R-0022": {
-      "total_interest": 2574,
+      "total_interest": 6708,
       "interest_234A": 0,
       "interest_234B": {
         "applicable": true,
-        "shortfall": 85800,
+        "shortfall": 223600,
         "months": 3,
-        "interest_amount": 2574,
+        "interest_amount": 6708,
         "note": "Return filed by due date so 234A = 0. 234B: April 1 to July 15 = 3 months (April, May, June = 3 full or part months)"
       },
       "interest_234C": {
@@ -226,7 +214,7 @@
     "R-0023": {
       "outcome": "demand",
       "refund_amount": null,
-      "demand_amount": 28374
+      "demand_amount": 30308
     }
   }
 }

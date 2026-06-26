@@ -1,0 +1,18 @@
+{
+  "id": "T-0075",
+  "title": "R-0035: old_regime, no premiums declared → NOT_APPLICABLE",
+  "target_type": "rule",
+  "target_ref": "R-0035",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime"
+  },
+  "expected_output": {
+    "deduction_80d_evidence_status": { "status": "NOT_APPLICABLE" }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "No 80D evidence at all → NOT_APPLICABLE."
+}

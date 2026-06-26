@@ -20,6 +20,10 @@ from engine.rules.wave3a import (
 )
 from engine.rules.wave3b import (
     r0024_deduction_80c,
+    r0035_80d_evidence_completeness,
+    r0036_80d_self_cap,
+    r0037_80d_parents_cap,
+    r0038_80d_total,
     r0028_deduction_aggregator,
 )
 from engine.rules.income_adjustment import (
@@ -139,8 +143,32 @@ WAVE3B_SPECS = [
         fn=r0024_deduction_80c,
     ),
     RuleSpec(
+        rule_id="R-0035",
+        requires=["regime_chosen"],
+        produces=["deduction_80d_evidence_status"],
+        fn=r0035_80d_evidence_completeness,
+    ),
+    RuleSpec(
+        rule_id="R-0036",
+        requires=["deduction_80d_evidence_status"],
+        produces=["deduction_80d_self"],
+        fn=r0036_80d_self_cap,
+    ),
+    RuleSpec(
+        rule_id="R-0037",
+        requires=["deduction_80d_evidence_status"],
+        produces=["deduction_80d_parents"],
+        fn=r0037_80d_parents_cap,
+    ),
+    RuleSpec(
+        rule_id="R-0038",
+        requires=["deduction_80d_self", "deduction_80d_parents"],
+        produces=["deduction_80D"],
+        fn=r0038_80d_total,
+    ),
+    RuleSpec(
         rule_id="R-0028",
-        requires=["taxable_income_old_pre_deductions", "deduction_80C"],
+        requires=["taxable_income_old_pre_deductions", "deduction_80C", "deduction_80D"],
         produces=["taxable_income_old_regime", "total_deductions_old", "deduction_breakdown"],
         fn=r0028_deduction_aggregator,
     ),

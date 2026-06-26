@@ -4,10 +4,12 @@ Deductions reduce taxable income under Chapter VI-A (old regime).
 Each rule is responsible for exactly one deduction section.
 
 Execution order (managed by scheduler):
-  R-0024  80C investments      → deduction_80C
-  R-0028  Deduction Aggregator → taxable_income_old_regime  (final, used by R-0016)
-
-R-0024 and R-0015 run in parallel (wave 1); R-0028 depends on both.
+  R-0024  80C investments          → deduction_80C
+  R-0035  80D evidence completeness → deduction_80d_evidence_status
+  R-0036  80D self / family cap     → deduction_80d_self
+  R-0037  80D parents cap           → deduction_80d_parents
+  R-0038  80D total                 → deduction_80D
+  R-0028  Deduction Aggregator      → taxable_income_old_regime  (final, used by R-0016)
 """
 
 from engine.context import EvidenceContext
@@ -45,6 +47,140 @@ def r0024_deduction_80c(ctx: EvidenceContext) -> None:
 # R-0028: Deduction Aggregator — Chapter VI-A (old regime)
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# R-0035: Section 80D — Evidence Completeness
+# ---------------------------------------------------------------------------
+
+def r0035_80d_evidence_completeness(ctx: EvidenceContext) -> None:
+    """
+    Check completeness of 80D health insurance premium evidence.
+    Uses age_bracket (taxpayer) and parent_age_bracket to determine applicable limits.
+    """
+    regime = ctx.get("regime_chosen", "new_regime")
+
+    if regime != "old_regime":
+        ctx.set("deduction_80d_evidence_status", {
+            "status": "NOT_APPLICABLE",
+            "reason": "80D deductions not available under new regime",
+            "missing_fields": [],
+            "suggested_questions": [],
+        })
+        return
+
+    self_premium = ctx.get("deduction_80d_self_premium")
+    parents_premium = ctx.get("deduction_80d_parents_premium")
+
+    has_self = self_premium is not None and int(self_premium) > 0
+    has_parents = parents_premium is not None and int(parents_premium) > 0
+
+    if not has_self and not has_parents:
+        ctx.set("deduction_80d_evidence_status", {
+            "status": "NOT_APPLICABLE",
+            "reason": "No 80D health insurance premium declared",
+            "missing_fields": [],
+            "suggested_questions": [],
+        })
+        return
+
+    missing = []
+    suggested = []
+
+    if has_self and not ctx.get("age_bracket"):
+        missing.append("age_bracket")
+        suggested.append("What is the taxpayer's age bracket? (below_60 or senior)")
+
+    if has_parents and not ctx.get("parent_age_bracket"):
+        missing.append("parent_age_bracket")
+        suggested.append("What is the parents' age bracket? (below_60 or senior)")
+
+    if missing:
+        ctx.set("deduction_80d_evidence_status", {
+            "status": "INCOMPLETE",
+            "missing_fields": missing,
+            "suggested_questions": suggested,
+        })
+    else:
+        ctx.set("deduction_80d_evidence_status", {
+            "status": "COMPLETE",
+            "missing_fields": [],
+            "suggested_questions": [],
+        })
+
+
+# ---------------------------------------------------------------------------
+# R-0036: Section 80D — Self / Family Cap
+# ---------------------------------------------------------------------------
+
+def r0036_80d_self_cap(ctx: EvidenceContext) -> None:
+    """
+    Apply the self/family health insurance cap.
+    below_60 → ₹25K; senior/super_senior → ₹50K.
+    """
+    status_obj = ctx.get("deduction_80d_evidence_status") or {}
+    if status_obj.get("status") != "COMPLETE":
+        ctx.set("deduction_80d_self", 0)
+        return
+
+    self_premium = ctx.get("deduction_80d_self_premium") or 0
+    age_bracket = ctx.get("age_bracket", "general")
+
+    if age_bracket in ("senior", "super_senior"):
+        limit = tables.get("2024.deductions.chapter_via.80D.self_senior.limit")
+    else:
+        limit = tables.get("2024.deductions.chapter_via.80D.self_below_60.limit")
+
+    ctx.set("deduction_80d_self", min(int(self_premium), limit))
+
+
+# ---------------------------------------------------------------------------
+# R-0037: Section 80D — Parents Cap
+# ---------------------------------------------------------------------------
+
+def r0037_80d_parents_cap(ctx: EvidenceContext) -> None:
+    """
+    Apply the parents' health insurance cap.
+    below_60 → ₹25K; senior → ₹50K.
+    """
+    status_obj = ctx.get("deduction_80d_evidence_status") or {}
+    if status_obj.get("status") != "COMPLETE":
+        ctx.set("deduction_80d_parents", 0)
+        return
+
+    parents_premium = ctx.get("deduction_80d_parents_premium") or 0
+    parent_age_bracket = ctx.get("parent_age_bracket", "below_60")
+
+    if parent_age_bracket == "senior":
+        limit = tables.get("2024.deductions.chapter_via.80D.parents_senior.limit")
+    else:
+        limit = tables.get("2024.deductions.chapter_via.80D.parents_below_60.limit")
+
+    ctx.set("deduction_80d_parents", min(int(parents_premium), limit))
+
+
+# ---------------------------------------------------------------------------
+# R-0038: Section 80D — Total (aggregate cap)
+# ---------------------------------------------------------------------------
+
+def r0038_80d_total(ctx: EvidenceContext) -> None:
+    """
+    Sum self + parents deductions and apply aggregate cap (₹1L).
+    """
+    status_obj = ctx.get("deduction_80d_evidence_status") or {}
+    if status_obj.get("status") != "COMPLETE":
+        ctx.set("deduction_80D", 0)
+        return
+
+    d_self = ctx.get("deduction_80d_self", 0) or 0
+    d_parents = ctx.get("deduction_80d_parents", 0) or 0
+    max_total = tables.get("2024.deductions.chapter_via.80D.max_total")
+
+    ctx.set("deduction_80D", min(d_self + d_parents, max_total))
+
+
+# ---------------------------------------------------------------------------
+# R-0028: Deduction Aggregator — Chapter VI-A (old regime)
+# ---------------------------------------------------------------------------
+
 def r0028_deduction_aggregator(ctx: EvidenceContext) -> None:
     """
     Sum all Chapter VI-A deductions and compute final old-regime taxable income.
@@ -55,14 +191,16 @@ def r0028_deduction_aggregator(ctx: EvidenceContext) -> None:
     pre = ctx.get("taxable_income_old_pre_deductions", 0) or 0
 
     d80c = ctx.get("deduction_80C", 0) or 0
-    # Future deductions plug in here (HRA via exemption, 80D, 80CCD_1B, etc.)
+    d80d = ctx.get("deduction_80D", 0) or 0
 
-    total = d80c
+    total = d80c + d80d
     taxable_old_final = max(0, pre - total)
 
     breakdown = {}
     if d80c:
         breakdown["80C"] = d80c
+    if d80d:
+        breakdown["80D"] = d80d
 
     ctx.update({
         "taxable_income_old_regime": taxable_old_final,

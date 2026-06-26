@@ -1,6 +1,6 @@
 """
-Wave 3B test suite — T-0046 through T-0052.
-Tests the Deduction Engine: R-0024 (80C), R-0028 (Deduction Aggregator).
+Wave 3B test suite — T-0046 through T-0052 (80C/aggregator) and T-0074 through T-0088 (80D).
+Tests the Deduction Engine: R-0024 (80C), R-0035–R-0038 (80D), R-0028 (Deduction Aggregator).
 Each test runs the target rule in isolation against fixed inputs.
 """
 
@@ -12,11 +12,19 @@ import pytest
 from engine.context import EvidenceContext
 from engine.rules.wave3b import (
     r0024_deduction_80c,
+    r0035_80d_evidence_completeness,
+    r0036_80d_self_cap,
+    r0037_80d_parents_cap,
+    r0038_80d_total,
     r0028_deduction_aggregator,
 )
 
 RULE_FN = {
     "R-0024": r0024_deduction_80c,
+    "R-0035": r0035_80d_evidence_completeness,
+    "R-0036": r0036_80d_self_cap,
+    "R-0037": r0037_80d_parents_cap,
+    "R-0038": r0038_80d_total,
     "R-0028": r0028_deduction_aggregator,
 }
 
@@ -24,7 +32,7 @@ TESTS_DIR = os.path.join(os.path.dirname(__file__), "tests")
 
 
 def _load_wave3b_tests():
-    ids = list(range(46, 53))
+    ids = list(range(46, 53)) + list(range(74, 89))
     cases = []
     for tid in ids:
         pattern = os.path.join(TESTS_DIR, f"T-{tid:04d}-*.json")

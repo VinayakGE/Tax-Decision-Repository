@@ -1,0 +1,19 @@
+{
+  "id": "T-0074",
+  "title": "R-0035: new_regime → deduction_80d_evidence_status = NOT_APPLICABLE",
+  "target_type": "rule",
+  "target_ref": "R-0035",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "new_regime",
+    "deduction_80d_self_premium": 20000
+  },
+  "expected_output": {
+    "deduction_80d_evidence_status": { "status": "NOT_APPLICABLE" }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "80D not available under new regime regardless of premium declared."
+}

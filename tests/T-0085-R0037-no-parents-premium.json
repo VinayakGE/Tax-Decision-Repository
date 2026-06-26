@@ -1,0 +1,19 @@
+{
+  "id": "T-0085",
+  "title": "R-0037: COMPLETE, no parents_premium declared → deduction_80d_parents = 0",
+  "target_type": "rule",
+  "target_ref": "R-0037",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "parent_age_bracket": "below_60"
+  },
+  "expected_output": {
+    "deduction_80d_parents": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "No parents premium in evidence — result is zero regardless of age bracket."
+}

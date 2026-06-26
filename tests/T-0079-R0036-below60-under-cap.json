@@ -1,0 +1,20 @@
+{
+  "id": "T-0079",
+  "title": "R-0036: COMPLETE, below_60, premium ₹20K < ₹25K cap → deduction_80d_self = 20000",
+  "target_type": "rule",
+  "target_ref": "R-0036",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "deduction_80d_self_premium": 20000,
+    "age_bracket": "general"
+  },
+  "expected_output": {
+    "deduction_80d_self": 20000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "General taxpayer (below 60) → ₹25K limit applies; actual ₹20K is under cap."
+}

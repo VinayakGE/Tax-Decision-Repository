@@ -4,21 +4,25 @@
       "wave": 1,
       "rules": [
         "R-0029",
-        "R-0024"
+        "R-0024",
+        "R-0035"
       ]
     },
     {
       "wave": 2,
       "rules": [
         "R-0032",
+        "R-0031",
         "R-0030",
-        "R-0031"
+        "R-0036",
+        "R-0037"
       ]
     },
     {
       "wave": 3,
       "rules": [
-        "R-0033"
+        "R-0033",
+        "R-0038"
       ]
     },
     {
@@ -36,8 +40,8 @@
     {
       "wave": 6,
       "rules": [
-        "R-0028",
-        "R-0017"
+        "R-0017",
+        "R-0028"
       ]
     },
     {
@@ -67,8 +71,8 @@
     {
       "wave": 11,
       "rules": [
-        "R-0022",
-        "R-0018"
+        "R-0018",
+        "R-0022"
       ]
     },
     {
@@ -81,24 +85,28 @@
   "execution_order": [
     "R-0029",
     "R-0024",
+    "R-0035",
     "R-0032",
-    "R-0030",
     "R-0031",
+    "R-0030",
+    "R-0036",
+    "R-0037",
     "R-0033",
+    "R-0038",
     "R-0034",
     "R-0015",
-    "R-0028",
     "R-0017",
+    "R-0028",
     "R-0016",
     "R-0019",
     "R-0021",
     "R-0020",
-    "R-0022",
     "R-0018",
+    "R-0022",
     "R-0023"
   ],
   "execution_depth": 12,
-  "rules_executed": 17,
+  "rules_executed": 21,
   "rule_outputs": {
     "R-0029": {
       "hra_evidence_status": {
@@ -111,18 +119,35 @@
     "R-0024": {
       "deduction_80C": 0
     },
+    "R-0035": {
+      "deduction_80d_evidence_status": {
+        "status": "NOT_APPLICABLE",
+        "reason": "80D deductions not available under new regime",
+        "missing_fields": [],
+        "suggested_questions": []
+      }
+    },
     "R-0032": {
       "hra_candidate_3": 0
-    },
-    "R-0030": {
-      "hra_candidate_1": 0
     },
     "R-0031": {
       "hra_candidate_2": 0
     },
+    "R-0030": {
+      "hra_candidate_1": 0
+    },
+    "R-0036": {
+      "deduction_80d_self": 0
+    },
+    "R-0037": {
+      "deduction_80d_parents": 0
+    },
     "R-0033": {
       "hra_exemption": 0,
       "hra_limiting_candidate": null
+    },
+    "R-0038": {
+      "deduction_80D": 0
     },
     "R-0034": {
       "total_salary_sec10_exemption": 0,
@@ -136,14 +161,14 @@
       "gross_total_income": 1022000,
       "total_income": 1022000
     },
+    "R-0017": {
+      "slab_tax_new_regime": 44700,
+      "total_before_rebate_new_regime": 44700
+    },
     "R-0028": {
       "taxable_income_old_regime": 972000,
       "total_deductions_old": 0,
       "deduction_breakdown": {}
-    },
-    "R-0017": {
-      "slab_tax_new_regime": 44700,
-      "total_before_rebate_new_regime": 44700
     },
     "R-0016": {
       "slab_tax_old_regime": 106900,
@@ -165,6 +190,11 @@
       "cess_new_regime": 0,
       "cess_old_regime": 4276
     },
+    "R-0018": {
+      "regime_recommendation": "new_regime",
+      "tax_saving_amount": 111176,
+      "new_regime_is_better": true
+    },
     "R-0022": {
       "total_interest": 0,
       "interest_234A": 0,
@@ -176,11 +206,6 @@
         "applicable": false,
         "reason": "Salary taxpayer \u2014 employer TDS satisfies advance tax obligation"
       }
-    },
-    "R-0018": {
-      "regime_recommendation": "new_regime",
-      "tax_saving_amount": 111176,
-      "new_regime_is_better": true
     },
     "R-0023": {
       "outcome": "refund",

@@ -1,0 +1,20 @@
+{
+  "id": "T-0081",
+  "title": "R-0036: COMPLETE, senior taxpayer, premium ₹45K < ₹50K cap → deduction_80d_self = 45000",
+  "target_type": "rule",
+  "target_ref": "R-0036",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "deduction_80d_self_premium": 45000,
+    "age_bracket": "senior"
+  },
+  "expected_output": {
+    "deduction_80d_self": 45000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Senior taxpayer (≥60) → ₹50K limit applies; actual ₹45K is under cap."
+}
