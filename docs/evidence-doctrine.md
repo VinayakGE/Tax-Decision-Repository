@@ -4,6 +4,24 @@
 
 ---
 
+## Doctrine Origins
+
+The doctrines below were not designed in advance. They were discovered by allowing real cases to contradict the system and updating accordingly. This table records what forced each doctrine into existence — applying the same evidentiary standard to the methodology that the methodology applies to the rules.
+
+| Doctrine | Origin | What forced it |
+|---|---|---|
+| Doctrine 0 | RC-0001 + D-001 | D-001 could not have been detected by any synthetic test. The entire test suite shared the same wrong assumption. |
+| Doctrine 1 | RC-0001 | 107 synthetic tests passed while the standard deduction was wrong for both regimes. |
+| Doctrine 2 | RC-0001 | A single CPC-verified return exposed what 107 tests missed. |
+| Doctrine 3 | RC-0002 (IG-001) | Perquisites treatment unclear — engine behavior may be correct, or the filing may have omitted them. Implementing a guess would have been wrong. |
+| Doctrine 4 | RC-0001 + RC-0002 | Rules implemented before RC-0001 had no independent verification. D-001 revealed that consistency without independence is not correctness. |
+| Doctrine 5 | RC-0002 planning | Two salary cases cannot expose business income, house property, or capital gains errors. Corpus selection must be intentional. |
+| Evidence Regression | Finance Act cadence | No code change is required for the implementation to become wrong. External authority moves; the engine must follow; synthetic tests cannot detect the drift. |
+
+A doctrine that cannot be traced to an observation has the same status as a rule with no independent case behind it: consistent with the author's reasoning, but not yet verified against reality.
+
+---
+
 ## Doctrine 0: No System Can Fully Validate Its Own Foundational Assumptions
 
 A system cannot establish the correctness of assumptions that originate from within itself using only artifacts derived from those assumptions.
@@ -273,7 +291,23 @@ For regulated decision engines specifically, "has not been shown to be wrong" is
 
 ---
 
-## Evidence Regression: When Reality Moves
+## Knowledge Drift and Evidence Regression
+
+### Three kinds of drift
+
+Software systems are subject to familiar drift types. A regulated decision engine adds a third:
+
+| Drift type | Trigger | Detection mechanism |
+|---|---|---|
+| **Code drift** | Developer changes code | Unit tests, CI, golden masters |
+| **Dependency drift** | Library or platform changes | Integration tests, dependency alerts |
+| **Knowledge drift** | External authority changes meaning or interpretation | Independent case validation, regulatory watch |
+
+Code drift and dependency drift are well understood. Knowledge drift is characteristic of knowledge systems — systems whose correctness depends not just on their internal logic but on alignment with an external authority that evolves independently.
+
+### Evidence regression: the observable form of knowledge drift
+
+When knowledge drift reaches the implementation — when the external authority has moved and the implementation has not — the system is in an **evidence regression**. Its tests all pass. Its behavior is internally consistent. But it is producing wrong answers, because the reference reality it was built against no longer matches the reference reality that governs.
 
 Conventional software has two maintenance triggers:
 
@@ -283,12 +317,6 @@ Conventional software has two maintenance triggers:
 A regulated decision engine has a third:
 
 3. **Evidence regression** — reference reality changes, making the implementation wrong even though nothing in the repository changed
-
-| Trigger | What changed | Detection mechanism |
-|---|---|---|
-| Code regression | Repository | Golden master tests |
-| Requirement change | Specification | Change process |
-| Evidence regression | Reality | Independent case validation |
 
 For a tax engine, evidence regression triggers include:
 - Finance Act published each year (slab rates, deduction limits, new sections)
