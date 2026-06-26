@@ -11,7 +11,7 @@ from typing import List, Optional
 
 from engine.parsers.manual import ManualParser
 from engine.executor import execute
-from engine.specs import WAVE3A_SPECS
+from engine.specs import ALL_SPECS
 from dvf import DECISION_FIELDS
 
 GOLDEN_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "golden")
@@ -69,7 +69,7 @@ def _run_case(case_data: dict) -> tuple:
 
     parser = ManualParser()
     evidence_obj = parser.parse(evidence)
-    ctx = execute(WAVE3A_SPECS, evidence_obj.evidence)
+    ctx = execute(ALL_SPECS, evidence_obj.evidence)
     return ctx.snapshot()
 
 
@@ -121,7 +121,7 @@ def run_golden(gm_id: str = None) -> List[GoldenResult]:
         stored_trace = case_data.get("stored_trace", {})
         if stored_trace:
             from engine.scheduler import build_schedule
-            waves = build_schedule(WAVE3A_SPECS)
+            waves = build_schedule(ALL_SPECS)
             actual_depth = len(waves)
             stored_depth = stored_trace.get("execution_depth", actual_depth)
             if actual_depth != stored_depth:

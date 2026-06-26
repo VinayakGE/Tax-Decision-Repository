@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from engine.parsers.manual import ManualParser
 from engine.executor import execute
-from engine.specs import WAVE3A_SPECS
+from engine.specs import ALL_SPECS
 from engine.scheduler import build_schedule
 from dvf import DECISION_FIELDS
 
@@ -28,6 +28,10 @@ CASE_COVERAGE = {
     "GM-0002": ["salary", "87a_cliff", "no_rebate", "new_regime", "refund"],
     "GM-0003": ["salary", "senior_citizen", "87a_rebate_both_regimes", "zero_tax", "refund"],
     "GM-0004": ["business_income", "no_advance_tax", "234b", "234c", "demand", "new_regime"],
+    "GM-0005": ["salary", "old_regime", "80c_at_cap", "deduction_engine", "demand"],
+    "GM-0006": ["salary", "old_regime", "80c_partial", "deduction_engine", "demand"],
+    "GM-0007": ["salary", "old_regime", "80c_over_limit_capped", "deduction_engine", "demand"],
+    "GM-0008": ["salary", "new_regime", "80c_declared_not_applied", "deduction_engine", "refund"],
 }
 
 
@@ -73,8 +77,8 @@ def generate_one(gm_dir: str) -> dict:
     parser = ManualParser()
     evidence_obj = parser.parse(evidence)
 
-    waves = build_schedule(WAVE3A_SPECS)
-    ctx = execute(WAVE3A_SPECS, evidence_obj.evidence)
+    waves = build_schedule(ALL_SPECS)
+    ctx = execute(ALL_SPECS, evidence_obj.evidence)
     snapshot = ctx.snapshot()
 
     expected = _extract_decision_fields(snapshot)

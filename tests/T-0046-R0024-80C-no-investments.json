@@ -1,0 +1,18 @@
+{
+  "id": "T-0046",
+  "title": "R-0024: No 80C investments declared — deduction is zero",
+  "target_type": "rule",
+  "target_ref": "R-0024",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime"
+  },
+  "expected_output": {
+    "deduction_80C": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "investments_80C not present in context. Rule should default to 0 and not error."
+}

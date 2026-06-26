@@ -1,7 +1,7 @@
 {
   "case_id": "GM-0003",
   "description": "Senior citizen (age 65) \u2014 old regime senior slabs + 87A rebate both regimes produce zero tax. Full TDS refund.",
-  "generated_at": "2026-06-26T06:03:32.201708Z",
+  "generated_at": "2026-06-26T06:28:28.831501Z",
   "engine_version": "1.0.0",
   "coverage_tags": [
     "salary",

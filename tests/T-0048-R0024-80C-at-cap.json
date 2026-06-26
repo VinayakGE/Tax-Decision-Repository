@@ -1,0 +1,22 @@
+{
+  "id": "T-0048",
+  "title": "R-0024: 80C investment exactly at ₹1.5L cap — full cap deducted",
+  "target_type": "rule",
+  "target_ref": "R-0024",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "investments_80C": 150000
+  },
+  "expected_output": {
+    "deduction_80C": 150000,
+    "deduction_80C_investments_declared": 150000,
+    "deduction_80C_cap": 150000,
+    "deduction_80C_capped": false
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Investment exactly equals cap ₹1.5L. Deduction = ₹1.5L. capped=false (not over cap)."
+}

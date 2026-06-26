@@ -137,7 +137,7 @@ def r0015_taxable_income_assembly(ctx: EvidenceContext) -> None:
 
     ctx.update({
         "taxable_income_new_regime": taxable_new,
-        "taxable_income_old_regime": taxable_old,
+        "taxable_income_old_pre_deductions": taxable_old,  # R-0028 reads this and produces taxable_income_old_regime
         "gross_total_income": gross_total,
         "total_income": gross_total,  # alias used by R-0019 and R-0021
         "standard_deduction_applied_new": std_deduction_new,

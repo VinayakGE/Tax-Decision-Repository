@@ -70,6 +70,14 @@ MUTATIONS = [
         mutated_value=50000,
         should_affect=["GM-0001", "GM-0002", "GM-0003"],
     ),
+    MutationSpec(
+        name="80C_limit_reduced",
+        description="Reduce 80C limit from ₹1.5L to ₹1L — GM-0005 (₹1.5L declared, deduction drops) and GM-0007 (₹2L declared, cap was already ₹1.5L, now drops to ₹1L) must detect this",
+        table_file="tables/2024/deductions.json",
+        key_path=["chapter_via", "80C", "limit"],
+        mutated_value=100000,
+        should_affect=["GM-0005", "GM-0007"],
+    ),
 ]
 
 

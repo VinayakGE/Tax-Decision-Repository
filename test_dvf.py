@@ -5,7 +5,7 @@ Run: pytest test_dvf.py -v
 """
 
 import pytest
-from engine.specs import WAVE3A_SPECS
+from engine.specs import ALL_SPECS
 from dvf.runners.golden import run_golden
 from dvf.runners.differential import run_diff, run_golden_diff
 from dvf.runners.mutation import run_all_mutations, MUTATIONS
@@ -28,9 +28,10 @@ class TestGoldenMasters:
 
     def test_golden_master_count(self):
         results = run_golden()
-        assert len(results) >= 4, f"Expected at least 4 GMs, got {len(results)}"
+        assert len(results) >= 8, f"Expected at least 8 GMs, got {len(results)}"
 
-    @pytest.mark.parametrize("gm_id", ["GM-0001", "GM-0002", "GM-0003", "GM-0004"])
+    @pytest.mark.parametrize("gm_id", ["GM-0001", "GM-0002", "GM-0003", "GM-0004",
+                                        "GM-0005", "GM-0006", "GM-0007", "GM-0008"])
     def test_individual_golden_master(self, gm_id):
         results = run_golden(gm_id=gm_id)
         assert len(results) == 1, f"Expected 1 result for {gm_id}, got {len(results)}"
@@ -48,7 +49,7 @@ class TestGoldenMasters:
 class TestDifferential:
     def test_identity_diff_is_empty(self):
         """Same spec set vs itself should produce zero diffs across all GMs."""
-        results = run_golden_diff(WAVE3A_SPECS, WAVE3A_SPECS)
+        results = run_golden_diff(ALL_SPECS, ALL_SPECS)
         diffs = [r for r in results if r.has_diff]
         assert not diffs, (
             f"Identity diff produced changes: "
@@ -57,7 +58,7 @@ class TestDifferential:
 
     def test_diff_structure(self):
         """DiffResult has the expected shape."""
-        results = run_golden_diff(WAVE3A_SPECS, WAVE3A_SPECS)
+        results = run_golden_diff(ALL_SPECS, ALL_SPECS)
         assert results
         for r in results:
             assert hasattr(r, "case_id")
@@ -88,7 +89,7 @@ class TestDifferential:
             "due_date": "2025-07-31",
             "income_type": "salary_only",
         }
-        result = run_diff(evidence, WAVE3A_SPECS, WAVE3A_SPECS, case_id="manual_test")
+        result = run_diff(evidence, ALL_SPECS, ALL_SPECS, case_id="manual_test")
         assert not result.has_diff
         assert result.case_id == "manual_test"
 
@@ -153,6 +154,7 @@ class TestCoverage:
         report = coverage_report()
         ov = report["overall"]
         assert ov["total"] == len(REQUIRED_COVERAGE)
+        # covered = unique required cells that have a GM (may be < total GMs due to multiple GMs per cell)
         assert ov["covered"] == len(GM_COVERAGE_MAP)
 
     def test_pending_cells_plus_covered_equals_total(self):

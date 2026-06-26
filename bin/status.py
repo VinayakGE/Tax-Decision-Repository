@@ -37,7 +37,7 @@ BUSINESS = {
 # Product readiness — updated manually each wave
 PRODUCT = {
     "wave_3a":         "Complete",
-    "wave_3b":         "Not Started",
+    "wave_3b":         "In Progress  (80C complete)",
     "parser_framework":"Ready",
     "real_parser":     "Not Started",
     "real_cases":      0,
@@ -116,9 +116,9 @@ def run_golden() -> dict:
 
 def scheduler_info() -> dict:
     from engine.scheduler import build_schedule
-    from engine.specs import WAVE3A_SPECS
-    waves = build_schedule(WAVE3A_SPECS)
-    return {"depth": len(waves), "rules": len(WAVE3A_SPECS)}
+    from engine.specs import ALL_SPECS
+    waves = build_schedule(ALL_SPECS)
+    return {"depth": len(waves), "rules": len(ALL_SPECS)}
 
 
 def compute_rci(active_rules: int, tests_passed: int, tests_total: int,
@@ -127,7 +127,7 @@ def compute_rci(active_rules: int, tests_passed: int, tests_total: int,
     knowledge   = _pct(active_rules, RULES_TARGET)
     rule_tests  = _pct(tests_passed, tests_total) if tests_total else 0.0
     gm_cov      = _pct(gm_passed, GM_TARGET)
-    mutation    = 100.0   # 4/4 mutations detected; update if new blind spots found
+    mutation    = 100.0   # 5/5 mutations detected; update if new blind spots found
     real_val    = _pct(real_cases, REAL_CASES_TARGET)
     score       = round((knowledge + rule_tests + gm_cov + mutation + real_val) / 5, 1)
     return {
@@ -216,7 +216,7 @@ def main():
     print(_row("Knowledge coverage",   f"{rci['knowledge']:>5.1f} / 100   ({r['active']}/{RULES_TARGET} rules)"))
     print(_row("Rule test coverage",   f"{rci['rule_tests']:>5.1f} / 100   ({test_res['passed']}/{tests_total} tests passing)"))
     print(_row("Golden master coverage",f"{rci['gm_cov']:>5.1f} / 100   ({gm_res['passed']}/{GM_TARGET} masters)"))
-    print(_row("Mutation detection",   f"{rci['mutation']:>5.1f} / 100   (4/4 mutations caught)"))
+    print(_row("Mutation detection",   f"{rci['mutation']:>5.1f} / 100   (5/5 mutations caught)"))
     print(_row("Real case validation", f"{rci['real_val']:>5.1f} / 100   ({BUSINESS['real_taxpayers_processed']}/{REAL_CASES_TARGET} cases)"))
     print()
     print(f"  {'RCI':<32} {rci['score']:>5.1f} / 100")

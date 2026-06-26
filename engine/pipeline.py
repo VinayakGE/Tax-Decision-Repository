@@ -13,7 +13,7 @@ import argparse
 
 from engine.parsers.manual import ManualParser
 from engine.executor import execute
-from engine.specs import WAVE3A_SPECS
+from engine.specs import ALL_SPECS
 from engine.explanation import explain
 from engine.report import render_html
 
@@ -41,7 +41,7 @@ def run(case_path: str, output_path: str = None) -> dict:
     evidence_obj = parser.parse(evidence)
 
     # Execute rules
-    ctx = execute(WAVE3A_SPECS, evidence_obj.evidence)
+    ctx = execute(ALL_SPECS, evidence_obj.evidence)
 
     # Generate explanation
     explanation = explain(ctx)

@@ -1,0 +1,21 @@
+{
+  "id": "T-0052",
+  "title": "R-0028: Deduction aggregator — no deductions, pass-through",
+  "target_type": "rule",
+  "target_ref": "R-0028",
+  "test_type": "positive",
+  "input": {
+    "taxable_income_old_pre_deductions": 850000,
+    "deduction_80C": 0
+  },
+  "expected_output": {
+    "taxable_income_old_regime": 850000,
+    "total_deductions_old": 0,
+    "deduction_breakdown": {}
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "No deductions declared. taxable_income_old_regime = pre_deductions unchanged. breakdown is empty dict."
+}

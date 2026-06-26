@@ -1,6 +1,9 @@
 """
-Rule Spec registry for the Wave 3A Tax Computation Engine.
+Rule Spec registry — Wave 3A (Tax Computation) and Wave 3B (Tax Adjustment / Deductions).
 Each spec declares requires/produces so the scheduler can build the dependency graph.
+
+ALL_SPECS is the combined set used by the pipeline and golden runner.
+WAVE3A_SPECS and WAVE3B_SPECS are kept separate for differential testing.
 """
 
 from engine.scheduler import RuleSpec
@@ -15,12 +18,17 @@ from engine.rules.wave3a import (
     r0022_interest_234abc,
     r0023_refund_vs_demand,
 )
+from engine.rules.wave3b import (
+    r0024_deduction_80c,
+    r0028_deduction_aggregator,
+)
 
 WAVE3A_SPECS = [
     RuleSpec(
         rule_id="R-0015",
         requires=["classified_income", "evidence_integrity_checks_passed"],
-        produces=["taxable_income_new_regime", "taxable_income_old_regime", "gross_total_income", "total_income"],
+        produces=["taxable_income_new_regime", "taxable_income_old_pre_deductions",
+                  "gross_total_income", "total_income"],
         fn=r0015_taxable_income_assembly,
     ),
     RuleSpec(
@@ -73,3 +81,21 @@ WAVE3A_SPECS = [
         fn=r0023_refund_vs_demand,
     ),
 ]
+
+WAVE3B_SPECS = [
+    RuleSpec(
+        rule_id="R-0024",
+        requires=["regime_chosen"],
+        produces=["deduction_80C"],
+        fn=r0024_deduction_80c,
+    ),
+    RuleSpec(
+        rule_id="R-0028",
+        requires=["taxable_income_old_pre_deductions", "deduction_80C"],
+        produces=["taxable_income_old_regime", "total_deductions_old", "deduction_breakdown"],
+        fn=r0028_deduction_aggregator,
+    ),
+]
+
+# Combined spec set used by all production paths
+ALL_SPECS = WAVE3A_SPECS + WAVE3B_SPECS

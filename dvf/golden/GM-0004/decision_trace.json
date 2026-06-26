@@ -3,43 +3,50 @@
     {
       "wave": 1,
       "rules": [
-        "R-0015"
+        "R-0015",
+        "R-0024"
       ]
     },
     {
       "wave": 2,
       "rules": [
         "R-0017",
-        "R-0016"
+        "R-0028"
       ]
     },
     {
       "wave": 3,
       "rules": [
-        "R-0019"
+        "R-0016"
       ]
     },
     {
       "wave": 4,
       "rules": [
-        "R-0021"
+        "R-0019"
       ]
     },
     {
       "wave": 5,
       "rules": [
-        "R-0020"
+        "R-0021"
       ]
     },
     {
       "wave": 6,
+      "rules": [
+        "R-0020"
+      ]
+    },
+    {
+      "wave": 7,
       "rules": [
         "R-0018",
         "R-0022"
       ]
     },
     {
-      "wave": 7,
+      "wave": 8,
       "rules": [
         "R-0023"
       ]
@@ -47,7 +54,9 @@
   ],
   "execution_order": [
     "R-0015",
+    "R-0024",
     "R-0017",
+    "R-0028",
     "R-0016",
     "R-0019",
     "R-0021",
@@ -56,18 +65,26 @@
     "R-0022",
     "R-0023"
   ],
-  "execution_depth": 7,
-  "rules_executed": 9,
+  "execution_depth": 8,
+  "rules_executed": 11,
   "rule_outputs": {
     "R-0015": {
       "taxable_income_new_regime": 1500000,
-      "taxable_income_old_regime": 1500000,
+      "taxable_income_old_pre_deductions": 1500000,
       "gross_total_income": 1500000,
       "total_income": 1500000
+    },
+    "R-0024": {
+      "deduction_80C": 0
     },
     "R-0017": {
       "slab_tax_new_regime": 140000,
       "total_before_rebate_new_regime": 140000
+    },
+    "R-0028": {
+      "taxable_income_old_regime": 1500000,
+      "total_deductions_old": 0,
+      "deduction_breakdown": {}
     },
     "R-0016": {
       "slab_tax_old_regime": 262500,
