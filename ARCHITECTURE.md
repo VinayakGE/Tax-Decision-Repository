@@ -270,24 +270,148 @@ draft ──► active ──► deprecated
 
 ## 9. Directory Purpose Map
 
-| Directory        | Contains |
-|------------------|----------|
-| `/docs`          | Human-readable architecture docs, domain model, guides |
-| `/data`          | Raw or processed tax data (AY-scoped subdirectories) |
-| `/rules`         | One JSON file per rule |
-| `/decision_trees`| Decision object files and YAML tree definitions |
-| `/validation`    | Validation check files |
-| `/knowledge_graph`| Entity definitions, ontology, relationship maps |
-| `/cases`         | One directory per case |
-| `/explanations`  | Reusable explanation templates |
-| `/changes`       | One JSON file per change, plus CHANGELOG.md |
-| `/tests`         | Test suites, one file per rule or decision |
-| `/schemas`       | JSON Schema files for all object types |
-| `/prompts`       | AI prompt templates that retrieve from this repository |
+| Directory          | Contains |
+|--------------------|----------|
+| `/docs`            | Human-readable architecture docs, domain model, guides |
+| `/data`            | Raw or processed tax data (AY-scoped subdirectories) |
+| `/rules`           | One JSON file per rule |
+| `/decision_trees`  | Decision object files and YAML tree definitions |
+| `/validation`      | Validation check files |
+| `/knowledge_graph` | Entity definitions, ontology, relationship maps |
+| `/cases`           | One directory per case |
+| `/explanations`    | Reusable explanation templates |
+| `/changes`         | One JSON file per change, plus CHANGELOG.md |
+| `/tests`           | Test suites, one file per rule or decision |
+| `/schemas`         | JSON Schema files for all object types |
+| `/prompts`         | AI prompt templates that retrieve from this repository |
+| `/registry`        | Registry index for all objects — the operating system |
+| `/dependency_graph`| Per-section dependency maps — impact analysis when law changes |
 
 ---
 
-## 10. What the AI Layer Must Never Do
+## 10. Repository Index (Operating System)
+
+The `/registry` directory is the operating system of the repository. Every object that exists must have a registry entry. Nothing is discoverable without one.
+
+**Registries:**
+
+| File | Contains |
+|------|----------|
+| `registry/rule-registry.json` | All rules — ID, title, status, AY, version, cross-refs |
+| `registry/decision-registry.json` | All decisions and their bound questions |
+| `registry/evidence-registry.json` | All evidence sources |
+| `registry/validation-registry.json` | All validations, severity, decision links |
+| `registry/case-registry.json` | All cases, AY, source, verified flag |
+| `registry/section-registry.json` | All legal sections cited — anchor for dependency graph |
+| `registry/version-registry.json` | All repository version snapshots |
+| `registry/index.json` | Master object counts and health metrics |
+
+**Invariant:** Every commit that adds or modifies an object must also update its registry entry. A CI check will enforce this.
+
+---
+
+## 11. Dependency Graph
+
+The `/dependency_graph` directory answers: **if this legal section changes, what objects in the repository are affected?**
+
+Every legal section in `registry/section-registry.json` has a corresponding file in `/dependency_graph/` that maps the full cascade:
+
+```
+Legal Section (SEC-XXX)
+  └─► Layer 1: Rules that cite this section
+        └─► Layer 2: Decisions that apply those rules
+              └─► Layer 3: Decision Trees
+                    └─► Layer 4: Validations
+                          └─► Layer 5: Cases
+                                └─► Layer 6: Tests
+                                      └─► Layer 7: AI Prompts
+```
+
+Each dependency file also contains the ordered update procedure — the exact steps to take when the section is amended.
+
+Schema: `schemas/dependency-schema.json`
+
+**When Finance Act is passed:** Look up every affected section in `registry/section-registry.json`. Open each dependency file. Follow its update procedure. Create Change entries for every affected object.
+
+---
+
+## 12. Rule Lifecycle
+
+Rules pass through seven stages before they are trusted by the system.
+
+```
+draft → peer_reviewed → legal_reviewed → active → deprecated → archived
+                                              └─► superseded ──►(new rule active)
+```
+
+Full lifecycle definitions, promotion requirements, and review checklists: `docs/rule-lifecycle.md`
+
+**The AI only retrieves `active` rules.** Every other stage is invisible to the AI.
+
+---
+
+## 13. Confidence Model
+
+The repository defines — not the AI — how confident a decision is, based on evidence completeness.
+
+**Evidence Completeness Score (ECS):** Fraction of required fields that are present and verified.
+
+**Confidence Score (CS):** ECS weighted by the quality of the primary evidence source.
+
+**Confidence Bands:**
+
+| Band | Score | Behavior |
+|------|-------|----------|
+| A | 95–100 | Proceed automatically |
+| B | 80–94 | Proceed, flag unverified fields |
+| C | 60–79 | Pause, ask user for missing fields |
+| D | 40–59 | Ask user, list all missing fields |
+| E | 0–39 | Halt, cannot decide |
+
+Full model: `docs/confidence-model.md`
+
+**The AI never omits a confidence block from a decision output.**
+
+---
+
+## 14. Conflict Resolver
+
+When two evidence sources report the same fact with different values, the conflict resolver determines which wins — not the AI.
+
+**Resolution hierarchy:** Defined in `docs/evidence-catalogue.md` priority matrix. Tier 1 always wins unless the delta exceeds 5%, which triggers escalation to the user.
+
+**Conflict types:**
+1. Amount Mismatch — auto-resolve if delta < 1%; escalate if delta > 5%
+2. Presence Mismatch — triggers Validation V-002; never silently ignored
+3. Classification Mismatch — always escalates to human
+4. Missing Source — handled by Confidence Model (Band E if source is required)
+
+Every resolution is logged as a machine-readable conflict entry.
+
+Full framework: `docs/conflict-resolver.md`
+
+---
+
+## 15. Rule Authoring Guide
+
+Any contributor can add rules by following `docs/rule-authoring-guide.md`. The guide covers:
+
+1. Checking prerequisites (authority, evidence, decision, outcome)
+2. Assigning the next Rule ID
+3. Writing the rule file from the canonical template
+4. Writing logic conditions correctly (no ambiguity, no bundling)
+5. Citing authority precisely
+6. Writing test cases (minimum count by complexity)
+7. Linking to decisions and updating registries
+8. Creating a Change entry
+9. Committing with the correct message format
+10. Requesting review (peer + legal)
+
+**The guide ensures Rule 500 is as well-formed as Rule 1, written by anyone, without asking the original author.**
+
+---
+
+## 16. What the AI Layer Must Never Do
 
 The AI (Jarviz) must:
 

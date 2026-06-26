@@ -80,6 +80,20 @@ Read [ARCHITECTURE.md](ARCHITECTURE.md) first. It defines the seven core objects
 │   ├── CHANGELOG.md
 │   └── CH-0001.json
 │
+├── registry/
+│   ├── index.json           ← Master object counts and health
+│   ├── rule-registry.json
+│   ├── decision-registry.json
+│   ├── evidence-registry.json
+│   ├── validation-registry.json
+│   ├── case-registry.json
+│   ├── section-registry.json
+│   └── version-registry.json
+│
+├── dependency_graph/
+│   ├── SEC-002-section-44AD.json
+│   └── SEC-004-section-115BAC.json
+│
 ├── data/                    ← Tax data (AY-scoped, empty until needed)
 └── explanations/            ← Reusable explanation templates
 ```
@@ -99,7 +113,9 @@ Read [ARCHITECTURE.md](ARCHITECTURE.md) first. It defines the seven core objects
 | Cases | 1 | synthetic |
 | Tests | 3 | pending |
 | Prompts | 2 | active |
-| Schemas | 7 | active |
+| Schemas | 9 | active |
+| Dependency Graphs | 2 | active |
+| Registry Files | 8 | active |
 
 ---
 
@@ -111,6 +127,11 @@ Read [ARCHITECTURE.md](ARCHITECTURE.md) first. It defines the seven core objects
 - **Evidence before decision.** Every decision traces back to a document.
 - **Changes are immutable records.** Nothing is silently edited.
 - **AI retrieves, repository decides.** The AI assistant never invents rules.
+- **Registry is mandatory.** Every object exists in the registry or it doesn't exist.
+- **Dependency graph first.** Before changing any rule, check what it cascades into.
+- **Confidence is computed, not guessed.** The repository defines the confidence band; the AI reports it.
+- **Conflicts are resolved by rule, not by AI.** Every evidence conflict has a defined resolution path.
+- **Lifecycle is enforced.** No rule reaches `active` without peer review and legal review.
 
 ---
 

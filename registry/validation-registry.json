@@ -1,0 +1,38 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "type": "validation-registry",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "validations": [
+    {
+      "id": "V-001",
+      "title": "TDS Mismatch — Form 16 vs 26AS",
+      "type": "cross-check",
+      "severity": "critical",
+      "status": "active",
+      "decision_refs": ["D-003"],
+      "rule_refs": [],
+      "file": "validation/V-001-tds-mismatch-form16-26as.json"
+    },
+    {
+      "id": "V-002",
+      "title": "Income in AIS Not Reported in Return",
+      "type": "completeness",
+      "severity": "critical",
+      "status": "active",
+      "decision_refs": ["D-001", "D-004"],
+      "rule_refs": [],
+      "file": "validation/V-002-ais-income-missing.json"
+    },
+    {
+      "id": "V-003",
+      "title": "Refund Bank Account Not Pre-Validated",
+      "type": "completeness",
+      "severity": "high",
+      "status": "active",
+      "decision_refs": ["D-004"],
+      "rule_refs": [],
+      "file": "validation/V-003-refund-bank-account-prevalidated.json"
+    }
+  ]
+}

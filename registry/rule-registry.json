@@ -1,0 +1,73 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "type": "rule-registry",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "rules": [
+    {
+      "id": "R-0001",
+      "title": "ITR-1 Ineligible — Business Income Exists",
+      "status": "active",
+      "lifecycle_stage": "active",
+      "version": "1.0.0",
+      "assessment_years": ["AY2025-26"],
+      "tags": ["itr-form", "eligibility", "itr1", "business-income"],
+      "decision_refs": ["D-001"],
+      "section_refs": ["SEC-001"],
+      "test_refs": ["T-0001", "T-0002"],
+      "file": "rules/R-0001-itr1-ineligible-business-income.json"
+    },
+    {
+      "id": "R-0002",
+      "title": "ITR-1 Eligible — Salary, One HP, Other Sources, Income ≤ ₹50L",
+      "status": "active",
+      "lifecycle_stage": "active",
+      "version": "1.0.0",
+      "assessment_years": ["AY2025-26"],
+      "tags": ["itr-form", "eligibility", "itr1", "salary"],
+      "decision_refs": ["D-001"],
+      "section_refs": ["SEC-001"],
+      "test_refs": ["T-0003", "T-0004"],
+      "file": "rules/R-0002-itr1-eligible-salary-only.json"
+    },
+    {
+      "id": "R-0003",
+      "title": "ITR-2 Required — Foreign Assets or Foreign Income",
+      "status": "active",
+      "lifecycle_stage": "active",
+      "version": "1.0.0",
+      "assessment_years": ["AY2025-26"],
+      "tags": ["itr-form", "eligibility", "itr2", "foreign-assets"],
+      "decision_refs": ["D-001"],
+      "section_refs": ["SEC-001"],
+      "test_refs": ["T-0005"],
+      "file": "rules/R-0003-itr2-foreign-assets.json"
+    },
+    {
+      "id": "R-0004",
+      "title": "ITR-4 Eligible — Presumptive Income under Section 44AD or 44ADA",
+      "status": "active",
+      "lifecycle_stage": "active",
+      "version": "1.0.0",
+      "assessment_years": ["AY2025-26"],
+      "tags": ["itr-form", "eligibility", "itr4", "presumptive", "44ad", "44ada"],
+      "decision_refs": ["D-001", "D-005"],
+      "section_refs": ["SEC-002", "SEC-003"],
+      "test_refs": ["T-0006", "T-0007"],
+      "file": "rules/R-0004-itr4-presumptive-eligible.json"
+    },
+    {
+      "id": "R-0005",
+      "title": "New Tax Regime is Default from AY2024-25",
+      "status": "active",
+      "lifecycle_stage": "active",
+      "version": "1.0.0",
+      "assessment_years": ["AY2024-25", "AY2025-26"],
+      "tags": ["regime", "new-regime", "115bac", "default"],
+      "decision_refs": ["D-002"],
+      "section_refs": ["SEC-004"],
+      "test_refs": ["T-0008"],
+      "file": "rules/R-0005-new-regime-default.json"
+    }
+  ]
+}

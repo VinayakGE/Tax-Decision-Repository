@@ -1,0 +1,85 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "type": "evidence-registry",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "evidence_sources": [
+    {
+      "id": "E-001",
+      "name": "AIS",
+      "full_name": "Annual Information Statement",
+      "issuer": "Income Tax Department",
+      "format": "Portal / PDF / JSON",
+      "frequency": "Real-Time",
+      "priority": 2,
+      "reliable_for": ["salary", "interest", "dividend", "capital_gains", "rent_received", "foreign_remittance", "tds_summary"],
+      "file": "docs/evidence-catalogue.md#e-001"
+    },
+    {
+      "id": "E-002",
+      "name": "26AS",
+      "full_name": "Tax Credit Statement",
+      "issuer": "Income Tax Department (TRACES)",
+      "format": "Portal / PDF / Text",
+      "frequency": "Real-Time",
+      "priority": 1,
+      "reliable_for": ["tds_credit", "tcs_credit", "advance_tax", "self_assessment_tax"],
+      "file": "docs/evidence-catalogue.md#e-002"
+    },
+    {
+      "id": "E-003",
+      "name": "Prefill JSON",
+      "full_name": "Pre-filled ITR JSON",
+      "issuer": "Income Tax Department",
+      "format": "JSON",
+      "frequency": "Annual",
+      "priority": 3,
+      "reliable_for": ["personal_info", "bank_accounts", "carry_forward_losses"],
+      "file": "docs/evidence-catalogue.md#e-003"
+    },
+    {
+      "id": "E-004",
+      "name": "Form 16",
+      "full_name": "Certificate of Tax Deducted at Source on Salary",
+      "issuer": "Employer",
+      "format": "PDF",
+      "frequency": "Annual",
+      "priority": 2,
+      "reliable_for": ["salary_income", "employer_tds", "exempt_allowances", "deductions_claimed"],
+      "file": "docs/evidence-catalogue.md#e-004"
+    },
+    {
+      "id": "E-005",
+      "name": "Form 16A",
+      "full_name": "Certificate of Tax Deducted at Source (Non-Salary)",
+      "issuer": "Deductor",
+      "format": "PDF (TRACES)",
+      "frequency": "Quarterly",
+      "priority": 2,
+      "reliable_for": ["non_salary_tds"],
+      "file": "docs/evidence-catalogue.md#e-005"
+    },
+    {
+      "id": "E-006",
+      "name": "Form 26QB",
+      "full_name": "TDS on Property Purchase",
+      "issuer": "Property Buyer",
+      "format": "Portal Challan",
+      "frequency": "Per-Transaction",
+      "priority": 1,
+      "reliable_for": ["property_tds"],
+      "file": "docs/evidence-catalogue.md#e-006"
+    },
+    {
+      "id": "E-007",
+      "name": "Capital Gains Statement",
+      "full_name": "Capital Gains Statement (Broker / AMC / CAS)",
+      "issuer": "Stockbroker or Mutual Fund AMC",
+      "format": "PDF / Excel",
+      "frequency": "Annual",
+      "priority": 1,
+      "reliable_for": ["stcg", "ltcg", "holding_period", "cost_of_acquisition"],
+      "file": "docs/evidence-catalogue.md#e-007"
+    }
+  ]
+}

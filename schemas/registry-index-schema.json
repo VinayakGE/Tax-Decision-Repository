@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "registry-index-schema.json",
+  "title": "RegistryIndex",
+  "description": "Base schema marker for all registry files. Individual registry files extend this with their specific structure.",
+  "type": "object",
+  "required": ["version", "last_updated"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "last_updated": { "type": "string", "format": "date" },
+    "type": { "type": "string" },
+    "description": { "type": "string" }
+  }
+}

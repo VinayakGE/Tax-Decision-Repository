@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dependency-schema.json",
+  "title": "DependencyGraph",
+  "description": "Schema for a dependency graph node rooted at a legal section. Answers: if this section changes, what objects are affected and in what order?",
+  "type": "object",
+  "required": ["section_id", "section_ref", "change_risk", "affected_objects", "impact_summary"],
+  "additionalProperties": false,
+  "properties": {
+    "section_id": {
+      "type": "string",
+      "pattern": "^SEC-[0-9]{3}$"
+    },
+    "section_ref": {
+      "type": "string",
+      "description": "Human-readable section name. E.g. 'Section 44AD'"
+    },
+    "act": {
+      "type": "string"
+    },
+    "change_risk": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"],
+      "description": "How frequently this section is amended and how many objects it affects."
+    },
+    "affected_objects": {
+      "type": "object",
+      "description": "Ordered layers of dependency. Layer 1 is directly affected; each layer depends on the prior.",
+      "properties": {
+        "layer_1_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "dependency_type", "affected_fields"],
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "dependency_type": {
+                "type": "string",
+                "enum": ["threshold", "rate", "eligibility", "definition", "formula"],
+                "description": "How this object depends on the section."
+              },
+              "affected_fields": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Which specific fields in the rule would change."
+              },
+              "change_required": { "type": "string" }
+            }
+          }
+        },
+        "layer_2_decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title", "via_rule"],
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "via_rule": { "type": "string" },
+              "change_required": { "type": "string" }
+            }
+          }
+        },
+        "layer_3_decision_trees": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "via_decision"],
+            "properties": {
+              "id": { "type": "string" },
+              "via_decision": { "type": "string" },
+              "change_required": { "type": "string" }
+            }
+          }
+        },
+        "layer_4_validations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title"],
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "change_required": { "type": "string" }
+            }
+          }
+        },
+        "layer_5_cases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title"],
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "change_required": { "type": "string" }
+            }
+          }
+        },
+        "layer_6_tests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": { "type": "string" },
+              "change_required": { "type": "string" }
+            }
+          }
+        },
+        "layer_7_prompts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": { "type": "string" },
+              "change_required": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "impact_summary": {
+      "type": "object",
+      "required": ["total_objects_affected", "estimated_update_effort"],
+      "properties": {
+        "total_objects_affected": { "type": "integer" },
+        "rules_affected": { "type": "integer" },
+        "decisions_affected": { "type": "integer" },
+        "validations_affected": { "type": "integer" },
+        "cases_affected": { "type": "integer" },
+        "tests_affected": { "type": "integer" },
+        "prompts_affected": { "type": "integer" },
+        "estimated_update_effort": {
+          "type": "string",
+          "enum": ["trivial", "low", "medium", "high", "critical"],
+          "description": "Human effort estimate for updating all affected objects."
+        }
+      }
+    },
+    "update_procedure": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Ordered steps to update the repository when this section changes."
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

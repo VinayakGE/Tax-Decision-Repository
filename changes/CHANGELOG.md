@@ -5,6 +5,27 @@ Format: `[CH-XXXX] YYYY-MM-DD — Type — Summary`
 
 ---
 
+## v1.1.0 — AY2025-26 (2026-06-26)
+
+**Scalability architecture — five missing modules.**
+
+### Added
+- [CH-0002] `registry/` — Repository Index (operating system): rule-registry, decision-registry, evidence-registry, validation-registry, case-registry, section-registry, version-registry, index.json
+- [CH-0002] `dependency_graph/SEC-002-section-44AD.json` — Full 7-layer impact map for Section 44AD with update procedure
+- [CH-0002] `dependency_graph/SEC-004-section-115BAC.json` — Full 7-layer impact map for Section 115BAC with update procedure
+- [CH-0002] `schemas/dependency-schema.json` — JSON Schema for dependency graph files
+- [CH-0002] `schemas/registry-index-schema.json` — Base schema for registry files
+- [CH-0002] `docs/rule-lifecycle.md` — 7-stage rule lifecycle with review checklists (draft → peer_reviewed → legal_reviewed → active → deprecated → superseded → archived)
+- [CH-0002] `docs/confidence-model.md` — Evidence Completeness Score, Evidence Quality Weights, Confidence Bands A–E, per-decision confidence tables, required output format
+- [CH-0002] `docs/conflict-resolver.md` — 4 conflict types, resolution hierarchy table, delta-threshold rules, conflict log schema
+- [CH-0002] `docs/rule-authoring-guide.md` — 11-step guide enabling any contributor to write Rule N+1 without asking the original author
+
+### Updated
+- [CH-0002] `ARCHITECTURE.md` — Added sections 10–15 covering Registry, Dependency Graph, Lifecycle, Confidence Model, Conflict Resolver, Rule Authoring Guide
+- [CH-0002] `README.md` — Updated structure, object counts, design principles
+
+---
+
 ## v1.0.0 — AY2025-26 (2026-06-26)
 
 **Initial knowledge architecture release.**

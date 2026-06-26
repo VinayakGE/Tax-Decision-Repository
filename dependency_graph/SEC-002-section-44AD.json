@@ -1,0 +1,98 @@
+{
+  "$schema": "../schemas/dependency-schema.json",
+  "section_id": "SEC-002",
+  "section_ref": "Section 44AD",
+  "act": "Income Tax Act, 1961",
+  "change_risk": "high",
+
+  "affected_objects": {
+    "layer_1_rules": [
+      {
+        "id": "R-0004",
+        "title": "ITR-4 Eligible — Presumptive Income under Section 44AD or 44ADA",
+        "dependency_type": "threshold",
+        "affected_fields": [
+          "logic.if (turnover_limit)",
+          "authority.finance_act",
+          "authority.effective_from",
+          "notes"
+        ],
+        "change_required": "Update turnover threshold, presumptive rate, and finance_act citation. Increment MINOR version."
+      }
+    ],
+    "layer_2_decisions": [
+      {
+        "id": "D-001",
+        "title": "Which ITR form must be filed?",
+        "via_rule": "R-0004",
+        "change_required": "Review D-001 inputs and logic. If threshold changes, update the decision description."
+      },
+      {
+        "id": "D-005",
+        "title": "Is the taxpayer eligible for ITR-4?",
+        "via_rule": "R-0004",
+        "change_required": "Update eligibility boundary in D-005 description and decision object."
+      }
+    ],
+    "layer_3_decision_trees": [
+      {
+        "id": "DT-001",
+        "via_decision": "D-001",
+        "change_required": "Update node-008 condition: '≤ ₹X crore' threshold comment."
+      }
+    ],
+    "layer_4_validations": [],
+    "layer_5_cases": [
+      {
+        "id": "C-000001",
+        "title": "Salary + Gig Income → ITR-4",
+        "change_required": "Recheck if synthetic case inputs still fall within new thresholds. Update notes if needed."
+      }
+    ],
+    "layer_6_tests": [
+      {
+        "id": "T-0006",
+        "change_required": "Verify business_turnover input still qualifies under new limit. Add boundary test at new threshold."
+      },
+      {
+        "id": "T-0007",
+        "change_required": "Same as T-0006."
+      }
+    ],
+    "layer_7_prompts": [
+      {
+        "id": "P-001",
+        "change_required": "Update any hardcoded threshold values in the prompt (e.g. '₹3 crore')."
+      }
+    ]
+  },
+
+  "impact_summary": {
+    "total_objects_affected": 9,
+    "rules_affected": 1,
+    "decisions_affected": 2,
+    "validations_affected": 0,
+    "cases_affected": 1,
+    "tests_affected": 2,
+    "prompts_affected": 1,
+    "estimated_update_effort": "low"
+  },
+
+  "update_procedure": [
+    "1. Read the Finance Act amendment — identify the new threshold and effective date.",
+    "2. Update SEC-002 in section-registry.json: last_amended_by, last_amended_date, key_thresholds.",
+    "3. Create a new Change entry CH-XXXX.json for each affected object.",
+    "4. Update R-0004: increment MINOR version, update logic.if threshold, update authority.finance_act and effective_from.",
+    "5. Update D-001 and D-005 descriptions if the boundary condition changed.",
+    "6. Update DT-001 YAML — any node with a threshold comment referencing the old amount.",
+    "7. Review C-000001 case inputs — if the synthetic case taxpayer's turnover is now at a boundary, adjust.",
+    "8. Update T-0006 and T-0007 — add a boundary test at the new threshold limit.",
+    "9. Update P-001 if any hardcoded threshold values appear in the prompt template.",
+    "10. Update registry/index.json: last_health_check date.",
+    "11. Update CHANGELOG.md with all CH-XXXX entries.",
+    "12. Run all affected tests to verify nothing regressed.",
+    "13. Git commit with message: '[SEC-002] Finance Act YYYY — Section 44AD threshold update'"
+  ],
+
+  "last_verified": "2026-06-26"
+}
