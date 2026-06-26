@@ -25,6 +25,14 @@ PAYING_USERS_TARGET = 50
 PARSERS_TOTAL       = 6
 PARSERS_DONE        = 2   # manual + AIS (Form16 is scaffolded)
 
+# Milestone record — set date when criteria confirmed, None if pending
+MILESTONES = {
+    "M1_engine_ready_for_evidence": "2026-06-26",  # Architecture, runtime, DVF, schema, LV all operational
+    "M2_real_case_batch_complete":  None,           # 20 real cases processed, LV match rate ≥ 80%
+    "M3_closed_beta":               None,           # First external CA firm using the engine
+    "M4_public_mvp":                None,           # First paying user
+}
+
 # Business validation — updated manually as milestones are reached
 BUSINESS = {
     "ca_firms_interviewed":       0,
@@ -67,7 +75,8 @@ def _pct(n: int, d: int) -> float:
 def run_all_tests() -> dict:
     t0 = time.time()
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", "test_wave3a.py", "test_dvf.py",
+        [sys.executable, "-m", "pytest",
+         "test_wave3a.py", "test_wave3b.py", "test_income_adjustment.py", "test_dvf.py",
          "-q", "--tb=no", "--no-header"],
         capture_output=True, text=True, cwd=REPO_ROOT
     )
@@ -117,6 +126,26 @@ def run_golden() -> dict:
     }
 
 
+def lv_summary() -> dict:
+    """Read LV classifications from all real cases in cases/real/."""
+    cases_dir = os.path.join(REPO_ROOT, "cases", "real")
+    counts = {"match": 0, "conservative": 0, "rule_gap": 0, "defect": 0, "unclassified": 0}
+    total = 0
+    for fname in os.listdir(cases_dir):
+        if not fname.endswith(".json") or "template" in fname.lower():
+            continue
+        try:
+            with open(os.path.join(cases_dir, fname)) as f:
+                case = json.load(f)
+            lv = case.get("lv_classification", "unclassified")
+            counts[lv] = counts.get(lv, 0) + 1
+            total += 1
+        except Exception:
+            pass
+    match_rate = round(100 * counts["match"] / total, 0) if total else 0
+    return {"total": total, "counts": counts, "match_rate": int(match_rate)}
+
+
 def scheduler_info() -> dict:
     from engine.scheduler import build_schedule
     from engine.specs import ALL_SPECS
@@ -130,7 +159,7 @@ def compute_rci(active_rules: int, tests_passed: int, tests_total: int,
     knowledge   = _pct(active_rules, RULES_TARGET)
     rule_tests  = _pct(tests_passed, tests_total) if tests_total else 0.0
     gm_cov      = _pct(gm_passed, GM_TARGET)
-    mutation    = 100.0   # 5/5 mutations detected; update if new blind spots found
+    mutation    = 100.0   # 7/7 mutations detected; update if new blind spots found
     real_val    = _pct(real_cases, REAL_CASES_TARGET)
     score       = round((knowledge + rule_tests + gm_cov + mutation + real_val) / 5, 1)
     return {
@@ -166,6 +195,7 @@ def main():
     pip_res   = run_pipeline()
     gm_res    = run_golden()
     sched     = scheduler_info()
+    lv        = lv_summary()
     print(" done.")
 
     tests_total  = test_res["passed"] + test_res["failed"]
@@ -191,18 +221,33 @@ def main():
 
     # ── 3. Product Readiness ─────────────────────────────────────────────────
     _section("3. PRODUCT READINESS")
+    for name, date in MILESTONES.items():
+        label = name.replace("_", " ").title()
+        value = f"✅  {date}" if date else "⏳  Pending"
+        print(_row(label, value))
+    print()
     print(_row("Wave 3A",          PRODUCT["wave_3a"]))
     print(_row("Wave 3B",          PRODUCT["wave_3b"]))
+    print(_row("  Deductions done", PRODUCT["wave_3b_done"]))
+    print(_row("  Next after cases", PRODUCT["wave_3b_next"]))
     print(_row("Parser framework", PRODUCT["parser_framework"]))
     print(_row("Real parser",      PRODUCT["real_parser"]))
-    print(_row("Real cases",       f"{PRODUCT['real_cases']} / {REAL_CASES_TARGET}"))
     print(_row("Closed beta",      PRODUCT["closed_beta"]))
     print(_row("Public MVP",       PRODUCT["public_mvp"]))
 
-    # ── 4. Business Validation ───────────────────────────────────────────────
-    _section("4. BUSINESS VALIDATION")
+    # ── 4. Evidence Quality ──────────────────────────────────────────────────
+    _section("4. EVIDENCE QUALITY  (Learning Velocity)")
+    lv_markers = {"match": "✅", "conservative": "🟡", "rule_gap": "🟠",
+                  "defect": "🔴", "unclassified": "⬜"}
+    print(_row("Real cases processed",
+               f"{lv['total']} / {PRODUCT['real_cases_target']}  (target for M2)"))
+    print(_row("LV match rate",
+               f"{lv['match_rate']}%  (target ≥ 80% for M2)" if lv["total"] else "—  (no cases yet)"))
+    for cat, marker in lv_markers.items():
+        n = lv["counts"].get(cat, 0)
+        print(_row(f"  {marker} {cat}", str(n)))
+    print()
     print(_row("CA firms interviewed",      f"{BUSINESS['ca_firms_interviewed']} / {CA_FIRMS_TARGET}"))
-    print(_row("Real taxpayers processed",  f"{BUSINESS['real_taxpayers_processed']} / {REAL_CASES_TARGET}"))
     print(_row("Paying users",              f"{BUSINESS['paying_users']} / {PAYING_USERS_TARGET}"))
     print(_row("Customer satisfaction",     BUSINESS["customer_satisfaction"]))
     print(_row("Bug escape rate",           BUSINESS["bug_escape_rate"]))
@@ -219,7 +264,7 @@ def main():
     print(_row("Knowledge coverage",   f"{rci['knowledge']:>5.1f} / 100   ({r['active']}/{RULES_TARGET} rules)"))
     print(_row("Rule test coverage",   f"{rci['rule_tests']:>5.1f} / 100   ({test_res['passed']}/{tests_total} tests passing)"))
     print(_row("Golden master coverage",f"{rci['gm_cov']:>5.1f} / 100   ({gm_res['passed']}/{GM_TARGET} masters)"))
-    print(_row("Mutation detection",   f"{rci['mutation']:>5.1f} / 100   (5/5 mutations caught)"))
+    print(_row("Mutation detection",   f"{rci['mutation']:>5.1f} / 100   (7/7 mutations caught)"))
     print(_row("Real case validation", f"{rci['real_val']:>5.1f} / 100   ({BUSINESS['real_taxpayers_processed']}/{REAL_CASES_TARGET} cases)"))
     print()
     print(f"  {'RCI':<32} {rci['score']:>5.1f} / 100")
