@@ -1,0 +1,19 @@
+{
+  "id": "T-0089",
+  "title": "R-0039: new_regime → deduction_80CCD1B = 0 (Section 115BAC(2) excludes this)",
+  "target_type": "rule",
+  "target_ref": "R-0039",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "new_regime",
+    "nps_contribution_80ccd1b": 40000
+  },
+  "expected_output": {
+    "deduction_80CCD1B": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "80CCD(1B) is old regime only. New regime ignores the NPS contribution declared."
+}

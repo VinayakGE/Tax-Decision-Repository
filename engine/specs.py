@@ -20,6 +20,7 @@ from engine.rules.wave3a import (
 )
 from engine.rules.wave3b import (
     r0024_deduction_80c,
+    r0039_deduction_80ccd1b,
     r0035_80d_evidence_completeness,
     r0036_80d_self_cap,
     r0037_80d_parents_cap,
@@ -143,6 +144,12 @@ WAVE3B_SPECS = [
         fn=r0024_deduction_80c,
     ),
     RuleSpec(
+        rule_id="R-0039",
+        requires=["regime_chosen"],
+        produces=["deduction_80CCD1B"],
+        fn=r0039_deduction_80ccd1b,
+    ),
+    RuleSpec(
         rule_id="R-0035",
         requires=["regime_chosen"],
         produces=["deduction_80d_evidence_status"],
@@ -168,7 +175,7 @@ WAVE3B_SPECS = [
     ),
     RuleSpec(
         rule_id="R-0028",
-        requires=["taxable_income_old_pre_deductions", "deduction_80C", "deduction_80D"],
+        requires=["taxable_income_old_pre_deductions", "deduction_80C", "deduction_80CCD1B", "deduction_80D"],
         produces=["taxable_income_old_regime", "total_deductions_old", "deduction_breakdown"],
         fn=r0028_deduction_aggregator,
     ),

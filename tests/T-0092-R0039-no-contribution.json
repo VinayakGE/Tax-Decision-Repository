@@ -1,0 +1,18 @@
+{
+  "id": "T-0092",
+  "title": "R-0039: old_regime, no NPS contribution declared → deduction_80CCD1B = 0",
+  "target_type": "rule",
+  "target_ref": "R-0039",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime"
+  },
+  "expected_output": {
+    "deduction_80CCD1B": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "No NPS contribution in evidence → zero deduction."
+}

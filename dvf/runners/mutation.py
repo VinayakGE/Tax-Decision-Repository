@@ -86,6 +86,14 @@ MUTATIONS = [
         mutated_value=25000,
         should_affect=["GM-0013"],
     ),
+    MutationSpec(
+        name="80CCD1B_limit_halved",
+        description="Halve 80CCD(1B) limit from ₹50K to ₹25K — GM-0016 (NPS ₹50K declared, deduction halves) must detect this",
+        table_file="tables/2024/deductions.json",
+        key_path=["chapter_via", "80CCD_1B", "limit"],
+        mutated_value=25000,
+        should_affect=["GM-0016"],
+    ),
 ]
 
 

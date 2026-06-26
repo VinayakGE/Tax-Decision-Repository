@@ -1,7 +1,7 @@
 {
   "case_id": "GM-0013",
   "description": "80D senior: taxpayer 62y (senior) + senior parents \u2192 max 80D (\u20b950K self + \u20b950K parents = \u20b9100K). Salary \u20b915L, old regime, no 80C \u2192 demand.",
-  "generated_at": "2026-06-26T11:25:59.650783Z",
+  "generated_at": "2026-06-26T11:33:33.697549Z",
   "engine_version": "1.0.0",
   "coverage_tags": [
     "salary",

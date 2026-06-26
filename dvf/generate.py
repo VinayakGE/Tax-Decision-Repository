@@ -39,6 +39,7 @@ CASE_COVERAGE = {
     "GM-0013": ["salary", "old_regime", "senior_taxpayer", "80d_max", "self_and_parents_senior", "deduction_engine", "demand"],
     "GM-0014": ["salary", "old_regime", "80d_self_and_parents", "80c_partial", "deduction_engine", "demand"],
     "GM-0015": ["salary", "old_regime", "80d_self_only", "80c_partial", "deduction_engine", "demand"],
+    "GM-0016": ["salary", "old_regime", "80c_at_cap", "80ccd1b_at_cap", "nps_stacking", "deduction_engine", "demand"],
 }
 
 

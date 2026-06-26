@@ -1,0 +1,23 @@
+{
+  "id": "T-0093",
+  "title": "R-0028: 80C ₹1L + 80CCD1B ₹30K + 80D ₹25K → total ₹1.55L, all three in breakdown",
+  "target_type": "rule",
+  "target_ref": "R-0028",
+  "test_type": "positive",
+  "input": {
+    "taxable_income_old_pre_deductions": 1000000,
+    "deduction_80C": 100000,
+    "deduction_80CCD1B": 30000,
+    "deduction_80D": 25000
+  },
+  "expected_output": {
+    "taxable_income_old_regime": 845000,
+    "total_deductions_old": 155000,
+    "deduction_breakdown": { "80C": 100000, "80CCD1B": 30000, "80D": 25000 }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "All three Chapter VI-A sections contribute. Breakdown tracks each section separately."
+}

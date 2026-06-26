@@ -112,20 +112,17 @@
   "rule_outputs": {
     "R-0029": {
       "hra_evidence_status": {
-        "status": "INCOMPLETE",
-        "missing_fields": [
-          "city_type"
-        ],
-        "suggested_questions": [
-          "Is your rented accommodation in a metro city (Delhi, Mumbai, Kolkata, or Chennai)?"
-        ]
+        "status": "NOT_APPLICABLE",
+        "reason": "No HRA received from employer",
+        "missing_fields": [],
+        "suggested_questions": []
       }
     },
     "R-0024": {
-      "deduction_80C": 100000
+      "deduction_80C": 150000
     },
     "R-0039": {
-      "deduction_80CCD1B": 0
+      "deduction_80CCD1B": 50000
     },
     "R-0035": {
       "deduction_80d_evidence_status": {
@@ -160,41 +157,34 @@
     "R-0034": {
       "total_salary_sec10_exemption": 0,
       "adjustment_breakdown": {},
-      "adjustment_trace": [
-        {
-          "section": "10(13A)",
-          "type": "HRA",
-          "evidence_status": "INCOMPLETE",
-          "exemption": 0,
-          "limiting_candidate": null
-        }
-      ],
-      "adjustment_status": "INCOMPLETE"
+      "adjustment_trace": [],
+      "adjustment_status": "NOT_APPLICABLE"
     },
     "R-0015": {
-      "taxable_income_new_regime": 925000,
-      "taxable_income_old_pre_deductions": 950000,
-      "gross_total_income": 1000000,
-      "total_income": 1000000
+      "taxable_income_new_regime": 1125000,
+      "taxable_income_old_pre_deductions": 1150000,
+      "gross_total_income": 1200000,
+      "total_income": 1200000
     },
     "R-0028": {
-      "taxable_income_old_regime": 850000,
-      "total_deductions_old": 100000,
+      "taxable_income_old_regime": 950000,
+      "total_deductions_old": 200000,
       "deduction_breakdown": {
-        "80C": 100000
+        "80C": 150000,
+        "80CCD1B": 50000
       }
     },
     "R-0017": {
-      "slab_tax_new_regime": 42500,
-      "total_before_rebate_new_regime": 42500
+      "slab_tax_new_regime": 68750,
+      "total_before_rebate_new_regime": 68750
     },
     "R-0016": {
-      "slab_tax_old_regime": 82500,
-      "total_before_rebate_old_regime": 82500
+      "slab_tax_old_regime": 102500,
+      "total_before_rebate_old_regime": 102500
     },
     "R-0019": {
-      "tax_after_rebate_new_regime": 0,
-      "tax_after_rebate_old_regime": 82500,
+      "tax_after_rebate_new_regime": 8750,
+      "tax_after_rebate_old_regime": 102500,
       "rebate_applied": true
     },
     "R-0021": {
@@ -203,19 +193,19 @@
       "surcharge_amount": 0
     },
     "R-0020": {
-      "total_tax_new_regime": 0,
-      "total_tax_old_regime": 85800,
-      "cess_new_regime": 0,
-      "cess_old_regime": 3300
+      "total_tax_new_regime": 9100,
+      "total_tax_old_regime": 106600,
+      "cess_new_regime": 350,
+      "cess_old_regime": 4100
     },
     "R-0022": {
-      "total_interest": 2574,
+      "total_interest": 3198,
       "interest_234A": 0,
       "interest_234B": {
         "applicable": true,
-        "shortfall": 85800,
+        "shortfall": 106600,
         "months": 3,
-        "interest_amount": 2574,
+        "interest_amount": 3198,
         "note": "Return filed by due date so 234A = 0. 234B: April 1 to July 15 = 3 months (April, May, June = 3 full or part months)"
       },
       "interest_234C": {
@@ -225,13 +215,13 @@
     },
     "R-0018": {
       "regime_recommendation": "new_regime",
-      "tax_saving_amount": 85800,
+      "tax_saving_amount": 97500,
       "new_regime_is_better": true
     },
     "R-0023": {
       "outcome": "demand",
       "refund_amount": null,
-      "demand_amount": 28374
+      "demand_amount": 29798
     }
   }
 }

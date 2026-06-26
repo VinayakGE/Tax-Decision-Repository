@@ -93,6 +93,7 @@ GM_COVERAGE_MAP = {
     "GM-0013": MatrixCell("salary_only",   "senior",  "above_12L_to_15L", "old_regime", "none", "on_time"),
     "GM-0014": MatrixCell("salary_only",   "general", "7L_to_12L",        "old_regime", "none", "on_time"),
     "GM-0015": MatrixCell("salary_only",   "general", "above_12L_to_15L", "old_regime", "none", "on_time"),
+    "GM-0016": MatrixCell("salary_only",   "general", "above_12L_to_15L", "old_regime", "none", "on_time"),
 }
 
 

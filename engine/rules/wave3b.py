@@ -5,6 +5,7 @@ Each rule is responsible for exactly one deduction section.
 
 Execution order (managed by scheduler):
   R-0024  80C investments          → deduction_80C
+  R-0039  80CCD(1B) NPS            → deduction_80CCD1B
   R-0035  80D evidence completeness → deduction_80d_evidence_status
   R-0036  80D self / family cap     → deduction_80d_self
   R-0037  80D parents cap           → deduction_80d_parents
@@ -46,6 +47,34 @@ def r0024_deduction_80c(ctx: EvidenceContext) -> None:
 # ---------------------------------------------------------------------------
 # R-0028: Deduction Aggregator — Chapter VI-A (old regime)
 # ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# R-0039: Section 80CCD(1B) — Additional NPS Contribution
+# ---------------------------------------------------------------------------
+
+def r0039_deduction_80ccd1b(ctx: EvidenceContext) -> None:
+    """
+    80CCD(1B): employee's own additional NPS contribution beyond the ₹1.5L 80C aggregate.
+    Old regime only — Section 115BAC(2) excludes this from the new regime.
+    Separate ₹50K ceiling that stacks on top of 80C.
+    """
+    regime = ctx.get("regime_chosen", "new_regime")
+
+    if regime != "old_regime":
+        ctx.set("deduction_80CCD1B", 0)
+        return
+
+    contribution = ctx.get("nps_contribution_80ccd1b", 0) or 0
+    limit = tables.get("2024.deductions.chapter_via.80CCD_1B.limit")  # 50000
+
+    deduction = min(int(contribution), limit)
+    ctx.update({
+        "deduction_80CCD1B": deduction,
+        "deduction_80CCD1B_declared": int(contribution),
+        "deduction_80CCD1B_cap": limit,
+        "deduction_80CCD1B_capped": contribution > limit,
+    })
+
 
 # ---------------------------------------------------------------------------
 # R-0035: Section 80D — Evidence Completeness
@@ -191,14 +220,17 @@ def r0028_deduction_aggregator(ctx: EvidenceContext) -> None:
     pre = ctx.get("taxable_income_old_pre_deductions", 0) or 0
 
     d80c = ctx.get("deduction_80C", 0) or 0
+    d80ccd1b = ctx.get("deduction_80CCD1B", 0) or 0
     d80d = ctx.get("deduction_80D", 0) or 0
 
-    total = d80c + d80d
+    total = d80c + d80ccd1b + d80d
     taxable_old_final = max(0, pre - total)
 
     breakdown = {}
     if d80c:
         breakdown["80C"] = d80c
+    if d80ccd1b:
+        breakdown["80CCD1B"] = d80ccd1b
     if d80d:
         breakdown["80D"] = d80d
 

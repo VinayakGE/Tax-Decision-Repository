@@ -28,12 +28,12 @@ class TestGoldenMasters:
 
     def test_golden_master_count(self):
         results = run_golden()
-        assert len(results) >= 15, f"Expected at least 15 GMs, got {len(results)}"
+        assert len(results) >= 16, f"Expected at least 16 GMs, got {len(results)}"
 
     @pytest.mark.parametrize("gm_id", ["GM-0001", "GM-0002", "GM-0003", "GM-0004",
                                         "GM-0005", "GM-0006", "GM-0007", "GM-0008",
                                         "GM-0009", "GM-0010", "GM-0011", "GM-0012",
-                                        "GM-0013", "GM-0014", "GM-0015"])
+                                        "GM-0013", "GM-0014", "GM-0015", "GM-0016"])
     def test_individual_golden_master(self, gm_id):
         results = run_golden(gm_id=gm_id)
         assert len(results) == 1, f"Expected 1 result for {gm_id}, got {len(results)}"

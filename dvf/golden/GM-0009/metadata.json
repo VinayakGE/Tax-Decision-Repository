@@ -1,7 +1,7 @@
 {
   "case_id": "GM-0009",
   "description": "HRA metro: c3 (rent test) is the limiting candidate. \u20b912L salary, Mumbai, \u20b922k/month rent \u2192 c1=c2=\u20b93L but c3=\u20b92.04L. Old regime with \u20b91.5L 80C.",
-  "generated_at": "2026-06-26T11:25:59.647482Z",
+  "generated_at": "2026-06-26T11:33:33.694249Z",
   "engine_version": "1.0.0",
   "coverage_tags": [
     "salary",

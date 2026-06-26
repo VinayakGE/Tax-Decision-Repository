@@ -12,6 +12,7 @@ import pytest
 from engine.context import EvidenceContext
 from engine.rules.wave3b import (
     r0024_deduction_80c,
+    r0039_deduction_80ccd1b,
     r0035_80d_evidence_completeness,
     r0036_80d_self_cap,
     r0037_80d_parents_cap,
@@ -21,6 +22,7 @@ from engine.rules.wave3b import (
 
 RULE_FN = {
     "R-0024": r0024_deduction_80c,
+    "R-0039": r0039_deduction_80ccd1b,
     "R-0035": r0035_80d_evidence_completeness,
     "R-0036": r0036_80d_self_cap,
     "R-0037": r0037_80d_parents_cap,
@@ -32,7 +34,7 @@ TESTS_DIR = os.path.join(os.path.dirname(__file__), "tests")
 
 
 def _load_wave3b_tests():
-    ids = list(range(46, 53)) + list(range(74, 89))
+    ids = list(range(46, 53)) + list(range(74, 94))
     cases = []
     for tid in ids:
         pattern = os.path.join(TESTS_DIR, f"T-{tid:04d}-*.json")
