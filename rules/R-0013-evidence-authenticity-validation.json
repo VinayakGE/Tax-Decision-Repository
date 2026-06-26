@@ -1,0 +1,39 @@
+{
+  "id": "R-0013",
+  "title": "Evidence Authenticity Validation — Internal Document Integrity",
+  "description": "Validate that each loaded evidence document is internally consistent and refers to the correct taxpayer, assessment year, and financial year. These are data quality checks, not tax decisions. An authentic document has a valid format, refers to the correct PAN, uses the current assessment year, and contains no internally duplicated entries. Authenticity failures indicate either a document uploaded in error (wrong person's Form 16) or a data corruption in the parsed output.",
+  "logic": {
+    "if": "any evidence document is loaded",
+    "then": "run all applicable authenticity checks from check_table; for each check that fails: classify failure_type and severity; add to authenticity_log; if severity is blocking: halt pipeline, set confidence band E, inform user to re-upload correct document; if severity is warning: reduce ECS by check-specific amount, log for explanation",
+    "else": "no documents loaded — this case is already caught by R-0012 (critical_missing); R-0013 only runs when documents are present"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 139A (PAN) and Section 203 (Form 16 / TAN obligations)",
+    "proviso": null,
+    "notification": "CBDT notification on TAN format",
+    "circular": null,
+    "finance_act": null,
+    "effective_from": "1962-04-01",
+    "url": null
+  },
+  "effective_date": "1962-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "evidence-integrity",
+    "authenticity",
+    "pan",
+    "tan",
+    "data-quality",
+    "wave-2",
+    "module-c"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003", "E-004", "E-005", "E-006"],
+  "decision_refs": ["D-001"],
+  "test_refs": ["T-0024", "T-0025"],
+  "change_refs": ["CH-0007"],
+  "notes": "Authenticity check table: (1) PAN consistency — all documents must contain the same PAN; mismatch is blocking. (2) TAN format — must match AAAA99999A pattern; invalid TAN is warning (TDS entry may still be valid if 26AS confirms it). (3) Assessment year — all documents must reference AY2025-26; stale document is blocking. (4) Duplicate TDS entries within 26AS — same TAN+quarter+amount appearing twice is warning (handled by R-0011). (5) Duplicate AIS entries — same source+category+amount appearing twice is warning (handled by R-0010). (6) Prefill JSON version — if prefill.assessment_year != current AY, mark as stale_prefill (warning). (7) Form 16 employer TAN — TAN on Form 16 must match at least one TDS entry in 26AS; mismatch is blocking."
+}

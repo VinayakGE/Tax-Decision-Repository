@@ -1,0 +1,34 @@
+{
+  "id": "T-0017",
+  "title": "Prefill shows TDS credit not present in 26AS — unclaimed credit risk",
+  "target_type": "rule",
+  "target_ref": "R-0009",
+  "test_type": "negative",
+  "input": {
+    "26as_tds": [{ "tan": "BLRX12345A", "section": "192", "amount": 28600, "quarter": "Q4" }],
+    "prefill_tds": [
+      { "tan": "BLRX12345A", "section": "192", "amount": 28600, "quarter": "Q4" },
+      { "tan": "MUMB98765B", "section": "194J", "amount": 5000, "quarter": "Q2" }
+    ]
+  },
+  "expected_output": {
+    "reconciliation_status_entry1": "reconciled",
+    "reconciliation_status_entry2": "presence_mismatch",
+    "entry2_direction": "prefill_only",
+    "entry2_credit_claimable": false,
+    "conflict_log_entry": {
+      "type": "presence_mismatch",
+      "field": "tds_194J.MUMB98765B",
+      "26as_value": null,
+      "prefill_value": 5000,
+      "resolution": "cannot_claim",
+      "user_action": "TDS of ₹5,000 from TAN MUMB98765B (194J) appears in Prefill but not in 26AS. Employer/deductor may not have deposited it. Contact deductor to deposit TDS. Cannot claim credit until it appears in 26AS."
+    },
+    "ecs_impact": -10
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "This is one of the most damaging situations in tax filing: a taxpayer claims a TDS credit that is in their Prefill but not in 26AS. The CPC rejects the credit, issues a demand, and the taxpayer owes tax + interest on the difference. Jarviz must block this credit claim until the 26AS reflects it."
+}

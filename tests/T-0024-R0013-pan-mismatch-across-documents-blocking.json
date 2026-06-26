@@ -1,0 +1,29 @@
+{
+  "id": "T-0024",
+  "title": "PAN in Form 16 does not match filing PAN — authenticity failure (blocking)",
+  "target_type": "rule",
+  "target_ref": "R-0013",
+  "test_type": "negative",
+  "input": {
+    "filing_pan": "ABCDE1234F",
+    "form16_pan": "XYZAB9999Z",
+    "ais_pan": "ABCDE1234F",
+    "26as_pan": "ABCDE1234F"
+  },
+  "expected_output": {
+    "authenticity_check": "pan_consistency",
+    "result": "fail",
+    "failure_type": "pan_mismatch",
+    "severity": "blocking",
+    "conflicting_document": "E-004 (Form 16)",
+    "action": "halt_pipeline",
+    "confidence_band": "E",
+    "user_action": "The Form 16 you uploaded belongs to a different taxpayer (PAN XYZAB9999Z). Please upload the correct Form 16 for PAN ABCDE1234F.",
+    "ecs_impact": -100
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "A PAN mismatch in Form 16 means the wrong document was uploaded — this is a blocking failure. The pipeline cannot proceed because we do not know whose income is in this Form 16. Confidence band drops to E and the taxpayer is asked to re-upload."
+}

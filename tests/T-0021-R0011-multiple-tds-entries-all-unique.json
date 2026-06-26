@@ -1,0 +1,24 @@
+{
+  "id": "T-0021",
+  "title": "Multiple TDS entries from different deductors — all unique, no duplicate",
+  "target_type": "rule",
+  "target_ref": "R-0011",
+  "test_type": "positive",
+  "input": {
+    "tds_credits": [
+      { "source": "26AS", "tan": "BLRX12345A", "section": "192", "amount": 28600, "quarter": "Q4" },
+      { "source": "26AS", "tan": "HDFC0001ZZ", "section": "194A", "amount": 1800, "quarter": "Q3" }
+    ]
+  },
+  "expected_output": {
+    "duplicate_tds_detected": false,
+    "all_credits_unique": true,
+    "total_tds_credit": 30400,
+    "conflict_log_entry": null
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Two TDS entries with different TANs and sections. These are genuinely distinct TDS deductions — salary TDS from employer and FD TDS from bank. Both are claimable. Total = ₹28,600 + ₹1,800 = ₹30,400. Matches the case in C-000001."
+}

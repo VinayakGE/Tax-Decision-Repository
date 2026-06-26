@@ -1,0 +1,39 @@
+{
+  "id": "R-0014",
+  "title": "Evidence Lineage Generation — Computation Provenance Graph",
+  "description": "After all decisions, computations, and validations are complete (Stages 8 through 10), build a directed acyclic graph (DAG) that traces every computed value in the final output back to its source evidence fields, applied rules, and user-declared answers. This lineage graph is stored in the Trace (Stage 11) and used by the Explanation Engine (Stage 13) to answer 'why' questions without requiring the AI to reason about tax — it simply traverses the graph and narrates what it finds.",
+  "logic": {
+    "if": "Stage 10 (Validation Engine) has completed and all decision and computation outputs are available",
+    "then": "build lineage_graph as a DAG where each node has: {value, type: evidence|computed|rule_applied|user_declared, source_ref: evidence_ref+field OR rule_id OR question_id, children: [dependent_nodes]}; root node is always the final_recommendation; traverse backwards from root: for each computed value, identify its formula inputs and create child nodes; for each formula input that is an evidence field, create a leaf node with evidence_ref and field_path; for each formula input that came from a rule (e.g. standard_deduction from tax-tables), create a rule_applied leaf node; for each value that came from a user answer, create a user_declared leaf node; the resulting graph must be complete: every leaf must be either an evidence leaf, a rule_applied leaf, or a user_declared leaf — no orphaned computed values",
+    "else": "lineage cannot be built because upstream stages are incomplete; log as lineage_incomplete; do not proceed to Stage 13"
+  },
+  "authority": {
+    "act": "Jarviz Architecture — Pipeline Stage 11 (Trace Generator)",
+    "section": "docs/pipeline.md Stage 11 and docs/evidence-integrity.md Module D",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": null,
+    "effective_from": "2026-06-26",
+    "url": null
+  },
+  "effective_date": "2026-06-26",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "evidence-integrity",
+    "evidence-lineage",
+    "provenance",
+    "explainability",
+    "trace",
+    "wave-2",
+    "module-d"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003", "E-004", "E-005", "E-006", "E-007"],
+  "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+  "test_refs": ["T-0026", "T-0027"],
+  "change_refs": ["CH-0007"],
+  "notes": "The lineage graph is what separates Jarviz from a black-box tax calculator. Every number on the final report has a traceable origin. If refund = ₹56,310, the lineage graph shows: refund ← (tds_credit ← 26AS TDS entries) − (total_tax ← (taxable_income ← classified_income ← evidence fields) × (slab_rates ← tax-tables) − (rebate_87A ← tax-tables, Section 87A)). The graph is rendered by the Explanation Engine as a structured narrative. The AI in Stage 13 does not compute the explanation — it only formats the graph traversal as readable prose. The lineage graph schema is defined in schemas/replay-schema.json. Node types: evidence (leaf), rule_applied (leaf or intermediate), computed (intermediate), user_declared (leaf)."
+}

@@ -1,0 +1,44 @@
+{
+  "id": "T-0026",
+  "title": "Evidence lineage graph traces refund ₹30,400 back to Form 16 and AIS leaf nodes",
+  "target_type": "rule",
+  "target_ref": "R-0014",
+  "test_type": "positive",
+  "input": {
+    "final_recommendation": { "refund": 30400, "total_tax": 0, "tds_credit": 30400 },
+    "tax_computation": {
+      "gross_total_income": 802200,
+      "taxable_income": 802200,
+      "slab_tax": 30400,
+      "rebate_87A": 30400,
+      "tds_192": 28600,
+      "tds_194A": 1800
+    },
+    "classified_income": {
+      "head_1_salary": { "net": 765000, "source_field": "E-004/Form16.gross_salary", "gross": 840000, "standard_deduction_source": "tax-tables/AY2025-26" },
+      "head_3_business": { "net": 19200, "source_field": "E-001/AIS.business_receipts", "turnover": 320000, "rate_source": "R-0004/Section_44AD" },
+      "head_5_other": { "net": 18000, "source_field": "E-001/AIS.interest_fd" }
+    }
+  },
+  "expected_output": {
+    "lineage_graph_complete": true,
+    "root_node": { "label": "refund", "value": 30400, "type": "computed" },
+    "leaf_nodes": [
+      { "label": "gross_salary", "value": 840000, "type": "evidence", "source_ref": "E-004", "field": "Form16.gross_salary" },
+      { "label": "standard_deduction", "value": 75000, "type": "rule_applied", "source_ref": "tax-tables/AY2025-26", "field": "new_regime.standard_deduction" },
+      { "label": "business_turnover", "value": 320000, "type": "evidence", "source_ref": "E-001", "field": "AIS.business_receipts" },
+      { "label": "presumptive_rate_44AD", "value": "6%", "type": "rule_applied", "source_ref": "R-0004", "field": "Section_44AD" },
+      { "label": "fd_interest", "value": 18000, "type": "evidence", "source_ref": "E-001", "field": "AIS.interest_fd" },
+      { "label": "rebate_87A_limit", "value": 1200000, "type": "rule_applied", "source_ref": "tax-tables/AY2025-26", "field": "new_regime.rebate_87A.income_limit" },
+      { "label": "tds_192", "value": 28600, "type": "evidence", "source_ref": "E-002", "field": "26AS.tds[TAN=BLRX12345A]" },
+      { "label": "tds_194A", "value": 1800, "type": "evidence", "source_ref": "E-002", "field": "26AS.tds[TAN=HDFC0001ZZ]" }
+    ],
+    "orphaned_nodes": [],
+    "user_declared_nodes": []
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "The lineage graph for C-000001. Every value in the final refund of ₹30,400 is traceable to specific fields in specific documents (Form 16, AIS, 26AS) or to specific rule applications (R-0004 for presumptive rate, tax-tables for standard deduction and rebate). There are no orphaned nodes — every computed value has a full provenance chain."
+}

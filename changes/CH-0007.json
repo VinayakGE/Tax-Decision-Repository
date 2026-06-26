@@ -1,0 +1,14 @@
+{
+  "id": "CH-0007",
+  "date": "2026-06-26",
+  "author": "Vinayak Gautham",
+  "type": "add",
+  "object_type": "rule",
+  "object_id": "R-0007 through R-0014",
+  "summary": "Wave 2 Evidence Integrity Engine — eight rules across four submodules: Module A Source Reconciliation (R-0007 AIS vs 26AS, R-0008 AIS vs Prefill, R-0009 26AS vs Prefill, R-0010 Duplicate Income Detection, R-0011 Duplicate TDS Detection), Module B Evidence Completeness (R-0012 Missing Evidence Detection), Module C Evidence Authenticity (R-0013), Module D Evidence Lineage (R-0014 Computation Provenance Graph). Added 17 tests (T-0011 through T-0027). Added JAB M-07 Evidence Integrity Score (≥95% target). Renumbered M-07/M-08/M-09 to M-08/M-09/M-10. Added docs/evidence-integrity.md.",
+  "authority": "Income Tax Act — Section 285BB (AIS), Section 203AA (26AS), Section 199 (TDS credit), Section 139A (PAN)",
+  "prior_version": "2.0.0-dev (R-0006)",
+  "new_version": "2.0.0-dev",
+  "git_commit": null,
+  "notes": "Wave 2 is now complete. The repository can now answer: (1) What is this income? (Wave 1), (2) Can I trust the evidence? (Wave 2). Wave 3 (computation rules) is the next milestone."
+}

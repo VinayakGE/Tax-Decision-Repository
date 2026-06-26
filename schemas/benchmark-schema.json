@@ -46,9 +46,10 @@
         "M04_validation_precision",
         "M05_validation_recall",
         "M06_false_positive_rate",
-        "M07_avg_questions",
-        "M08_processing_time_ms",
-        "M09_human_override_rate"
+        "M07_evidence_integrity_score",
+        "M08_avg_questions",
+        "M09_processing_time_ms",
+        "M10_human_override_rate"
       ],
       "additionalProperties": false,
       "properties": {
@@ -149,7 +150,31 @@
             "details": { "type": ["string", "null"] }
           }
         },
-        "M07_avg_questions": {
+        "M07_evidence_integrity_score": {
+          "type": "object",
+          "required": ["value", "target", "passed", "cases_passed", "cases_failed"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 95.0 },
+            "passed": { "type": "boolean" },
+            "cases_passed": { "type": "integer", "minimum": 0 },
+            "cases_failed": { "type": "integer", "minimum": 0 },
+            "failure_breakdown": {
+              "type": "object",
+              "properties": {
+                "major_variance_cases": { "type": "integer", "minimum": 0 },
+                "unresolved_presence_mismatch_cases": { "type": "integer", "minimum": 0 },
+                "duplicate_income_cases": { "type": "integer", "minimum": 0 },
+                "duplicate_tds_cases": { "type": "integer", "minimum": 0 },
+                "critical_missing_evidence_cases": { "type": "integer", "minimum": 0 },
+                "authenticity_failure_cases": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M08_avg_questions": {
           "type": "object",
           "required": ["value", "target", "passed", "p95_questions"],
           "additionalProperties": false,
@@ -161,7 +186,7 @@
             "details": { "type": ["string", "null"] }
           }
         },
-        "M08_processing_time_ms": {
+        "M09_processing_time_ms": {
           "type": "object",
           "required": ["p50", "p95", "target_p50", "target_p95", "passed", "stages_1_to_12_p50"],
           "additionalProperties": false,
@@ -175,7 +200,7 @@
             "details": { "type": ["string", "null"] }
           }
         },
-        "M09_human_override_rate": {
+        "M10_human_override_rate": {
           "type": "object",
           "required": ["value", "target", "passed", "status", "cases_with_outcome_data"],
           "additionalProperties": false,

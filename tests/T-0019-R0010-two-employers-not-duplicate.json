@@ -1,0 +1,25 @@
+{
+  "id": "T-0019",
+  "title": "Two different employer salaries are distinct income — not a duplicate",
+  "target_type": "rule",
+  "target_ref": "R-0010",
+  "test_type": "positive",
+  "input": {
+    "classified_income_before_dedup": [
+      { "source": "Form 16 — Employer A", "income_head": "head_1_salary", "amount": 600000, "tan": "BLRA00001A" },
+      { "source": "Form 16 — Employer B", "income_head": "head_1_salary", "amount": 400000, "tan": "MUMB00002B" }
+    ]
+  },
+  "expected_output": {
+    "duplicate_detected": false,
+    "resolution": "both_entries_retained",
+    "income_after_dedup": 1000000,
+    "reasoning": "Different TAN values confirm different employers. These are distinct salary income items from a job change (PAT-004 scenario). Both must be summed.",
+    "conflict_log_entry": null
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Two entries with the same income_head but different TANs (different employers) are not duplicates — they are additive. The duplicate detection rule must not fire here. This is the boundary test: same head, different source identity. Different TAN = different income origin."
+}

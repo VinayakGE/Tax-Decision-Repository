@@ -1,0 +1,30 @@
+{
+  "id": "T-0012",
+  "title": "AIS and 26AS TDS differ by 5.9% — major_variance conflict",
+  "target_type": "rule",
+  "target_ref": "R-0007",
+  "test_type": "negative",
+  "input": {
+    "ais": { "tds_entries": [{ "tan": "BLRX12345A", "amount": 28600, "section": "192" }] },
+    "26as": { "tds_entries": [{ "tan": "BLRX12345A", "amount": 27000, "section": "192" }] }
+  },
+  "expected_output": {
+    "reconciliation_status": "major_variance",
+    "variance_pct": 5.93,
+    "authoritative_value_for_credit": 27000,
+    "conflict_log_entry": {
+      "type": "amount_mismatch",
+      "field": "tds_192.BLRX12345A",
+      "ais_value": 28600,
+      "26as_value": 27000,
+      "resolution": "use_26AS_value_for_credit",
+      "user_action_required": "Verify TDS deposit with employer. ₹1,600 shortfall in 26AS."
+    },
+    "ecs_impact": -10
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Matches the scenario from V-001 (TDS mismatch). Delta = (28600-27000)/28600 = 5.59%, which exceeds the 5% major_variance threshold. 26AS value (₹27,000) is used for the TDS credit. The ₹1,600 shortfall is unclaimable until employer deposits it. This test verifies R-0007 produces the conflict; V-001 fires as a downstream consequence."
+}

@@ -1,0 +1,39 @@
+{
+  "id": "R-0012",
+  "title": "Missing Evidence Detection — Expected Documents Not Loaded",
+  "description": "Based on the taxpayer's confirmed income profile (from Pattern Matching and Wave 1 classification), determine which evidence documents are expected to exist and check whether they are loaded. Missing required evidence reduces the Evidence Completeness Score (ECS), lowers the confidence band, and in critical cases prevents the pipeline from proceeding. The rule distinguishes between critical_missing (pipeline cannot proceed), expected_missing (pipeline continues with reduced confidence), and acceptable_absent (document is optional for this profile).",
+  "logic": {
+    "if": "pattern is confirmed AND income profile is established from Wave 1",
+    "then": "for each expected_evidence_item derived from the pattern profile: check if document is loaded; if not loaded: classify as: critical_missing if {26AS not loaded} OR {AIS not loaded AND income profile has no other income source} → halt pipeline at Stage 6, confidence band E; expected_missing if {Form 16 not loaded AND TDS u/s 192 appears in 26AS} → confidence band C, reduce ECS by 15; expected_missing if {broker_statement not loaded AND AIS shows capital_gains entries} → confidence band C, reduce ECS by 20; expected_missing if {Form 16A not loaded AND TDS u/s 194A/194J in 26AS} → confidence band B, reduce ECS by 10; acceptable_absent if {Prefill JSON not loaded} → reduce ECS by 5; acceptable_absent if {Form 26QB not loaded AND no property transactions in AIS} → no ECS impact",
+    "else": "all expected evidence is present; ECS unaffected by this rule; proceed to Module C"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 139(1) and Section 285BB (AIS) and Section 203AA (26AS)",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": null,
+    "effective_from": "1962-04-01",
+    "url": null
+  },
+  "effective_date": "1962-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "evidence-integrity",
+    "evidence-completeness",
+    "missing-evidence",
+    "confidence-model",
+    "ecs",
+    "wave-2",
+    "module-b"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003", "E-004", "E-005", "E-006", "E-007"],
+  "decision_refs": ["D-001", "D-002", "D-003"],
+  "test_refs": ["T-0022", "T-0023"],
+  "change_refs": ["CH-0007"],
+  "notes": "This rule implements the Confidence Model (docs/confidence-model.md) at the evidence level. The ECS reductions here are the primary input to the confidence band calculation in Stage 6 and Stage 12. The rule must be updated whenever a new evidence type is added to docs/evidence-catalogue.md."
+}

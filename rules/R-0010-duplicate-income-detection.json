@@ -1,0 +1,38 @@
+{
+  "id": "R-0010",
+  "title": "Duplicate Income Detection — Same Income in Multiple Evidence Sources",
+  "description": "Detect when the same income amount appears in multiple evidence sources and would be counted twice if both sources were summed. The most common instance: salary appearing in both Form 16 and the AIS salary entry. These must be reconciled (one replaces the other) not summed. This rule runs after Source Reconciliation (R-0007 through R-0009) and uses the reconciliation output to determine which income items are the same item from different sources versus genuinely distinct income items.",
+  "logic": {
+    "if": "classified_income contains two or more entries that share the same: income_head AND income_source_type AND approximate_amount (within 5%) AND assessment_year",
+    "then": "flag as potential_duplicate; apply resolution_hierarchy: (1) if one entry has a document source (Form 16, 26AS) and the other is user-declared → remove user-declared, retain document-sourced; (2) if both are document-sourced from different documents for the same underlying income (e.g. Form 16 salary + AIS salary) → retain higher-authority source, mark lower-authority as reconciled_duplicate; (3) if amounts differ by > 5% → not a duplicate, treat as conflict (R-0007/R-0008 handles); log resolution in conflict_log with type duplicate_income and resolution_method",
+    "else": "no duplicates detected; proceed with classified_income as-is"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 14 (Heads of Income) and Section 4 (Charge of Income Tax)",
+    "proviso": "Income is taxable once — double counting a single income item inflates tax liability and is an error in the return",
+    "notification": null,
+    "circular": null,
+    "finance_act": null,
+    "effective_from": "1962-04-01",
+    "url": null
+  },
+  "effective_date": "1962-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "evidence-integrity",
+    "duplicate-detection",
+    "income-classification",
+    "data-quality",
+    "wave-2",
+    "module-a"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003", "E-004"],
+  "decision_refs": ["D-001"],
+  "test_refs": ["T-0018", "T-0019"],
+  "change_refs": ["CH-0007"],
+  "notes": "Duplicate income is not the same as duplicate TDS (R-0011). Duplicate income means the same gross income amount being taxed twice. Duplicate TDS means the same TDS credit being claimed twice. Both inflate the return in opposite directions: duplicate income inflates tax, duplicate TDS inflates refund. The most frequent real-world case: a freelancer submits both an AIS business receipt and a manually entered income figure — if the AIS entry was already extracted by the engine, the manual entry creates a double-count."
+}

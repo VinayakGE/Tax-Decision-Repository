@@ -1,0 +1,31 @@
+{
+  "id": "T-0018",
+  "title": "Form 16 salary and AIS salary are same income — duplicate resolved, not summed",
+  "target_type": "rule",
+  "target_ref": "R-0010",
+  "test_type": "positive",
+  "input": {
+    "classified_income_before_dedup": [
+      { "source": "Form 16", "income_head": "head_1_salary", "amount": 840000, "authority_rank": 1 },
+      { "source": "AIS", "income_head": "head_1_salary", "amount": 840000, "authority_rank": 2 }
+    ]
+  },
+  "expected_output": {
+    "duplicate_detected": true,
+    "resolution": "retain_higher_authority",
+    "retained_entry": { "source": "Form 16", "amount": 840000 },
+    "removed_entry": { "source": "AIS", "status": "reconciled_duplicate" },
+    "income_after_dedup": 840000,
+    "conflict_log_entry": {
+      "type": "duplicate_income",
+      "field": "head_1_salary",
+      "resolution_method": "retain_form16_as_primary_authority",
+      "amount_difference": 0
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "The most common duplicate: Form 16 and AIS both record the same employer salary. If summed, income would be ₹16,80,000 instead of ₹8,40,000 — doubling the tax. Form 16 is higher authority than AIS for salary. The AIS entry is retained as a corroborating source, not as an additive income item."
+}

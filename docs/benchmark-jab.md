@@ -44,7 +44,7 @@ Gold standard cases are stored in `benchmarks/gss/` using the same schema as `ca
 
 ---
 
-## The Ten Metrics
+## The Eleven Metrics
 
 ### M-00: Decision Coverage ★ North-Star KPI
 
@@ -188,7 +188,48 @@ False_Positive_Rate = False_Positives / (False_Positives + True_Negatives) × 10
 
 ---
 
-### M-07: Average Questions Asked
+### M-07: Evidence Integrity Score
+
+**What it measures:** The percentage of processed cases in which all required evidence sources reconcile without unresolved conflicts.
+
+```
+Evidence_Integrity_Score = (cases where all integrity checks pass) / total_cases × 100
+```
+
+A case passes evidence integrity if all of the following hold:
+
+| Check | Pass Condition |
+|-------|---------------|
+| Source Reconciliation (R-0007, R-0008, R-0009) | No `major_variance` or unresolved `presence_mismatch` |
+| Duplicate Income (R-0010) | No unresolved duplicate income entries |
+| Duplicate TDS (R-0011) | No duplicate TDS credits in the final return |
+| Evidence Completeness (R-0012) | No `critical_missing`; `expected_missing` is permitted |
+| Evidence Authenticity (R-0013) | No blocking authenticity failures |
+
+`minor_variance` and `acceptable_absent` are permitted — they count as passed.
+
+**Target:** ≥ 95%
+
+**Why this precedes all accuracy metrics:** If M-07 is low, improving M-01 (ITR accuracy) or M-02 (refund accuracy) won't help. The engine is reasoning over inconsistent or incomplete evidence. Evidence integrity is a prerequisite for decision accuracy. A perfect computation on corrupted input produces a confidently wrong answer.
+
+**Measurement method:** `evidence_integrity.all_checks_passed` flag in the replay record for each GSS case.
+
+**Sub-metric — Integrity Failure Breakdown:**
+
+```json
+{
+  "major_variance_cases": 3,
+  "unresolved_presence_mismatch_cases": 8,
+  "duplicate_income_cases": 1,
+  "duplicate_tds_cases": 2,
+  "critical_missing_evidence_cases": 5,
+  "authenticity_failure_cases": 1
+}
+```
+
+---
+
+### M-08: Average Questions Asked
 
 **What it measures:** How many questions Jarviz asks the user before reaching a decision, averaged across all GSS cases.
 
@@ -206,7 +247,7 @@ Avg_Questions = sum(questions_asked_per_case) / total_cases
 
 ---
 
-### M-08: Processing Time (End-to-End)
+### M-09: Processing Time (End-to-End)
 
 **What it measures:** How long the pipeline takes from document upload to final explanation, excluding user think time.
 
@@ -227,7 +268,7 @@ P95_Processing_Time = 95th percentile of same
 
 ---
 
-### M-09: Human Override Rate
+### M-10: Human Override Rate
 
 **What it measures:** The fraction of cases where a human (CA or taxpayer) rejected Jarviz's final recommendation and filed differently.
 

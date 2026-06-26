@@ -1,0 +1,32 @@
+{
+  "id": "T-0013",
+  "title": "AIS shows FD interest ₹18,000 — no matching 26AS TDS entry (presence_mismatch)",
+  "target_type": "rule",
+  "target_ref": "R-0007",
+  "test_type": "negative",
+  "input": {
+    "ais": { "interest_fd": [{ "bank": "HDFC Bank", "amount": 18000 }] },
+    "26as": { "tds_194A": [] }
+  },
+  "expected_output": {
+    "reconciliation_status": "presence_mismatch",
+    "direction": "ais_only",
+    "income_amount": 18000,
+    "tds_amount": 0,
+    "conflict_log_entry": {
+      "type": "presence_mismatch",
+      "field": "interest_fd.HDFC_Bank",
+      "ais_value": 18000,
+      "26as_value": null,
+      "resolution": "pending_validation",
+      "note": "FD interest in AIS not covered by TDS entry in 26AS. TDS may not have been deducted (amount below ₹40,000 threshold) or was deducted but not yet reflected. Income must still be reported."
+    },
+    "v002_candidate": true,
+    "ecs_impact": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "FD interest below ₹40,000 threshold doesn't attract TDS u/s 194A, so 26AS having no entry is normal. AIS still records the income. This is not a conflict — it's an AIS-only income that must be included in the return. R-0007 flags it as presence_mismatch; V-002 fires if this income is not in the classified_income output."
+}

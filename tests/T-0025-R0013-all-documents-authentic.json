@@ -1,0 +1,29 @@
+{
+  "id": "T-0025",
+  "title": "All documents pass authenticity checks — PAN consistent, TAN valid, AY correct",
+  "target_type": "rule",
+  "target_ref": "R-0013",
+  "test_type": "positive",
+  "input": {
+    "filing_pan": "ABCDE1234F",
+    "form16_pan": "ABCDE1234F",
+    "ais_pan": "ABCDE1234F",
+    "26as_pan": "ABCDE1234F",
+    "form16_tan": "BLRX12345A",
+    "form16_assessment_year": "AY2025-26",
+    "prefill_assessment_year": "AY2025-26",
+    "26as_assessment_year": "AY2025-26"
+  },
+  "expected_output": {
+    "authenticity_checks_run": ["pan_consistency", "tan_format", "assessment_year", "form16_tan_in_26as"],
+    "all_passed": true,
+    "failures": [],
+    "ecs_impact": 0,
+    "halt_pipeline": false
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "All authenticity checks pass. PANs match across all documents, TAN format is valid, all documents reference AY2025-26, and the Form 16 TAN appears in 26AS."
+}

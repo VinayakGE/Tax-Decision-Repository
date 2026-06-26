@@ -5,6 +5,30 @@ Format: `[CH-XXXX] YYYY-MM-DD — Type — Summary`
 
 ---
 
+## v2.0.0-dev — AY2025-26 (2026-06-26) [continued]
+
+**Wave 2: Evidence Integrity Engine — R-0007 through R-0014.**
+
+### Added (Wave 2)
+- [CH-0007] `docs/evidence-integrity.md` — Wave 2 architecture: four submodules (Source Reconciliation, Evidence Completeness, Evidence Authenticity, Evidence Lineage), reconciliation status values, evidence authority hierarchy, lineage graph node types
+- [CH-0007] `rules/R-0007` — AIS ↔ 26AS reconciliation: variance thresholds (< 1% reconciled, 1–5% minor, > 5% major), presence mismatch detection, 26AS authority for TDS credits
+- [CH-0007] `rules/R-0008` — AIS ↔ Prefill reconciliation: stale Prefill detection, AIS always supersedes Prefill
+- [CH-0007] `rules/R-0009` — 26AS ↔ Prefill reconciliation: TDS credit only claimable if in 26AS; Prefill TDS not in 26AS flagged as unclaimed_credit_risk
+- [CH-0007] `rules/R-0010` — Duplicate income detection: same income in Form 16 + AIS resolved by authority hierarchy (not summed)
+- [CH-0007] `rules/R-0011` — Duplicate TDS detection: same TDS in 26AS + Form 16 resolved (26AS is the credit; Form 16 is corroborating)
+- [CH-0007] `rules/R-0012` — Missing evidence detection: critical_missing (halt), expected_missing (reduce ECS), acceptable_absent
+- [CH-0007] `rules/R-0013` — Evidence authenticity: PAN consistency (blocking), TAN format, AY consistency, Form 16 TAN must match 26AS
+- [CH-0007] `rules/R-0014` — Evidence lineage generation: computation provenance DAG tracing every output to evidence leaf, rule_applied leaf, or user_declared leaf; blocks Stage 13 if any orphaned nodes
+- [CH-0007] Tests T-0011 through T-0027 (17 tests covering all 8 Wave 2 rules)
+
+### Updated (Wave 2)
+- [CH-0007] `docs/benchmark-jab.md` — Added M-07 Evidence Integrity Score (≥95% target); renumbered M-07/M-08/M-09 → M-08/M-09/M-10; total metrics: 11
+- [CH-0007] `schemas/benchmark-schema.json` — Added M07_evidence_integrity_score with failure breakdown; renamed M07/M08/M09 keys
+- [CH-0007] `registry/rule-registry.json` — Added R-0007 through R-0014
+- [CH-0007] `registry/index.json` — Rules: 6→14 active, Tests: 7→27 pending
+
+---
+
 ## v2.0.0-dev — AY2025-26 (2026-06-26)
 
 **Phase 5: Knowledge Expansion begins. R-0006 — first Wave 1 rule.**

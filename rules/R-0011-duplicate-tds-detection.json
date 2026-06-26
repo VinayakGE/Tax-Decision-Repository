@@ -1,0 +1,39 @@
+{
+  "id": "R-0011",
+  "title": "Duplicate TDS Detection — Same TDS Credit Claimed from Multiple Sources",
+  "description": "Detect when the same TDS credit is being claimed twice — once from 26AS and once from Form 16, Form 16A, or Prefill JSON — for the same TDS deduction. TDS can only be claimed once, and only the 26AS entry is authoritative for the credit amount (Section 199). All other sources are used only for cross-verification, not as the basis for the credit claim.",
+  "logic": {
+    "if": "tds_credits contains two or more entries that share the same: deductor_TAN AND TDS_section AND approximate_amount (within 1%) AND financial_quarter",
+    "then": "flag as duplicate_tds; apply resolution: (1) if one entry is from 26AS and others are from Form 16 / Form 16A / Prefill → retain 26AS entry as the credit, mark others as corroborating_sources (not credits); (2) if both entries claim to be from 26AS → check for genuinely separate TDS deductions in the same quarter from the same TAN — if TAN + quarter + amount are identical, it is a data extraction error; retain only one entry; log in conflict_log with type duplicate_tds and source_resolution",
+    "else": "no duplicate TDS detected; all TDS credits are distinct deductions; proceed with full credit"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 199 (Credit for tax deducted) and Section 203AA (Form 26AS as authority)",
+    "proviso": "CBDT Circular 2/2021: TDS credit is available only as per 26AS. Section 199 allows credit only for TDS that has been deposited with the government.",
+    "notification": null,
+    "circular": "CBDT Circular 2/2021",
+    "finance_act": null,
+    "effective_from": "2021-04-01",
+    "url": null
+  },
+  "effective_date": "2021-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "evidence-integrity",
+    "duplicate-detection",
+    "tds",
+    "tds-credit",
+    "data-quality",
+    "wave-2",
+    "module-a"
+  ],
+  "evidence_refs": ["E-002", "E-004", "E-005"],
+  "decision_refs": ["D-003"],
+  "test_refs": ["T-0020", "T-0021"],
+  "change_refs": ["CH-0007"],
+  "notes": "Claiming duplicate TDS inflates the refund and will be rejected by the ITD's Centralised Processing Centre (CPC) during processing. It is one of the most common causes of demand notices and refund delays. The engine must ensure each TDS entry in the final return corresponds to exactly one 26AS entry. Form 16 and Form 16A are corroborating sources — they verify the TDS was deducted — but the credit amount is taken from 26AS."
+}
