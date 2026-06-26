@@ -25,14 +25,14 @@
     "taxable_income_new_regime": 825000,
     "gross_total_income": 900000,
     "standard_deduction_applied_new": 75000,
-    "standard_deduction_applied_old": 50000,
+    "standard_deduction_applied_old": 75000,
     "special_rate_items": [],
     "assembly_status": "complete",
-    "taxable_income_old_pre_deductions": 850000
+    "taxable_income_old_pre_deductions": 825000
   },
   "actual_output": null,
   "status": "pending",
   "last_run": null,
   "assessment_year": "AY2025-26",
-  "notes": "Salary \u20b99L. New Regime: 9L - 75K = 8.25L taxable. Old Regime: 9L - 50K = 8.5L taxable. No other income heads or special-rate items."
+  "notes": "Salary \u20b99L. New Regime: 9L - 75K = 8.25L taxable. Old Regime: 9L - 75K = 8.25L taxable. Finance (No.2) Act 2024 raised Section 16(ia) standard deduction to \u20b975K for both regimes from AY2025-26. No other income heads or special-rate items."
 }

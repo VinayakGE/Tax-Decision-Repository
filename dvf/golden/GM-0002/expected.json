@@ -5,11 +5,11 @@
   "refund_amount": 4304,
   "demand_amount": null,
   "total_tax_new_regime": 83200,
-  "total_tax_old_regime": 187200,
-  "tax_saving_amount": 104000,
+  "total_tax_old_regime": 179400,
+  "tax_saving_amount": 96200,
   "total_interest": 2496,
   "taxable_income_new_regime": 1200000,
-  "taxable_income_old_regime": 1225000,
+  "taxable_income_old_regime": 1200000,
   "gross_total_income": 1275000,
   "rebate_applied": false,
   "rebate_87A_new_regime": 0,
@@ -17,6 +17,6 @@
   "surcharge_new_regime": 0,
   "surcharge_old_regime": 0,
   "cess_new_regime": 3200,
-  "cess_old_regime": 7200,
+  "cess_old_regime": 6900,
   "assembly_status": "complete"
 }

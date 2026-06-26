@@ -1,0 +1,122 @@
+{
+  "_comment": "RC-0001 — First real-case validation. Mixed income: salary + 44AD gig delivery + other sources. New regime. Income below basic exemption → zero tax, full TDS refund. Expected LV = rule_gap (engine does not implement 44AD presumptive income or head 5 other sources).",
+
+  "schema_version": "1.0.0",
+  "case_id": "RC-0001",
+  "source": "real",
+  "anonymized": true,
+  "assessment_year": "AY2025-26",
+  "submitted_by": "self",
+  "verified": false,
+
+  "taxpayer": {
+    "name": "Anonymized-01",
+    "age": 34,
+    "age_bracket": "general"
+  },
+
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [
+        {
+          "source": "Form 24Q",
+          "gross_salary": 237598,
+          "employer": "Employer-A (anonymized)",
+          "tan": "ANON-A-001",
+          "note": "Entire salary categorised as Profits in Lieu of Salary (ProfitsInSalary); regular Salary component = 0"
+        }
+      ],
+      "head_2_house_property": [],
+      "head_3_business": [
+        {
+          "source": "AIS / 26AS",
+          "nature": "44AD — Gig Delivery Services",
+          "code": "21008",
+          "gross_receipts_bank": 56309,
+          "gross_receipts_cash": 0,
+          "presumptive_income": 3379,
+          "amount": 3379,
+          "method": "6% of bank receipts (Section 44AD)"
+        }
+      ],
+      "head_4_capital_gains": [],
+      "head_5_other_sources": [
+        { "nature": "IFD", "description": "Interest on Fixed Deposit", "amount": 2108 },
+        { "nature": "SAV", "description": "Savings Bank Interest",     "amount": 475 },
+        { "nature": "DIV", "description": "Dividend",                  "amount": 4 }
+      ]
+    },
+
+    "basic_salary": null,
+    "hra_actual": null,
+    "rent_paid": null,
+    "city_type": null,
+
+    "investments_80C": null,
+    "nps_contribution_80ccd1b": null,
+    "deduction_80d_self_premium": null,
+    "deduction_80d_parents_premium": null,
+    "parent_age_bracket": null,
+
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+
+    "tds_credits_from_26AS": [
+      { "tan": "ANON-A-001", "section": "192", "amount": 54714, "employer": "Employer-A — salary TDS" },
+      { "tan": "ANON-A-001", "section": "94A", "amount": 211,   "employer": "Employer-A — FD interest TDS" },
+      { "tan": "ANON-GIG-01","section": "94C", "amount": 269,   "employer": "Gig Platform 1 (anonymized) — delivery TDS" },
+      { "tan": "ANON-GIG-02","section": "94C", "amount": 1115,  "employer": "Gig Platform 2 (anonymized) — delivery TDS" }
+    ],
+    "advance_tax_paid": 0,
+    "self_assessment_tax_paid": 0,
+
+    "regime_chosen": "new_regime",
+    "return_filed_date": "2026-06-26",
+    "due_date": "2026-08-31",
+    "income_type": "salary_gig_other"
+  },
+
+  "human_expected": {
+    "_comment": "Source: filed ITR4 JSON (receipt 649949100260626). All figures verified from ITR. Regime = new regime; both regimes yield same taxable income and zero tax since total income < basic exemption in either regime.",
+    "taxable_income_new_regime": 168560,
+    "taxable_income_old_regime": 168560,
+    "total_tax_new_regime": 0,
+    "total_tax_old_regime": 0,
+    "regime_recommendation": "new_regime",
+    "outcome": "refund",
+    "refund_amount": 56310,
+    "demand_amount": 0,
+    "total_interest": 0
+  },
+
+  "lv_classification": "rule_gap",
+
+  "notes": "Income breakdown: salary 162598 (gross 237598 – std deduction 75000) + 44AD gig 3379 (6% of 56309 bank receipts) + other sources 2587 (FD interest 2108 + savings 475 + dividend 4) = 168564, rounded to 168560 by ITR (Section 288A). No Chapter VI-A deductions claimed (consistent with new regime). Standard deduction 75000 applies to both regimes per Finance (No.2) Act 2024. Filing mandatory under 139(1) seventh proviso: TDS credits (56309) exceed 1 lakh. 80TTA (savings interest 475) available under old regime but not claimed; no impact as tax is 0 regardless. Entire salary classified as Profits in Lieu of Salary; tax treatment identical to regular salary under Head 1. DEFECTS FOUND AND FIXED IN THIS CASE: (1) Old regime standard deduction was 50000 in tax table — corrected to 75000 per Finance (No.2) Act 2024 amendment to Section 16(ia). This affected all 16 GMs and 2 test cases; all updated and re-verified. REMAINING RULE GAPS: (1) Section 288A rounding not implemented — engine produces 168564, ITR shows 168560 (delta +4). Low priority: no tax impact. (2) demand_amount not produced for refund cases — engine produces None instead of 0. Minor gap in output completeness.",
+
+  "entity_pressure_observed": [],
+
+  "_investigation_log": {
+    "run_date": "2026-06-26",
+    "defects_found": [
+      "D-001: Old regime standard deduction was 50000 in tables/2024/tax_slabs.json and tables/2024/deductions.json. Should be 75000 per Finance (No.2) Act 2024, Section 16(ia) amendment. Fixed in this session. 15 GM expected files and 2 test cases (T-0028, T-0029) updated."
+    ],
+    "rule_gaps_remaining": [
+      "RG-001: Section 288A income rounding not implemented — engine produces pre-rounding figure (168564); ITR shows 168560. Delta +4. Zero tax impact for this case.",
+      "RG-002: demand_amount not produced for refund cases — engine returns None; should return 0."
+    ],
+    "case_data_corrections": [
+      "Added 'amount': 3379 to head_3_business entry — engine uses item.get('amount', 0) to sum business income; original case had only 'presumptive_income' which the engine does not recognise as the income amount field."
+    ],
+    "engine_actual_output": {
+      "taxable_income_new_regime": 168564,
+      "taxable_income_old_regime": 168564,
+      "total_tax_new_regime": 0,
+      "total_tax_old_regime": 0,
+      "outcome": "refund",
+      "refund_amount": 56309,
+      "demand_amount": null,
+      "total_interest": 0,
+      "regime_recommendation": "new_regime"
+    }
+  }
+}

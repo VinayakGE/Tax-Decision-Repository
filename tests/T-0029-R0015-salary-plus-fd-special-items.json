@@ -37,7 +37,7 @@
     "taxable_income_new_regime": 755000,
     "gross_total_income": 1030000,
     "standard_deduction_applied_new": 75000,
-    "standard_deduction_applied_old": 50000,
+    "standard_deduction_applied_old": 75000,
     "special_rate_items": [
       {
         "section": "112A",
@@ -49,11 +49,11 @@
       }
     ],
     "assembly_status": "complete",
-    "taxable_income_old_pre_deductions": 780000
+    "taxable_income_old_pre_deductions": 755000
   },
   "actual_output": null,
   "status": "pending",
   "last_run": null,
   "assessment_year": "AY2025-26",
-  "notes": "Salary \u20b98L, FD interest \u20b930K, LTCG 112A \u20b92L (post 23-Jul-2024). New Regime taxable income = (8L - 75K) + 30K = 7.55L. LTCG \u20b92L is segregated as special-rate item; taxable portion = 2L - 1.25L exemption = 75K at 12.5%. Note: LTCG amount included in gross_total_income but not in slab-taxable income."
+  "notes": "Salary \u20b98L, FD interest \u20b930K, LTCG 112A \u20b92L (post 23-Jul-2024). New Regime taxable income = (8L - 75K) + 30K = 7.55L. Old Regime: same 7.55L before Chapter VI-A (std deduction now 75K for both regimes per Finance (No.2) Act 2024). LTCG \u20b92L is segregated as special-rate item; taxable portion = 2L - 1.25L exemption = 75K at 12.5%."
 }

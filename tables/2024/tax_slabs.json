@@ -32,8 +32,9 @@
   },
 
   "old_regime": {
-    "standard_deduction": 50000,
+    "standard_deduction": 75000,
     "standard_deduction_section": "16(ia)",
+    "note": "Standard deduction raised to ₹75,000 for AY2025-26 under Finance (No. 2) Act 2024 (amended Section 16(ia) directly; applies to both Old and New Regime).",
     "age_brackets": {
       "general":      { "min_age": 0,  "max_age": 59,   "description": "Below 60 years" },
       "senior":       { "min_age": 60, "max_age": 79,   "description": "60 years or above but below 80" },
