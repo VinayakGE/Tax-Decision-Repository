@@ -10,9 +10,9 @@
     {
       "wave": 2,
       "rules": [
-        "R-0031",
         "R-0032",
-        "R-0030"
+        "R-0030",
+        "R-0031"
       ]
     },
     {
@@ -81,9 +81,9 @@
   "execution_order": [
     "R-0029",
     "R-0024",
-    "R-0031",
     "R-0032",
     "R-0030",
+    "R-0031",
     "R-0033",
     "R-0034",
     "R-0015",
@@ -110,15 +110,15 @@
     "R-0024": {
       "deduction_80C": 150000
     },
-    "R-0031": {
-      "hra_candidate_2": 300000,
-      "hra_city_is_metro": true
-    },
     "R-0032": {
       "hra_candidate_3": 204000
     },
     "R-0030": {
       "hra_candidate_1": 300000
+    },
+    "R-0031": {
+      "hra_candidate_2": 300000,
+      "hra_city_is_metro": true
     },
     "R-0033": {
       "hra_exemption": 204000,
@@ -126,9 +126,19 @@
     },
     "R-0034": {
       "total_salary_sec10_exemption": 204000,
-      "income_adjustment_breakdown": {
+      "adjustment_breakdown": {
         "HRA_10_13A": 204000
-      }
+      },
+      "adjustment_trace": [
+        {
+          "section": "10(13A)",
+          "type": "HRA",
+          "evidence_status": "COMPLETE",
+          "exemption": 204000,
+          "limiting_candidate": "c3"
+        }
+      ],
+      "adjustment_status": "COMPLETE"
     },
     "R-0015": {
       "taxable_income_new_regime": 1125000,

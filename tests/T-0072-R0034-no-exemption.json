@@ -1,15 +1,17 @@
 {
   "id": "T-0072",
-  "title": "R-0034: hra_exemption = 0 → total_salary_sec10_exemption = 0, breakdown empty",
+  "title": "R-0034: hra_exemption = 0 (NOT_APPLICABLE) → total = 0, breakdown empty, status NOT_APPLICABLE",
   "target_type": "rule",
   "target_ref": "R-0034",
   "test_type": "positive",
   "input": {
-    "hra_exemption": 0
+    "hra_exemption": 0,
+    "hra_evidence_status": { "status": "NOT_APPLICABLE", "reason": "No HRA received from employer", "missing_fields": [], "suggested_questions": [] }
   },
   "expected_output": {
     "total_salary_sec10_exemption": 0,
-    "income_adjustment_breakdown": {}
+    "adjustment_breakdown": {},
+    "adjustment_status": "NOT_APPLICABLE"
   },
   "actual_output": null,
   "status": "pending",

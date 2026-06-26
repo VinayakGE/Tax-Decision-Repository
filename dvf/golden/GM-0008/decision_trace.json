@@ -10,9 +10,9 @@
     {
       "wave": 2,
       "rules": [
-        "R-0031",
         "R-0032",
-        "R-0030"
+        "R-0030",
+        "R-0031"
       ]
     },
     {
@@ -81,9 +81,9 @@
   "execution_order": [
     "R-0029",
     "R-0024",
-    "R-0031",
     "R-0032",
     "R-0030",
+    "R-0031",
     "R-0033",
     "R-0034",
     "R-0015",
@@ -111,14 +111,14 @@
     "R-0024": {
       "deduction_80C": 0
     },
-    "R-0031": {
-      "hra_candidate_2": 0
-    },
     "R-0032": {
       "hra_candidate_3": 0
     },
     "R-0030": {
       "hra_candidate_1": 0
+    },
+    "R-0031": {
+      "hra_candidate_2": 0
     },
     "R-0033": {
       "hra_exemption": 0,
@@ -126,7 +126,9 @@
     },
     "R-0034": {
       "total_salary_sec10_exemption": 0,
-      "income_adjustment_breakdown": {}
+      "adjustment_breakdown": {},
+      "adjustment_trace": [],
+      "adjustment_status": "NOT_APPLICABLE"
     },
     "R-0015": {
       "taxable_income_new_regime": 925000,

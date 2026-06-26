@@ -1,0 +1,22 @@
+{
+  "id": "T-0073",
+  "title": "R-0034: hra_evidence_status INCOMPLETE → adjustment_status = INCOMPLETE, trace has entry",
+  "target_type": "rule",
+  "target_ref": "R-0034",
+  "test_type": "positive",
+  "input": {
+    "hra_exemption": 0,
+    "hra_evidence_status": { "status": "INCOMPLETE", "missing_fields": ["city_type"], "suggested_questions": ["Is your rented accommodation in a metro city?"] },
+    "hra_limiting_candidate": null
+  },
+  "expected_output": {
+    "total_salary_sec10_exemption": 0,
+    "adjustment_breakdown": {},
+    "adjustment_status": "INCOMPLETE"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "INCOMPLETE propagates up so the future Intake Engine knows to surface suggested_questions. adjustment_trace will contain the HRA entry with evidence_status=INCOMPLETE."
+}

@@ -1,7 +1,7 @@
 {
   "case_id": "GM-0010",
   "description": "HRA non-metro: c2 (40% of basic) is the limiting candidate. \u20b912L salary, Hyderabad, \u20b926k/month rent \u2192 c1=\u20b93L, c2=\u20b92.4L (40% \u00d7 \u20b96L), c3=\u20b92.52L. Old regime with \u20b91L 80C.",
-  "generated_at": "2026-06-26T11:07:04.580312Z",
+  "generated_at": "2026-06-26T11:12:58.459817Z",
   "engine_version": "1.0.0",
   "coverage_tags": [
     "salary",

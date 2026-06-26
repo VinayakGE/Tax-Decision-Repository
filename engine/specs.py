@@ -65,7 +65,8 @@ INCOME_ADJUSTMENT_SPECS = [
     RuleSpec(
         rule_id="R-0034",
         requires=["hra_exemption"],
-        produces=["total_salary_sec10_exemption", "income_adjustment_breakdown"],
+        produces=["total_salary_sec10_exemption", "adjustment_breakdown",
+                  "adjustment_trace", "adjustment_status"],
         fn=r0034_income_adjustment_aggregator,
     ),
 ]

@@ -186,9 +186,15 @@ def r0033_hra_final_exemption(ctx: EvidenceContext) -> None:
 def r0034_income_adjustment_aggregator(ctx: EvidenceContext) -> None:
     """
     Aggregate all Section 10 salary exemptions.
-    Produces total_salary_sec10_exemption consumed by R-0015 (Income Assembly).
+    Frozen API: always produces these four fields regardless of which exemptions are active.
+      total_salary_sec10_exemption — consumed by R-0015 (Income Assembly)
+      adjustment_breakdown         — {section_ref: amount} for each active exemption
+      adjustment_trace             — per-exemption detail record (evidence status, amounts)
+      adjustment_status            — COMPLETE | INCOMPLETE | NOT_APPLICABLE at the stage level
     """
     hra = ctx.get("hra_exemption", 0) or 0
+    hra_info = ctx.get("hra_evidence_status") or {}
+    hra_status = hra_info.get("status", "NOT_APPLICABLE")
     # Future: lta_exemption, children_education_allowance, etc.
 
     total = hra
@@ -196,7 +202,28 @@ def r0034_income_adjustment_aggregator(ctx: EvidenceContext) -> None:
     if hra:
         breakdown["HRA_10_13A"] = hra
 
+    # Trace: one entry per attempted exemption (skip NOT_APPLICABLE ones)
+    trace = []
+    if hra_status in ("COMPLETE", "INCOMPLETE"):
+        trace.append({
+            "section": "10(13A)",
+            "type": "HRA",
+            "evidence_status": hra_status,
+            "exemption": hra,
+            "limiting_candidate": ctx.get("hra_limiting_candidate"),
+        })
+
+    # Stage-level status: INCOMPLETE if any exemption lacks evidence, else COMPLETE if any applied
+    if hra_status == "INCOMPLETE":
+        stage_status = "INCOMPLETE"
+    elif hra_status == "COMPLETE":
+        stage_status = "COMPLETE"
+    else:
+        stage_status = "NOT_APPLICABLE"
+
     ctx.update({
         "total_salary_sec10_exemption": total,
-        "income_adjustment_breakdown": breakdown,
+        "adjustment_breakdown": breakdown,
+        "adjustment_trace": trace,
+        "adjustment_status": stage_status,
     })

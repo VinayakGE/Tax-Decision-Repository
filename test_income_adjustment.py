@@ -32,7 +32,7 @@ TESTS_DIR = os.path.join(os.path.dirname(__file__), "tests")
 
 
 def _load_income_adjustment_tests():
-    ids = list(range(53, 73))
+    ids = list(range(53, 74))
     cases = []
     for tid in ids:
         pattern = os.path.join(TESTS_DIR, f"T-{tid:04d}-*.json")
