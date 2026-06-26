@@ -1,0 +1,55 @@
+{
+  "case_id": "SYNTH-001",
+  "description": "Salaried taxpayer, ₹10L salary + ₹22K FD interest. New vs Old Regime comparison. Demonstrates 87A rebate effect at ₹10L income level.",
+  "assessment_year": "AY2025-26",
+  "taxpayer": {
+    "name": "Arjun Mehta",
+    "pan": "ABCPM1234D",
+    "age": 34,
+    "age_bracket": "general",
+    "residency": "resident_individual"
+  },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [
+        {
+          "source": "Form 16",
+          "gross_salary": 1000000,
+          "employer": "Acme Technologies Pvt Ltd",
+          "tan": "BLRX12345A"
+        }
+      ],
+      "head_2_house_property": [],
+      "head_3_business": [],
+      "head_4_capital_gains": [],
+      "head_5_other_sources": [
+        { "source": "AIS", "category": "interest_fd", "amount": 22000 }
+      ]
+    },
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [
+      {
+        "tan": "BLRX12345A",
+        "section": "192",
+        "amount": 85000,
+        "employer": "Acme Technologies Pvt Ltd"
+      }
+    ],
+    "advance_tax_paid": 0,
+    "self_assessment_tax_paid": 0,
+    "regime_chosen": "new_regime",
+    "return_filed_date": "2025-07-15",
+    "due_date": "2025-07-31",
+    "income_type": "salary_only"
+  },
+  "old_regime_deductions_declared": {
+    "80C": 150000,
+    "note": "Wave 3B — not yet applied to old regime computation."
+  },
+  "metadata": {
+    "case_type": "synthetic",
+    "created": "2026-06-26",
+    "journey": "Journey 1 — Regime Selection"
+  }
+}

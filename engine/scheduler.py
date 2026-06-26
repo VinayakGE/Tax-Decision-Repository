@@ -32,9 +32,9 @@ def build_schedule(specs: List[RuleSpec]) -> List[List[RuleSpec]]:
         for key in spec.produces:
             produced_by[key] = spec.rule_id
 
-    # Build adjacency: rule A must run before rule B if A produces something B requires
+    # Build adjacency: rule A must run before rule B if A produces something B requires.
+    # Use sets so multiple keys from the same producer only add one edge (and one in_degree unit).
     edges = defaultdict(set)  # edges[a] = set of rule_ids that depend on a
-    in_degree = {s.rule_id: 0 for s in specs}
 
     for spec in specs:
         for req in spec.requires:
@@ -42,7 +42,12 @@ def build_schedule(specs: List[RuleSpec]) -> List[List[RuleSpec]]:
                 producer_id = produced_by[req]
                 if producer_id != spec.rule_id:
                     edges[producer_id].add(spec.rule_id)
-                    in_degree[spec.rule_id] += 1
+
+    # Derive in_degree from unique edges (not from key count)
+    in_degree = {s.rule_id: 0 for s in specs}
+    for producer_id, dependents in edges.items():
+        for dep_id in dependents:
+            in_degree[dep_id] += 1
 
     queue = deque(rid for rid, deg in in_degree.items() if deg == 0)
     waves = []

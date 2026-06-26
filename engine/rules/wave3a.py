@@ -139,6 +139,7 @@ def r0015_taxable_income_assembly(ctx: EvidenceContext) -> None:
         "taxable_income_new_regime": taxable_new,
         "taxable_income_old_regime": taxable_old,
         "gross_total_income": gross_total,
+        "total_income": gross_total,  # alias used by R-0019 and R-0021
         "standard_deduction_applied_new": std_deduction_new,
         "standard_deduction_applied_old": std_deduction_old,
         "special_rate_items": special_rate_items,
@@ -287,9 +288,21 @@ def r0019_section_87a_rebate(ctx: EvidenceContext) -> None:
 # R-0021: Surcharge (must run before cess)
 # ---------------------------------------------------------------------------
 
+def _apply_surcharge(tax: float, bracket_rate: float, is_new_regime: bool, caps: dict) -> tuple:
+    """Returns (effective_rate, surcharge, cap_applied)."""
+    rate = bracket_rate
+    cap_applied = False
+    nr_cap = caps["new_regime_max_surcharge"]["rate"]
+    if is_new_regime and rate > nr_cap:
+        rate = nr_cap
+        cap_applied = True
+    return rate, round(tax * rate), cap_applied
+
+
 def r0021_surcharge(ctx: EvidenceContext) -> None:
     total_income = ctx.get("total_income")
     tax_after_rebate_new = ctx.get("tax_after_rebate_new_regime", 0)
+    tax_after_rebate_old = ctx.get("tax_after_rebate_old_regime", 0)
     regime = ctx.get("regime", "new_regime")
 
     brackets = tables.get("2024.surcharge.brackets")
@@ -301,16 +314,12 @@ def r0021_surcharge(ctx: EvidenceContext) -> None:
         if total_income > b["income_above"]:
             bracket = b
 
-    rate = bracket["rate"]
-    surcharge = round(tax_after_rebate_new * rate)
-
-    # Apply New Regime cap (max 25%)
-    nr_cap = caps["new_regime_max_surcharge"]["rate"]
-    cap_applied = False
-    if regime == "new_regime" and rate > nr_cap:
-        rate = nr_cap
-        surcharge = round(tax_after_rebate_new * rate)
-        cap_applied = True
+    rate_new, surcharge_new, cap_applied = _apply_surcharge(
+        tax_after_rebate_new, bracket["rate"], True, caps
+    )
+    rate_old, surcharge_old, _ = _apply_surcharge(
+        tax_after_rebate_old, bracket["rate"], False, caps
+    )
 
     result = {
         "surcharge_bracket_ref": "TaxTable:2024.surcharge.brackets",
@@ -319,11 +328,12 @@ def r0021_surcharge(ctx: EvidenceContext) -> None:
             "income_upto": bracket["income_upto"],
             "rate": bracket["rate"],
         },
-        "surcharge_rate_applied": rate,
+        "surcharge_rate_applied": rate_new,
         "new_regime_cap_applied": cap_applied,
-        "surcharge_amount": surcharge,
+        "surcharge_amount": surcharge_new,
         "marginal_relief_applied": False,
-        "surcharge_new_regime": surcharge,
+        "surcharge_new_regime": surcharge_new,
+        "surcharge_old_regime": surcharge_old,
     }
 
     ctx.update(result)
@@ -370,7 +380,14 @@ def _months_between(d1_str: str, d2_str: str) -> int:
 
 
 def r0022_interest_234abc(ctx: EvidenceContext) -> None:
-    total_tax = ctx.get("total_tax_due", 0)
+    # total_tax_due may be provided directly (unit tests) or derived from chosen regime
+    if ctx.has("total_tax_due"):
+        total_tax = ctx.get("total_tax_due")
+    else:
+        regime = ctx.get("regime_chosen", "new_regime")
+        total_tax = ctx.get(
+            "total_tax_new_regime" if regime == "new_regime" else "total_tax_old_regime", 0
+        )
     tds = ctx.get("tds_credit_from_26AS", 0)
     advance = ctx.get("advance_tax_paid", 0)
     filed_date = ctx.get("return_filed_date", "")
