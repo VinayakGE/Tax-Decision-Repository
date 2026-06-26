@@ -1,0 +1,18 @@
+{
+  "case_id": "GM-0002",
+  "description": "87A cliff — income ₹12.75L puts taxpayer just above ₹12L New Regime rebate limit. No rebate applies.",
+  "taxpayer": { "name": "Priya Sharma", "age": 42, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1275000, "employer": "Nexus Corp", "tan": "DELX77001B" }],
+      "head_2_house_property": [], "head_3_business": [], "head_4_capital_gains": [],
+      "head_5_other_sources": []
+    },
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "DELX77001B", "section": "192", "amount": 90000, "employer": "Nexus Corp" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "new_regime",
+    "return_filed_date": "2025-07-20", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

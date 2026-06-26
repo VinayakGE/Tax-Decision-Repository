@@ -1,0 +1,15 @@
+{
+  "case_id": "GM-0002",
+  "description": "87A cliff \u2014 income \u20b912.75L puts taxpayer just above \u20b912L New Regime rebate limit. No rebate applies.",
+  "generated_at": "2026-06-26T06:03:32.201301Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "salary",
+    "87a_cliff",
+    "no_rebate",
+    "new_regime",
+    "refund"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

@@ -1,0 +1,20 @@
+{
+  "case_id": "GM-0004",
+  "description": "Freelancer — business income only, no advance tax, TDS insufficient. Demand case with 234B + 234C interest.",
+  "taxpayer": { "name": "Kavitha Nair", "age": 29, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [],
+      "head_2_house_property": [],
+      "head_3_business": [{ "source": "AIS", "category": "professional_receipts", "amount": 1500000 }],
+      "head_4_capital_gains": [],
+      "head_5_other_sources": []
+    },
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "MUMB99887B", "section": "194J", "amount": 20000, "deductor": "TechClient Ltd" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "new_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "freelance_business"
+  }
+}

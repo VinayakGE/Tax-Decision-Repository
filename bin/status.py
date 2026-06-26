@@ -29,6 +29,25 @@ def _bar(pct: float, width=20) -> str:
     return "█" * filled + "░" * (width - filled)
 
 
+def run_dvf() -> dict:
+    """Run DVF: golden masters + coverage map."""
+    from dvf.runners.golden import run_golden
+    from dvf.coverage import coverage_report
+    t0 = time.time()
+    results = run_golden()
+    elapsed = time.time() - t0
+    passed = sum(1 for r in results if r.passed)
+    report = coverage_report()
+    return {
+        "total": len(results),
+        "passed": passed,
+        "elapsed_ms": round(elapsed * 1000),
+        "coverage_pct": report["overall"]["pct"],
+        "covered": report["overall"]["covered"],
+        "required": report["overall"]["total"],
+    }
+
+
 def run_tests() -> dict:
     t0 = time.time()
     result = subprocess.run(
@@ -106,6 +125,15 @@ def main():
     print(f"  {'Wave 3A suite':<30} {test_res['passed']:>2}/{total_tests} passed   {_bar(pass_rate)}  {pass_rate:.0f}%  ({test_res['elapsed_s']}s)")
     print()
 
+    # DVF results
+    print(f"  DECISION VALIDATION FRAMEWORK  (running...)", flush=True)
+    dvf_res = run_dvf()
+    gm_rate = (dvf_res["passed"] / dvf_res["total"] * 100) if dvf_res["total"] > 0 else 0
+    cov_bar = _bar(dvf_res["coverage_pct"])
+    print(f"  {'Golden masters':<30} {dvf_res['passed']:>2}/{dvf_res['total']} passed   {_bar(gm_rate)}  {gm_rate:.0f}%  ({dvf_res['elapsed_ms']}ms)")
+    print(f"  {'Matrix coverage':<30} {dvf_res['covered']:>2}/{dvf_res['required']} cells    {cov_bar}  {dvf_res['coverage_pct']}%")
+    print()
+
     # Scheduler metrics
     print(f"  SCHEDULER GRAPH")
     depth = scheduler_depth()
@@ -142,7 +170,9 @@ def main():
 
     print()
     print(f"  {'─' * 61}")
-    print(f"  Rule coverage: {r['active']}/{r['active']} rules with tests  ·  Health: {'✅ PASS' if test_res['failed'] == 0 else '❌ FAIL'}")
+    dvf_health = "✅ PASS" if dvf_res["passed"] == dvf_res["total"] else "❌ FAIL"
+    wave_health = "✅ PASS" if test_res["failed"] == 0 else "❌ FAIL"
+    print(f"  Wave 3A: {wave_health}  ·  DVF golden masters: {dvf_health}  ·  Matrix: {dvf_res['coverage_pct']}% covered")
     print()
 
 
