@@ -1,0 +1,231 @@
+# Evidence Doctrine
+
+*Engineering principles for building trustworthy decision systems through independent evidence.*
+
+---
+
+## The Core Problem: Circularity of Validation
+
+Traditional decision-system engineering assumes this model:
+
+```
+Law → Implementation → Testing → Confidence
+```
+
+This breaks in a specific, non-obvious way.
+
+The synthetic test corpus and the implementation share the same author: a human's interpretation of the source material. When both are derived from the same mental model, they can agree perfectly while both being wrong in the same direction. Testing then reports zero defects — not because the system is correct, but because the error is consistent across both the implementation and the tests.
+
+This is the **circularity problem**. Internal consistency is not the same as correctness.
+
+**Defect D-001** is the canonical example. The old-regime standard deduction was implemented as ₹50,000. The synthetic test suite expected ₹50,000. Both were wrong (Finance No. 2 Act 2024 raised it to ₹75,000). Both agreed. Zero defects reported — until one real CPC-accepted return exposed the mismatch.
+
+No synthetic test can break this circularity, because every synthetic test is downstream of the same misunderstanding. Only a reference from outside the closed system can.
+
+The empirical validation layer exists for this reason. It is not redundant with testing. It operates at a different epistemic level.
+
+```
+Law
+ ↓
+Implementation
+ ↓
+Testing         ← verifies internal consistency
+ ↓
+Independent Evidence  ← verifies correct grounding in reality
+ ↓
+Correction
+```
+
+---
+
+## The Five Doctrines
+
+**Doctrine 1** — *Synthetic evidence establishes consistency, not confidence.*
+
+A system that passes 1,000 synthetic tests is consistent. It is not verified. The tests and the implementation share the same source of error.
+
+**Doctrine 2** — *Independent evidence establishes confidence.*
+
+An independent source is one whose computation is not derived from the same mental model as the implementation. CPC 143(1) intimations, CA-reviewed computations, and official assessments qualify. A human manually applying the same interpretation of the statute does not fully qualify — the circularity is only partially broken.
+
+**Doctrine 3** — *Interpretation uncertainty must never be silently encoded as deterministic logic.*
+
+When the correct treatment of an observation is not yet known, the observation becomes an Interpretation Gap. Implementing a guess as a rule converts uncertainty into false confidence and may cause the system to learn the wrong behavior.
+
+**Doctrine 4** — *Every implemented rule should eventually trace back to independent evidence.*
+
+A rule with no independent case behind it has unknown accuracy. It has been verified consistent (tests pass) but not verified correct (no independent reference confirms it produces the right answer).
+
+**Doctrine 5** — *The validation corpus defines the boundary of verified knowledge. Expand it deliberately, not randomly.*
+
+The cases you have run determine what reality has had the opportunity to teach the system. A corpus of 20 salary-only cases cannot expose errors in capital gains rules, presumptive income rules, or house property rules. Corpus selection is an experimental design problem. Cases should be chosen to maximize the probability of uncovering errors in regions of the rule space that have not yet been independently verified.
+
+---
+
+## Evidence Classification
+
+### Rule Gap (RG)
+
+A statutory provision that exists and applies but is not implemented in the engine.
+
+- Status: Observed → Explained → Implemented → Verified
+- Resolution: always involves a code change
+- Example: RG-005, Section 80CCD(2) employer NPS — identified in RC-0002, confirmed by CPC intimation (₹70,000 impact)
+
+### Knowledge Gap (KG)
+
+An Interpretation Gap that resolves into a confirmed implementable rule when sufficient evidence arrives.
+
+- Status: (promoted from IG) → Implemented → Verified
+- Resolution: code change after evidence confirms correct interpretation
+
+### Interpretation Gap (IG)
+
+An observation that cannot yet be classified as a rule gap or evidence gap because the correct treatment is not yet established.
+
+```
+Observation
+     ↓
+Interpretation Gap
+     │
+     ├── Evidence supports implementation
+     │         ↓
+     │    Knowledge Gap → rule implemented
+     │
+     └── Evidence supports current engine behavior
+               ↓
+          Close with NO code change
+```
+
+The second exit path is important. An IG may close without any code change, because the observation turns out to reflect a filing error or incomplete evidence rather than an engine error. The system was already correct; the observation was incomplete.
+
+- Example: IG-001, perquisites treatment — Form 24Q reports ₹6,541; CPC accepted return without them; no evidence yet that they were Rule 3 exempt vs. simply omitted by the taxpayer. Engine behavior (include perquisites at full value under Section 17(2) default) is the more defensible statutory position.
+
+### Evidence Gap (EG)
+
+Evidence that was expected to be present in the case but was not recorded, causing the engine to compute with an incomplete picture. Distinct from a rule gap — the rule may be correct, but the input was incomplete.
+
+- Resolution: update the case file; re-run validation
+- Example: prior year 244A refund interest (₹1,743) missing from RC-0002 initial evidence, later found in prefill data
+
+### Domain Model Gap (DMG)
+
+A structural limitation in how the evidence schema represents a concept, distinct from an unimplemented rule.
+
+- Example: VDA income was initially represented in `head_5_other_sources` with `amount: null`, but VDA flows to `head_4_capital_gains` in ITR-2. The model needed extension, not just a new rule.
+
+---
+
+## Evidence Weight
+
+Evidence Weight has two independent dimensions: **Strength** and **Breadth**. They should not be collapsed into a single scalar, because they represent different failure modes.
+
+### Strength (per observation)
+
+How much epistemic weight does each observation carry?
+
+| Provenance | Tier | Weight |
+|---|---|---|
+| CPC 143(1) intimation | Government-accepted | 3 |
+| CA-reviewed computation | Expert-independent | 2 |
+| Taxpayer self-computation | Author-dependent | 1 |
+| Synthetic case | Engine-derived | 0.5 |
+
+**Strength score** for a rule = sum of weights across all observations that exercise it.
+
+### Breadth (across the corpus)
+
+How many distinct income categories, regime choices, and edge conditions has the rule been tested against independently?
+
+Breadth is not just a count — it measures coverage across orthogonal dimensions:
+
+- Regime (new vs. old)
+- Income head (salary, capital gains, house property, business, other sources)
+- Age bracket (general, senior, super-senior)
+- Complexity tier (simple salary, multiple employers, VDA, foreign assets, surcharge)
+
+**Breadth failure**: 10 high-strength observations all from salary-only cases leaves all other income categories with zero independent verification of the same rule.
+
+### Prioritization
+
+- Maximize **breadth** until minimum category coverage is achieved
+- Maximize **strength** within each covered category
+- A rule with strength ≥ 6 and breadth across ≥ 3 categories is provisionally well-evidenced
+
+---
+
+## Corpus Design
+
+The validation corpus is not a collection of whatever cases are available. It is a designed experiment.
+
+**Corpus selection criterion**: prefer cases that exercise rule combinations not yet independently verified, rather than cases that accumulate evidence for already-verified rules.
+
+**Minimum coverage target (M2)**:
+
+| Category | Target cases | Notes |
+|---|---|---|
+| Salary only, new regime | 2 | Baseline |
+| Salary only, old regime | 2 | Regime comparison |
+| Multiple employers | 1 | Aggregation logic |
+| HRA + salary | 2 | Section 10(13A) |
+| Capital gains | 2 | Short-term + long-term |
+| Presumptive income (44AD/44ADA) | 2 | Business head |
+| House property | 2 | Rental income |
+| VDA income | 1 | Section 115BBH |
+| High-income surcharge | 1 | >₹50L |
+| 80C + 80D deductions | 2 | Chapter VI-A depth |
+| Foreign assets | 1 | Schedule FA |
+
+Completing this matrix with CPC-verified cases provides strong independent confidence across the rule space. Cases that overlap categories (e.g., salary + capital gains + 80C) are particularly valuable because they expose interaction effects between rules.
+
+---
+
+## Evidence Closure Lifecycle
+
+Each rule gap, knowledge gap, and interpretation gap carries a `closure_stage` that is updated as evidence accumulates.
+
+```
+Observed → Explained → Implemented → Verified
+```
+
+| Stage | Definition |
+|---|---|
+| Observed | Mismatch identified between engine output and independent reference |
+| Explained | Root cause identified; categorized as RG / KG / IG / EG / DMG |
+| Implemented | Code change made (or, for IGs, determination that no change is warranted) |
+| Verified | A subsequent independent case confirms the corrected behavior |
+
+The `Verified` stage requires a *new* case — the case that exposed the gap cannot itself verify the fix.
+
+### Living document pattern
+
+Each real case's `_investigation_log` carries the observation and explanation. The implementation is traceable via git commit. Verification is traceable via the subsequent case that exercises the same rule after the fix.
+
+```json
+{
+  "id": "RG-005",
+  "description": "Section 80CCD(2) employer NPS not implemented",
+  "closure_stage": "Explained",
+  "observed_in": "RC-0002",
+  "observed_date": "2026-06-26",
+  "impact": "₹70,000 GTI under-reduction under new regime",
+  "implemented_commit": null,
+  "verified_in": null
+}
+```
+
+---
+
+## Relationship to Testing
+
+This doctrine does not diminish the role of the synthetic test suite. The two layers are complementary and operate at different levels:
+
+| Layer | What it verifies | What it cannot detect |
+|---|---|---|
+| Unit tests | Rule logic is internally correct | Axioms encoded in rules are wrong |
+| Golden master tests | Engine output is stable across changes | Baseline output was wrong when GMs were generated |
+| Independent case validation | Engine output matches independent real-world computation | — |
+
+The layers are ordered by independence from the implementation. Unit tests share 100% of the implementation's assumptions. Golden masters share the assumptions at generation time. Independent cases share none.
+
+All three layers are necessary. The absence of the third layer leaves the system in a state where it can know it is consistent but cannot know it is correct.
