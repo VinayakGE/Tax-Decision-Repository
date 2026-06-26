@@ -270,3 +270,43 @@ The layers are ordered by independence from the implementation. This ordering de
 All three layers are necessary. The presence of layers 1 and 2 without layer 3 leaves the system in a state where it can know it is consistent but cannot know it is correct. That distinction is not philosophical — it is the difference between a system that has never been shown to be wrong and a system that has been shown to be right.
 
 For regulated decision engines specifically, "has not been shown to be wrong" is not sufficient. A government authority (CPC, tax tribunal, appellate body) will measure the system against independently established computation, not against internal consistency. The empirical layer is therefore not optional for this class of system — it is the only layer that answers the question a regulated outcome actually poses.
+
+---
+
+## Evidence Regression: When Reality Moves
+
+Conventional software has two maintenance triggers:
+
+1. **Code regression** — a code change causes behavior to change unexpectedly
+2. **Requirement change** — new requirements mean code must change
+
+A regulated decision engine has a third:
+
+3. **Evidence regression** — reference reality changes, making the implementation wrong even though nothing in the repository changed
+
+| Trigger | What changed | Detection mechanism |
+|---|---|---|
+| Code regression | Repository | Golden master tests |
+| Requirement change | Specification | Change process |
+| Evidence regression | Reality | Independent case validation |
+
+For a tax engine, evidence regression triggers include:
+- Finance Act published each year (slab rates, deduction limits, new sections)
+- CBDT circulars and notifications (interpretation of existing provisions)
+- CPC processing behavior changes (what the government actually computes)
+- New forms or schedules (structural changes to how income is reported)
+
+The critical property of evidence regression: **all synthetic tests will continue to pass**. The tests don't know the statute changed. Only an independent case from the new period — or a deliberate re-validation pass against the updated reference — can expose the drift.
+
+This changes the maintenance calendar. The system now runs on two independent clocks:
+
+```
+Engineering clock   → code changes, refactors, dependency updates
+Regulatory clock    → Finance Act, CBDT circulars, CPC behavior
+```
+
+The regulatory clock does not respect sprint cycles. It fires in February when the Union Budget is presented, again when the Finance Act receives assent, and at irregular intervals when CBDT issues clarifications. Each event is a potential evidence regression that must be absorbed into the implementation and re-verified against real cases from the new period.
+
+A system without the empirical layer has no mechanism to detect evidence regression. A system with it has a natural detection mechanism: the first independent case from the new period that exercises the affected rule will expose the drift.
+
+The practical consequence is that **every Finance Act change should be followed by targeted corpus expansion** — at least one real case exercising the changed rules in the new period, verified against CPC computation, to close the evidence regression loop.
