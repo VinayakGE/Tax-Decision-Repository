@@ -1,0 +1,14 @@
+{
+  "id": "CH-0001",
+  "date": "2026-06-26",
+  "author": "Vinayak Gautham",
+  "type": "add",
+  "object_type": "rule",
+  "object_id": "R-0001, R-0002, R-0003, R-0004, R-0005",
+  "summary": "Initial repository creation. Added seed rules R-0001 through R-0005 covering ITR form eligibility (ITR-1, ITR-2, ITR-4) and new regime default. This is the foundational commit establishing the knowledge architecture.",
+  "authority": null,
+  "prior_version": null,
+  "new_version": "1.0.0",
+  "git_commit": null,
+  "notes": "Repository constitution (ARCHITECTURE.md), domain model, evidence catalogue, decision catalogue, JSON schemas, decision tree DT-001, validations V-001 to V-003, case C-000001, tests T-0001/T-0003/T-0006, and prompts P-001/P-002 all created in this initial commit."
+}

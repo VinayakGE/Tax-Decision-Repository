@@ -1,0 +1,16 @@
+{
+  "id": "V-003",
+  "title": "Refund Bank Account Not Pre-Validated",
+  "type": "completeness",
+  "severity": "high",
+  "condition": "taxpayer.refund_amount > 0 AND taxpayer.bank_account.pre_validated == false",
+  "failure_message": "The taxpayer is due a refund of ₹{refund_amount} but no pre-validated bank account has been linked to the PAN on the IT Portal.",
+  "remediation": "Log in to the IT Portal (incometax.gov.in) and pre-validate the bank account under 'My Profile > Bank Account'. IFSC and account number must match. Refunds are processed only to pre-validated accounts.",
+  "rule_refs": [],
+  "evidence_refs": ["E-003"],
+  "decision_refs": ["D-004"],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "Even if a bank account is mentioned in the return, refunds only go to pre-validated accounts. This must be checked before filing."
+}

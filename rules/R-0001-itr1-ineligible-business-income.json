@@ -1,0 +1,32 @@
+{
+  "id": "R-0001",
+  "title": "ITR-1 Ineligible — Business Income Exists",
+  "description": "A taxpayer who has any income under the head 'Profits and Gains of Business or Profession' cannot file ITR-1 (Sahaj), regardless of the amount.",
+  "logic": {
+    "if": "taxpayer.income.business_income IS NOT NULL AND taxpayer.income.business_income > 0",
+    "then": "itr_form = ITR-1 is INVALID. Taxpayer must use ITR-3 or ITR-4.",
+    "else": "Business income disqualifier does not apply."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 139(1) read with ITR-1 Instructions",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": null,
+    "effective_from": "2017-04-01",
+    "url": null
+  },
+  "effective_date": "2017-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "superseded_by": null,
+  "tags": ["itr-form", "eligibility", "itr1", "business-income"],
+  "evidence_refs": ["E-001", "E-003"],
+  "decision_refs": ["D-001"],
+  "test_refs": ["T-0001", "T-0002"],
+  "change_refs": ["CH-0001"],
+  "notes": "Applies to ALL business income including freelance/gig income taxable as business income. See also R-0005 (ITR-4 presumptive eligibility) for the alternative form."
+}

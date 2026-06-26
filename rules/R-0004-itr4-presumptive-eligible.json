@@ -1,0 +1,32 @@
+{
+  "id": "R-0004",
+  "title": "ITR-4 Eligible — Presumptive Income under Section 44AD or 44ADA",
+  "description": "A Resident individual or HUF (not a company or LLP) whose total income does not exceed ₹50 lakh and who has income from business computed under Section 44AD (turnover ≤ ₹3 crore, cash receipts ≤ 5%) or profession under Section 44ADA (receipts ≤ ₹75 lakh) is eligible to file ITR-4, provided no disqualifying conditions apply.",
+  "logic": {
+    "if": "taxpayer.resident_status == 'ROR' AND (taxpayer.income.presumptive_44AD == true OR taxpayer.income.presumptive_44ADA == true) AND taxpayer.income.total <= 5000000 AND taxpayer.is_director == false AND taxpayer.holds_unlisted_shares == false AND taxpayer.has_foreign_assets == false AND taxpayer.income.capital_gains == false",
+    "then": "itr_form = ITR-4 is VALID",
+    "else": "ITR-4 not eligible — evaluate ITR-3"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 44AD and Section 44ADA read with ITR-4 Instructions AY2025-26",
+    "proviso": "Proviso to Section 44AD(4): If income declared lower than presumptive, books must be maintained and audit is required.",
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2023",
+    "effective_from": "2023-04-01",
+    "url": null
+  },
+  "effective_date": "2023-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "superseded_by": null,
+  "tags": ["itr-form", "eligibility", "itr4", "presumptive", "44ad", "44ada", "business-income"],
+  "evidence_refs": ["E-001", "E-003"],
+  "decision_refs": ["D-001", "D-005"],
+  "test_refs": ["T-0006", "T-0007"],
+  "change_refs": ["CH-0001"],
+  "notes": "Finance Act 2023 increased the 44AD threshold from ₹2 Cr to ₹3 Cr (with condition that cash receipts ≤ 5%). The 44ADA threshold was also increased from ₹50 L to ₹75 L. These limits apply from AY2024-25 onwards."
+}

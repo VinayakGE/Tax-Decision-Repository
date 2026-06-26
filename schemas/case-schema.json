@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "case-schema.json",
+  "title": "Case",
+  "description": "Schema for a complete tax filing case in the Jarviz Tax Decision Repository.",
+  "type": "object",
+  "required": ["id", "title", "assessment_year", "profile", "inputs", "decisions", "rules_used", "validations", "final_output", "source", "verified"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^C-[0-9]{6}$",
+      "description": "Unique case ID. Format: C-XXXXXX"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short scenario description."
+    },
+    "assessment_year": {
+      "type": "string",
+      "pattern": "^AY[0-9]{4}-[0-9]{2}$"
+    },
+    "profile": {
+      "type": "object",
+      "required": ["resident_status", "age_category"],
+      "properties": {
+        "resident_status": {
+          "type": "string",
+          "enum": ["ROR", "RNOR", "NR"]
+        },
+        "age_category": {
+          "type": "string",
+          "enum": ["general", "senior", "super-senior"]
+        },
+        "income_heads": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "is_director": { "type": "boolean" },
+        "holds_unlisted_shares": { "type": "boolean" },
+        "has_foreign_assets": { "type": "boolean" }
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_ref", "summary"],
+        "properties": {
+          "evidence_ref": { "type": "string" },
+          "summary": { "type": "string" },
+          "key_values": { "type": "object" }
+        }
+      },
+      "description": "Evidence documents provided in this case."
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["decision_ref", "outcome"],
+        "properties": {
+          "decision_ref": { "type": "string", "pattern": "^D-[0-9]{3}$" },
+          "outcome": { "type": "string" },
+          "explanation": { "type": "string" }
+        }
+      }
+    },
+    "rules_used": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^R-[0-9]{4}$" }
+    },
+    "validations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["validation_ref", "result"],
+        "properties": {
+          "validation_ref": { "type": "string", "pattern": "^V-[0-9]{3}$" },
+          "result": { "type": "string", "enum": ["pass", "fail", "warning", "skipped"] },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "final_output": {
+      "type": "object",
+      "required": ["itr_form", "tax_regime"],
+      "properties": {
+        "itr_form": { "type": "string" },
+        "tax_regime": { "type": "string", "enum": ["old", "new"] },
+        "taxable_income": { "type": "number" },
+        "tax_liability": { "type": "number" },
+        "tds_credit": { "type": "number" },
+        "refund_amount": { "type": "number" },
+        "tax_due": { "type": "number" }
+      }
+    },
+    "explanation_ref": {
+      "type": "string",
+      "description": "Path to the narrative explanation file."
+    },
+    "source": {
+      "type": "string",
+      "enum": ["real", "synthetic"],
+      "description": "Whether this is a real or synthetic case."
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "Has this case been cross-checked against actual filing."
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

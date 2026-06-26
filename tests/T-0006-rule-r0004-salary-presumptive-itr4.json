@@ -1,0 +1,29 @@
+{
+  "id": "T-0006",
+  "title": "Salary + presumptive business income (44AD) — ITR-4 eligible",
+  "target_type": "rule",
+  "target_ref": "R-0004",
+  "input": {
+    "taxpayer.resident_status": "ROR",
+    "taxpayer.income.salary": 400000,
+    "taxpayer.income.presumptive_44AD": true,
+    "taxpayer.income.business_turnover": 1500000,
+    "taxpayer.income.business_presumptive_amount": 120000,
+    "taxpayer.income.total": 520000,
+    "taxpayer.income.capital_gains": false,
+    "taxpayer.income.foreign_income": false,
+    "taxpayer.is_director": false,
+    "taxpayer.holds_unlisted_shares": false,
+    "taxpayer.has_foreign_assets": false
+  },
+  "expected_output": {
+    "itr4_valid": true,
+    "itr_form": "ITR-4",
+    "applicable_rule": "R-0004"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Classic salary + gig/freelance scenario where business income is presumptive u/s 44AD. Total income well below ₹50L ceiling."
+}

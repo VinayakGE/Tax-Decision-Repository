@@ -1,0 +1,32 @@
+{
+  "id": "R-0005",
+  "title": "New Tax Regime is Default from AY2024-25",
+  "description": "With effect from Assessment Year 2024-25 (Financial Year 2023-24), the New Tax Regime under Section 115BAC is the default regime for individual taxpayers. A taxpayer must actively opt out to choose the Old Regime by filing Form 10-IEA before the due date of filing (for those with business income) or by selecting the Old Regime in the ITR.",
+  "logic": {
+    "if": "taxpayer has not filed Form 10-IEA AND taxpayer has not selected old regime in ITR",
+    "then": "tax_regime = New Regime (Section 115BAC) applies by default",
+    "else": "Old Regime applies as opted"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 115BAC(1A) inserted by Finance Act 2023",
+    "proviso": "Proviso: Taxpayers with business/profession income must file Form 10-IEA to opt for old regime.",
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2023",
+    "effective_from": "2023-04-01",
+    "url": null
+  },
+  "effective_date": "2023-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2024-25", "AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "superseded_by": null,
+  "tags": ["regime", "new-regime", "115bac", "default", "opt-out"],
+  "evidence_refs": ["E-003"],
+  "decision_refs": ["D-002"],
+  "test_refs": ["T-0008"],
+  "change_refs": ["CH-0001"],
+  "notes": "Before AY2024-25, the Old Regime was the default. This rule marks the inversion. Form 10-IEA must be filed on or before the due date u/s 139(1) to opt for old regime for business income taxpayers."
+}

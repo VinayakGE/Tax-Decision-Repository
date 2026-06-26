@@ -1,0 +1,30 @@
+{
+  "id": "T-0003",
+  "title": "Salary only taxpayer, income < ₹50L — ITR-1 eligible",
+  "target_type": "rule",
+  "target_ref": "R-0002",
+  "input": {
+    "taxpayer.resident_status": "ROR",
+    "taxpayer.income.salary": 800000,
+    "taxpayer.income.interest": 12000,
+    "taxpayer.income.total": 812000,
+    "taxpayer.income.business_income": 0,
+    "taxpayer.income.capital_gains": false,
+    "taxpayer.income.foreign_income": false,
+    "taxpayer.is_director": false,
+    "taxpayer.holds_unlisted_shares": false,
+    "taxpayer.has_foreign_assets": false,
+    "taxpayer.income.house_property_count": 1,
+    "taxpayer.income.lottery_income": false
+  },
+  "expected_output": {
+    "itr1_valid": true,
+    "itr_form": "ITR-1",
+    "applicable_rule": "R-0002"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Golden path: standard salaried employee with savings interest, one home, no complications."
+}

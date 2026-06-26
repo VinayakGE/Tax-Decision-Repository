@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "change-schema.json",
+  "title": "Change",
+  "description": "Schema for an immutable change record in the Jarviz Tax Decision Repository.",
+  "type": "object",
+  "required": ["id", "date", "author", "type", "object_type", "object_id", "summary", "prior_version", "new_version"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CH-[0-9]{4}$",
+      "description": "Unique change ID. Format: CH-XXXX"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO 8601 date of the change."
+    },
+    "author": {
+      "type": "string",
+      "description": "Who made the change."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["add", "modify", "deprecate", "supersede", "fix"],
+      "description": "Nature of the change."
+    },
+    "object_type": {
+      "type": "string",
+      "enum": ["rule", "evidence", "decision", "validation", "case", "schema", "prompt", "docs"],
+      "description": "Type of object that changed."
+    },
+    "object_id": {
+      "type": "string",
+      "description": "ID of the specific object that changed."
+    },
+    "summary": {
+      "type": "string",
+      "description": "What changed and why."
+    },
+    "authority": {
+      "type": ["string", "null"],
+      "description": "If triggered by law change: legal source reference."
+    },
+    "prior_version": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version string before this change. Null for new objects."
+    },
+    "new_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version string after this change."
+    },
+    "git_commit": {
+      "type": ["string", "null"],
+      "description": "Git commit hash of this change."
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

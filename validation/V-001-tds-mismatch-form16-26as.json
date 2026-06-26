@@ -1,0 +1,16 @@
+{
+  "id": "V-001",
+  "title": "TDS Mismatch — Form 16 vs 26AS",
+  "type": "cross-check",
+  "severity": "critical",
+  "condition": "Form 16 Part A TDS amount != 26AS Part A TDS amount for the same deductor TAN",
+  "failure_message": "TDS amount in Form 16 does not match the TDS credit in 26AS for TAN {deductor_tan}. Form 16 shows ₹{form16_tds}, 26AS shows ₹{26as_tds}. The return will only receive credit for the amount in 26AS.",
+  "remediation": "Contact your employer to verify that TDS was deposited and the correct amount appears in 26AS. If employer has not deposited TDS, it must be deposited before filing. Do not claim TDS credit that does not appear in 26AS.",
+  "rule_refs": [],
+  "evidence_refs": ["E-002", "E-004"],
+  "decision_refs": ["D-003"],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "This is the single most common cause of mismatch notices from the IT Department. Always reconcile Form 16 against 26AS before filing. 26AS is authoritative for TDS credit; Form 16 is employer-generated and may contain errors."
+}

@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rule-schema.json",
+  "title": "Rule",
+  "description": "Schema for a single atomic tax rule in the Jarviz Tax Decision Repository.",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "description",
+    "logic",
+    "authority",
+    "effective_date",
+    "assessment_years",
+    "version",
+    "status",
+    "tags",
+    "evidence_refs",
+    "decision_refs",
+    "test_refs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^R-[0-9]{4}$",
+      "description": "Unique rule ID. Format: R-XXXX"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 120,
+      "description": "Short human-readable rule title."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Plain-English statement of what the rule says."
+    },
+    "logic": {
+      "type": "object",
+      "required": ["if", "then"],
+      "additionalProperties": false,
+      "properties": {
+        "if": {
+          "type": "string",
+          "description": "Condition in plain English or pseudo-code."
+        },
+        "then": {
+          "type": "string",
+          "description": "Outcome when condition is true."
+        },
+        "else": {
+          "type": "string",
+          "description": "Outcome when condition is false (optional)."
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "required": ["act", "section"],
+      "additionalProperties": false,
+      "properties": {
+        "act": {
+          "type": "string",
+          "description": "Primary act name. E.g. 'Income Tax Act, 1961'"
+        },
+        "section": {
+          "type": "string",
+          "description": "Section number. E.g. 'Section 44AD'"
+        },
+        "proviso": {
+          "type": ["string", "null"],
+          "description": "Specific proviso, if applicable."
+        },
+        "notification": {
+          "type": ["string", "null"],
+          "description": "CBDT notification number, if applicable."
+        },
+        "circular": {
+          "type": ["string", "null"],
+          "description": "CBDT circular number, if applicable."
+        },
+        "finance_act": {
+          "type": ["string", "null"],
+          "description": "Finance Act that introduced or amended this rule."
+        },
+        "effective_from": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date from which legal authority is effective."
+        },
+        "url": {
+          "type": ["string", "null"],
+          "description": "URL to the official legal source."
+        }
+      }
+    },
+    "effective_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date from which this rule is in force. ISO 8601."
+    },
+    "sunset_date": {
+      "type": ["string", "null"],
+      "format": "date",
+      "description": "Date this rule ceases to apply. Null if still active."
+    },
+    "assessment_years": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^AY[0-9]{4}-[0-9]{2}$"
+      },
+      "minItems": 1,
+      "description": "Assessment Years to which this rule applies. E.g. ['AY2025-26']"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semver version of this rule. E.g. '1.0.0'"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "deprecated", "superseded"],
+      "description": "Lifecycle status of the rule."
+    },
+    "superseded_by": {
+      "type": ["string", "null"],
+      "pattern": "^R-[0-9]{4}$",
+      "description": "If status is superseded, the ID of the replacing rule."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Classification labels. E.g. ['itr-form', 'eligibility', 'business-income']"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^E-[0-9]{3}$"
+      },
+      "description": "Evidence sources this rule consumes."
+    },
+    "decision_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^D-[0-9]{3}$"
+      },
+      "description": "Decisions this rule participates in."
+    },
+    "test_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^T-[0-9]{4}$"
+      },
+      "description": "Test case IDs that verify this rule."
+    },
+    "change_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^CH-[0-9]{4}$"
+      },
+      "description": "Change log entries that modified this rule."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any additional clarifying notes for human readers."
+    }
+  }
+}

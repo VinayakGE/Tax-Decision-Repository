@@ -1,0 +1,100 @@
+{
+  "version": "1.0.0",
+  "assessment_year": "AY2025-26",
+  "description": "Master entity list for the Jarviz Tax Decision Repository knowledge graph.",
+  "entities": [
+    {
+      "id": "ENT-001",
+      "name": "Taxpayer",
+      "type": "subject",
+      "attributes": ["resident_status", "age_category", "is_director", "holds_unlisted_shares", "has_foreign_assets"],
+      "relationships": [
+        { "rel": "has_income", "target": "ENT-002" },
+        { "rel": "claims_deductions", "target": "ENT-003" },
+        { "rel": "holds_documents", "target": "ENT-006" },
+        { "rel": "must_file", "target": "ENT-005" },
+        { "rel": "chooses", "target": "ENT-007" }
+      ]
+    },
+    {
+      "id": "ENT-002",
+      "name": "Income",
+      "type": "financial",
+      "subtypes": ["Salary", "Business", "CapitalGains", "HouseProperty", "OtherSources"],
+      "relationships": [
+        { "rel": "contributes_to", "target": "ENT-004" }
+      ]
+    },
+    {
+      "id": "ENT-003",
+      "name": "Deduction",
+      "type": "financial",
+      "subtypes": ["80C", "80D", "80E", "80CCD1B", "80CCD2", "HRA", "StandardDeduction", "24b"],
+      "relationships": [
+        { "rel": "reduces", "target": "ENT-004" }
+      ]
+    },
+    {
+      "id": "ENT-004",
+      "name": "TaxableIncome",
+      "type": "computed",
+      "formula": "GrossTotalIncome - AllowableDeductions",
+      "relationships": [
+        { "rel": "determines", "target": "ENT-008" }
+      ]
+    },
+    {
+      "id": "ENT-005",
+      "name": "ITRForm",
+      "type": "output",
+      "subtypes": ["ITR-1", "ITR-2", "ITR-3", "ITR-4"],
+      "relationships": [
+        { "rel": "determined_by", "target": "D-001" }
+      ]
+    },
+    {
+      "id": "ENT-006",
+      "name": "Document",
+      "type": "evidence",
+      "subtypes": ["AIS", "26AS", "Form16", "Form16A", "Form26QB", "PrefillJSON", "BrokerStatement"],
+      "relationships": [
+        { "rel": "provides_evidence_for", "target": "ENT-002" },
+        { "rel": "proves", "target": "ENT-009" }
+      ]
+    },
+    {
+      "id": "ENT-007",
+      "name": "TaxRegime",
+      "type": "election",
+      "subtypes": ["OldRegime", "NewRegime"],
+      "relationships": [
+        { "rel": "affects", "target": "ENT-008" }
+      ]
+    },
+    {
+      "id": "ENT-008",
+      "name": "TaxLiability",
+      "type": "computed",
+      "formula": "IncomeTax + Surcharge + Cess - Rebate87A",
+      "relationships": [
+        { "rel": "offset_by", "target": "ENT-009" }
+      ]
+    },
+    {
+      "id": "ENT-009",
+      "name": "TaxCredit",
+      "type": "financial",
+      "subtypes": ["TDS", "TCS", "AdvanceTax", "SelfAssessmentTax"],
+      "relationships": [
+        { "rel": "results_in", "target": "ENT-010" }
+      ]
+    },
+    {
+      "id": "ENT-010",
+      "name": "RefundOrDue",
+      "type": "output",
+      "formula": "TaxLiability - TotalTaxCredit",
+      "note": "Negative = refund; Positive = tax due"
+    }
+  ]
+}

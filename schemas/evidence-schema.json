@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidence-schema.json",
+  "title": "Evidence",
+  "description": "Schema for an evidence source definition in the Jarviz Tax Decision Repository.",
+  "type": "object",
+  "required": ["id", "name", "description", "source", "format", "fields", "reliable_for", "issued_by", "frequency"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^E-[0-9]{3}$",
+      "description": "Unique evidence ID. Format: E-XXX"
+    },
+    "name": {
+      "type": "string",
+      "description": "Common name. E.g. 'AIS', 'Form 16', '26AS'"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this document contains and its purpose."
+    },
+    "source": {
+      "type": "string",
+      "description": "Who issues this document. E.g. 'Income Tax Department', 'Employer'"
+    },
+    "format": {
+      "type": "string",
+      "enum": ["PDF", "JSON", "XML", "Excel", "Portal", "Text"],
+      "description": "File format."
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "authoritative_for"],
+        "properties": {
+          "name": { "type": "string" },
+          "section": { "type": "string" },
+          "authoritative_for": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      },
+      "description": "Fields contained in this evidence source."
+    },
+    "reliable_for": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Facts this evidence is authoritative for."
+    },
+    "issued_by": {
+      "type": "string",
+      "description": "Issuing authority."
+    },
+    "frequency": {
+      "type": "string",
+      "enum": ["Annual", "Quarterly", "Per-Transaction", "On-Request", "Real-Time"],
+      "description": "How often this document is issued or updated."
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Priority rank when multiple evidence sources conflict (lower = higher priority)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes for human readers."
+    }
+  }
+}
