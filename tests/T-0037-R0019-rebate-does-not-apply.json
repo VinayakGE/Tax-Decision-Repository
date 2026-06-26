@@ -1,0 +1,27 @@
+{
+  "id": "T-0037",
+  "title": "R-0019: 87A rebate does not apply — income ₹13L exceeds New Regime limit",
+  "target_type": "rule",
+  "target_ref": "R-0019",
+  "test_type": "negative",
+  "input": {
+    "total_income": 1300000,
+    "slab_tax_new_regime": 95000,
+    "slab_tax_old_regime": 132500,
+    "special_rate_tax_new_regime": [],
+    "special_rate_tax_old_regime": []
+  },
+  "expected_output": {
+    "rebate_87A_new_regime": 0,
+    "rebate_87A_old_regime": 0,
+    "tax_after_rebate_new_regime": 95000,
+    "tax_after_rebate_old_regime": 132500,
+    "rebate_applied": false,
+    "rebate_not_applied_reason": "total_income_exceeds_rebate_limit"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Income ₹13L > ₹12L rebate limit under New Regime. No rebate applies to either regime. This is a common taxpayer confusion point — income ₹13L effectively attracts significantly more tax than ₹12L because the rebate is lost entirely (marginal effect). There is no partial rebate — it is cliff-edge at ₹12L."
+}

@@ -1,0 +1,33 @@
+{
+  "id": "T-0043",
+  "title": "R-0022: No interest — salary taxpayer with complete TDS coverage",
+  "target_type": "rule",
+  "target_ref": "R-0022",
+  "test_type": "negative",
+  "input": {
+    "total_tax_due": 55000,
+    "tds_credit_from_26AS": 55000,
+    "advance_tax_paid": 0,
+    "return_filed_date": "2025-07-20",
+    "due_date": "2025-07-31",
+    "income_type": "salary_only"
+  },
+  "expected_output": {
+    "interest_234A": 0,
+    "interest_234B": {
+      "applicable": false,
+      "reason": "TDS by employer covers ≥ 90% of tax liability (Section 209A exemption)"
+    },
+    "interest_234C": {
+      "applicable": false,
+      "reason": "Salary taxpayer — employer TDS satisfies advance tax obligation"
+    },
+    "total_interest": 0,
+    "interest_applicable": false
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Salary-only taxpayer with complete TDS. TDS covers 100% of tax liability. 234B and 234C do not apply because employer TDS counts as advance tax under Section 209A. 234A is also zero since return filed before due date. This is the majority case for salaried taxpayers."
+}

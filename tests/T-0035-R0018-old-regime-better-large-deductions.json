@@ -1,0 +1,33 @@
+{
+  "id": "T-0035",
+  "title": "R-0018: Regime comparator — Old Regime is better when large deductions available",
+  "target_type": "rule",
+  "target_ref": "R-0018",
+  "test_type": "positive",
+  "input": {
+    "total_tax_new_regime": 124800,
+    "total_tax_old_regime": 96200,
+    "gross_salary": 1500000,
+    "old_regime_deductions_claimed": 450000,
+    "deductions_breakdown": {
+      "80C": 150000,
+      "80CCD_1B": 50000,
+      "HRA": 180000,
+      "80D": 50000,
+      "interest_24b_SOP": 20000
+    }
+  },
+  "expected_output": {
+    "regime_recommendation": "old_regime",
+    "new_regime_total_tax": 124800,
+    "old_regime_total_tax": 96200,
+    "tax_saving_amount": 28600,
+    "new_regime_is_better": false,
+    "flag_for_explanation": "Taxpayer may benefit from Old Regime — verify deduction eligibility."
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Salary ₹15L with large deductions (80C + 80CCD(1B) + HRA + 80D = ₹4.3L). Old Regime taxable income is significantly lower, making it more tax-efficient. Engine must recommend Old Regime and flag deduction eligibility for the Explanation Engine. Deduction amounts used here are placeholders for Wave 3B computation."
+}

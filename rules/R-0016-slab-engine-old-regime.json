@@ -1,0 +1,38 @@
+{
+  "id": "R-0016",
+  "title": "Slab Engine — Old Regime Tax Computation",
+  "description": "Computes income tax under the Old Regime by applying the applicable slab rates from the tax table to the taxpayer's slab-taxable income. Age bracket (general / senior / super-senior) determines which slab schedule to use. Also computes tax on special-rate income items at their respective flat rates. All rate values come from TaxTable:2024.tax_slabs.old_regime and TaxTable:2024.special_rates.",
+  "logic": {
+    "if": "taxable_income_old_regime is available (from R-0015) AND taxpayer_age is known",
+    "then": "1. Determine age bracket: age < 60 → general; 60 ≤ age < 80 → senior; age ≥ 80 → super_senior. 2. Load slab schedule from TaxTable:2024.tax_slabs.old_regime.slabs[age_bracket]. 3. Compute slab tax: iterate each slab band; tax_on_band = (min(taxable_income, band.to) - band.from) * band.rate for each band where taxable_income > band.from; slab_tax_old = sum of tax_on_band values. 4. Compute special rate taxes: for each item in special_rate_items: load rate from TaxTable:2024.special_rates.rates[item.section]; determine applicable rate (pre or post 23-Jul-2024) based on transaction date; compute special_tax = (item.amount - exemption_if_any) * rate. 5. Output: { slab_tax_old_regime, special_rate_tax_old_regime: [{ section, amount, rate, tax }], total_before_rebate_old_regime: slab_tax_old_regime + sum(special_rate_tax) }",
+    "else": "if taxpayer_age is unknown: ask intake question 'What is the taxpayer's date of birth?' before proceeding. If taxable_income_old_regime is not available: block on R-0015 output."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 4 (charge of income tax), Finance Act First Schedule Part I",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2024",
+    "effective_from": "2024-04-01",
+    "url": null
+  },
+  "effective_date": "2024-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "slab-engine",
+    "old-regime",
+    "age-bracket",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003"],
+  "decision_refs": ["D-002"],
+  "test_refs": ["T-0030", "T-0031"],
+  "change_refs": ["CH-0008"],
+  "notes": "All slab thresholds and rates are sourced from TaxTable:2024.tax_slabs.old_regime — never hard-coded in this rule. The three age bracket schedules differ only in the zero-tax threshold (₹2.5L / ₹3L / ₹5L). Capital gains split-year computation (pre/post 23-Jul-2024 rates) is handled here for Old Regime; the same split applies in R-0017 for New Regime."
+}

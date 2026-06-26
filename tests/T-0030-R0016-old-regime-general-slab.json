@@ -1,0 +1,30 @@
+{
+  "id": "T-0030",
+  "title": "R-0016: Old Regime slab tax — general category, ₹8.5L taxable income",
+  "target_type": "rule",
+  "target_ref": "R-0016",
+  "test_type": "positive",
+  "input": {
+    "taxable_income_old_regime": 850000,
+    "taxpayer_age": 35,
+    "age_bracket": "general",
+    "special_rate_items": []
+  },
+  "expected_output": {
+    "age_bracket_used": "general",
+    "slab_schedule_ref": "TaxTable:2024.tax_slabs.old_regime.slabs.general",
+    "slab_computation": [
+      { "band": "0–₹2,50,000",     "applicable_income": 250000, "rate": 0.00, "tax": 0 },
+      { "band": "₹2,50,001–₹5,00,000", "applicable_income": 250000, "rate": 0.05, "tax": 12500 },
+      { "band": "₹5,00,001–₹8,50,000", "applicable_income": 350000, "rate": 0.20, "tax": 70000 }
+    ],
+    "slab_tax_old_regime": 82500,
+    "special_rate_tax_old_regime": [],
+    "total_before_rebate_old_regime": 82500
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "General category (age 35). Income ₹8.5L. Tax = 0 + 12,500 + (3.5L × 20%) = 12,500 + 70,000 = ₹82,500 before rebate/cess."
+}

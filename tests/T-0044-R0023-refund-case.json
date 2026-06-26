@@ -1,0 +1,33 @@
+{
+  "id": "T-0044",
+  "title": "R-0023: Refund case — TDS exceeds final tax liability",
+  "target_type": "rule",
+  "target_ref": "R-0023",
+  "test_type": "positive",
+  "input": {
+    "total_tax_new_regime": 44200,
+    "total_interest": 0,
+    "tds_credits_from_26AS": [
+      { "tan": "BLRX12345A", "section": "192", "amount": 65000, "employer": "Acme Corp" }
+    ],
+    "advance_tax_paid": 0,
+    "self_assessment_tax_paid": 0,
+    "regime_chosen": "new_regime"
+  },
+  "expected_output": {
+    "total_tax_due": 44200,
+    "total_taxes_paid": 65000,
+    "tds_credit_used": 65000,
+    "tds_credit_source": "26AS only",
+    "net_position": 20800,
+    "outcome": "refund",
+    "refund_amount": 20800,
+    "file_for_refund": true,
+    "demand_amount": null
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Employer deducted ₹65,000 TDS (conservative estimate) but actual tax is only ₹44,200. Refund of ₹20,800. TDS credit sourced exclusively from 26AS per R-0009/R-0011 rules. This is the canonical refund scenario — salaried taxpayer whose employer over-estimated TDS."
+}

@@ -1,0 +1,39 @@
+{
+  "id": "R-0021",
+  "title": "Surcharge — Additional Tax on High-Income Taxpayers",
+  "description": "Computes surcharge on income tax for taxpayers whose total income exceeds ₹50 lakh. Surcharge rates are progressive — four brackets from 10% to 37%. Under the New Regime, surcharge is capped at 25%. LTCG under Section 112A carries an additional cap of 15% surcharge regardless of income. Marginal relief applies where the incremental surcharge exceeds the incremental income above the threshold. All bracket values and caps come from TaxTable:2024.surcharge.",
+  "logic": {
+    "if": "total_income (gross_total_income) is known AND tax_after_rebate is computed (from R-0019)",
+    "then": "1. Load bracket table from TaxTable:2024.surcharge.brackets. 2. Determine applicable surcharge rate: find the bracket where income_above < total_income <= income_upto; surcharge_rate_base = bracket.rate. 3. Apply regime cap: if regime == new_regime: surcharge_rate = min(surcharge_rate_base, TaxTable:2024.surcharge.caps.new_regime_max_surcharge) i.e. min(surcharge_rate_base, 0.25). 4. Apply LTCG 112A cap separately: for any LTCG_112A_tax in special_rate_tax: surcharge_on_ltcg_112A = LTCG_112A_tax * min(surcharge_rate, TaxTable:2024.surcharge.caps.ltcg_112A_surcharge_cap) i.e. min(surcharge_rate, 0.15). 5. Compute surcharge: surcharge = (tax_after_rebate_excluding_LTCG_112A_portion) * surcharge_rate + surcharge_on_ltcg_112A. 6. Apply marginal relief if applicable (see TaxTable:2024.surcharge.marginal_relief). 7. Output: { surcharge_rate_applied, surcharge_amount, marginal_relief_applied, marginal_relief_amount }",
+    "else": "if total_income <= 5000000: surcharge = 0; no further computation needed."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Finance Act First Schedule — Surcharge on income tax; Section 112A (surcharge cap on LTCG)",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2023 (New Regime surcharge cap at 25%)",
+    "effective_from": "2023-04-01",
+    "url": null
+  },
+  "effective_date": "2023-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "surcharge",
+    "high-income",
+    "marginal-relief",
+    "ltcg-112a",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": [],
+  "decision_refs": ["D-002"],
+  "test_refs": ["T-0040", "T-0041"],
+  "change_refs": ["CH-0008"],
+  "notes": "Surcharge affects < 5% of individual taxpayers (those with income > ₹50L) but the LTCG 112A cap and New Regime cap make computation non-trivial. Marginal relief must always be checked when income is within ₹10L of a surcharge bracket threshold — the incremental tax + surcharge must not exceed the incremental income. Under the New Regime, the 37% surcharge bracket is effectively abolished (capped at 25%), reducing the maximum effective tax rate from ~42.7% to ~39% for the highest income individuals."
+}

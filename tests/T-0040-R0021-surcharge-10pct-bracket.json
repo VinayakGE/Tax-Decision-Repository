@@ -1,0 +1,26 @@
+{
+  "id": "T-0040",
+  "title": "R-0021: Surcharge at 10% — income ₹60L (bracket ₹50L–₹1Cr)",
+  "target_type": "rule",
+  "target_ref": "R-0021",
+  "test_type": "positive",
+  "input": {
+    "total_income": 6000000,
+    "tax_after_rebate_new_regime": 1192500,
+    "special_rate_items_new_regime": [],
+    "regime": "new_regime"
+  },
+  "expected_output": {
+    "surcharge_bracket_ref": "TaxTable:2024.surcharge.brackets",
+    "surcharge_bracket": { "income_above": 5000000, "income_upto": 10000000, "rate": 0.10 },
+    "surcharge_rate_applied": 0.10,
+    "new_regime_cap_applied": false,
+    "surcharge_amount": 119250,
+    "marginal_relief_applied": false
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Income ₹60L falls in 10% surcharge bracket (₹50L–₹1Cr). Surcharge = 10% × ₹11,92,500 = ₹1,19,250. New Regime cap is 25% — not triggered here (10% < 25%). Marginal relief not required (income is ₹10L above threshold, well within bracket)."
+}

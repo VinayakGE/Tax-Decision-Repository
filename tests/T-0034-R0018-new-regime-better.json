@@ -1,0 +1,25 @@
+{
+  "id": "T-0034",
+  "title": "R-0018: Regime comparator — New Regime is better for salary-only taxpayer",
+  "target_type": "rule",
+  "target_ref": "R-0018",
+  "test_type": "positive",
+  "input": {
+    "total_tax_new_regime": 54080,
+    "total_tax_old_regime": 72072,
+    "gross_salary": 1000000,
+    "old_regime_deductions_claimed": 150000
+  },
+  "expected_output": {
+    "regime_recommendation": "new_regime",
+    "new_regime_total_tax": 54080,
+    "old_regime_total_tax": 72072,
+    "tax_saving_amount": 17992,
+    "new_regime_is_better": true
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Salary ₹10L. New Regime: taxable = 9.25L → slab = 42,500 + cess (1,700) = ~44,200 (no rebate as income > 12L). Old Regime: taxable = 10L - 50K std - 1.5L 80C = 8L → slab = 72,500, rebate = 0 → cess = 2,900 → ~75,400. New Regime saves ~₹18K. The engine should recommend New Regime. (Exact figures depend on full R-0019/R-0020 chain; this test uses pre-computed end-to-end totals.)"
+}

@@ -49,7 +49,8 @@
         "M07_evidence_integrity_score",
         "M08_avg_questions",
         "M09_processing_time_ms",
-        "M10_human_override_rate"
+        "M10_human_override_rate",
+        "M11_explainability"
       ],
       "additionalProperties": false,
       "properties": {
@@ -217,6 +218,28 @@
                 "human_preference": { "type": "integer", "minimum": 0 },
                 "data_not_provided": { "type": "integer", "minimum": 0 },
                 "ambiguous": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M11_explainability": {
+          "type": "object",
+          "required": ["value", "target", "passed", "outputs_with_complete_trace", "outputs_with_incomplete_trace"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 100.0, "description": "100% — no partial credit. Release blocker if below 100%." },
+            "passed": { "type": "boolean" },
+            "outputs_with_complete_trace": { "type": "integer", "minimum": 0 },
+            "outputs_with_incomplete_trace": { "type": "integer", "minimum": 0 },
+            "incomplete_trace_breakdown": {
+              "type": "object",
+              "properties": {
+                "missing_rule_ref": { "type": "integer", "minimum": 0 },
+                "missing_evidence_leaf": { "type": "integer", "minimum": 0 },
+                "orphaned_lineage_node": { "type": "integer", "minimum": 0 },
+                "explanation_engine_gap": { "type": "integer", "minimum": 0 }
               }
             },
             "details": { "type": ["string", "null"] }

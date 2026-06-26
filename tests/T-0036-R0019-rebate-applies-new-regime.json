@@ -1,0 +1,27 @@
+{
+  "id": "T-0036",
+  "title": "R-0019: 87A rebate applies — New Regime, income ₹12L, full rebate offsets slab tax",
+  "target_type": "rule",
+  "target_ref": "R-0019",
+  "test_type": "positive",
+  "input": {
+    "total_income": 1200000,
+    "slab_tax_new_regime": 80000,
+    "slab_tax_old_regime": 115000,
+    "special_rate_tax_new_regime": [],
+    "special_rate_tax_old_regime": []
+  },
+  "expected_output": {
+    "rebate_87A_new_regime": 60000,
+    "rebate_87A_old_regime": 0,
+    "tax_after_rebate_new_regime": 20000,
+    "tax_after_rebate_old_regime": 115000,
+    "rebate_table_ref": "TaxTable:2024.rebates.87A",
+    "rebate_applied": true
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Income exactly ₹12L — right at the New Regime rebate boundary. Rebate = min(80,000, 60,000) = ₹60,000. Net slab tax after rebate = ₹20,000. Old Regime: income ₹12L > ₹5L limit → no rebate. This demonstrates the significant tax advantage at the ₹12L New Regime threshold."
+}

@@ -1,0 +1,33 @@
+{
+  "id": "T-0045",
+  "title": "R-0023: Demand case — freelancer with insufficient TDS, self-assessment tax required",
+  "target_type": "rule",
+  "target_ref": "R-0023",
+  "test_type": "positive",
+  "input": {
+    "total_tax_new_regime": 86640,
+    "total_interest": 6440,
+    "tds_credits_from_26AS": [
+      { "tan": "MUMB99887B", "section": "194J", "amount": 20000, "deductor": "TechClient Ltd" }
+    ],
+    "advance_tax_paid": 0,
+    "self_assessment_tax_paid": 0,
+    "regime_chosen": "new_regime"
+  },
+  "expected_output": {
+    "total_tax_due": 93080,
+    "total_taxes_paid": 20000,
+    "tds_credit_used": 20000,
+    "net_position": -73080,
+    "outcome": "demand",
+    "demand_amount": 73080,
+    "refund_amount": null,
+    "pay_before_filing": true,
+    "payment_instruction": "Pay self-assessment tax of ₹73,080 under Challan 280 before filing return (Section 140A)"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Freelancer: tax ₹80,200 + interest ₹6,440 = ₹86,640 + ₹6,440 wait, total_tax_new_regime already includes cess per R-0020. Total due = ₹86,640 + ₹6,440 interest = ₹93,080. TDS credit from 26AS = ₹20,000. Demand = ₹73,080. Must pay self-assessment tax before filing — Section 140A requires payment before ITR submission."
+}

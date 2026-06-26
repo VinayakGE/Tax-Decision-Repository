@@ -1,0 +1,33 @@
+{
+  "id": "T-0028",
+  "title": "R-0015: Salary-only taxpayer — New Regime taxable income after standard deduction",
+  "target_type": "rule",
+  "target_ref": "R-0015",
+  "test_type": "positive",
+  "input": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 900000 }],
+      "head_2_house_property": [],
+      "head_3_business": [],
+      "head_4_capital_gains": [],
+      "head_5_other_sources": []
+    },
+    "special_rate_items": [],
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true
+  },
+  "expected_output": {
+    "taxable_income_new_regime": 825000,
+    "taxable_income_old_regime": 850000,
+    "gross_total_income": 900000,
+    "standard_deduction_applied_new": 75000,
+    "standard_deduction_applied_old": 50000,
+    "special_rate_items": [],
+    "assembly_status": "complete"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Salary ₹9L. New Regime: 9L - 75K = 8.25L taxable. Old Regime: 9L - 50K = 8.5L taxable. No other income heads or special-rate items."
+}

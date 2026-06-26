@@ -1,0 +1,14 @@
+{
+  "id": "CH-0008",
+  "date": "2026-06-26",
+  "author": "Vinayak Gautham",
+  "type": "add",
+  "object_type": "rule",
+  "object_id": "R-0015 through R-0023",
+  "summary": "Wave 3A Tax Computation Engine — nine rules: R-0015 Taxable Income Assembly, R-0016 Slab Engine (Old Regime), R-0017 Slab Engine (New Regime), R-0018 Regime Comparator, R-0019 Section 87A Rebate, R-0020 Health & Education Cess, R-0021 Surcharge, R-0022 Interest 234A/B/C, R-0023 Refund vs Demand Calculation. Added Tax Table Repository (tables/2024/: tax_slabs.json, rebates.json, surcharge.json, cess.json, deductions.json, special_rates.json). Added 18 tests (T-0028 through T-0045). Added JAB M-11 Explainability (100% target, release blocker). Created Jarviz Capability Matrix (docs/capability-matrix.md).",
+  "authority": "Income Tax Act — Section 115BAC (New Regime), Section 87A (Rebate), Finance Act First Schedule (slabs/surcharge/cess), Section 234A/234B/234C (interest), Section 140A (self-assessment), Section 237 (refund)",
+  "prior_version": "2.0.0-dev (R-0014)",
+  "new_version": "2.0.0-dev",
+  "git_commit": null,
+  "notes": "Wave 3A is now complete. The repository can now answer: (1) What is this income? (Wave 1), (2) Can I trust the evidence? (Wave 2), (3) What is the tax? (Wave 3A). The pipeline is Evidence → Classification → Evidence Integrity → Taxable Income Assembly → Computation → Refund/Demand. Wave 3B (Tax Adjustments — deductions) is the next milestone. Key architectural decision: all numeric tax values (slabs, rates, rebate limits) live in tables/2024/ — never hard-coded into rules. When Finance Act changes a value, one table file changes, not dozens of rules."
+}

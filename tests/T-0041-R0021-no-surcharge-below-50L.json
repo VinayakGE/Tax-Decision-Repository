@@ -1,0 +1,23 @@
+{
+  "id": "T-0041",
+  "title": "R-0021: No surcharge — income ₹49L (below ₹50L threshold)",
+  "target_type": "rule",
+  "target_ref": "R-0021",
+  "test_type": "negative",
+  "input": {
+    "total_income": 4900000,
+    "tax_after_rebate_new_regime": 1042500,
+    "regime": "new_regime"
+  },
+  "expected_output": {
+    "surcharge_bracket": { "income_above": 0, "income_upto": 5000000, "rate": 0.00 },
+    "surcharge_rate_applied": 0.00,
+    "surcharge_amount": 0,
+    "marginal_relief_applied": false
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Income ₹49L is below the ₹50L surcharge threshold. Surcharge = ₹0. This is the most common outcome — surcharge affects only a small fraction of individual taxpayers."
+}

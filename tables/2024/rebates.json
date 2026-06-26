@@ -1,0 +1,36 @@
+{
+  "table_id": "2024.rebates",
+  "title": "Section 87A Rebate — AY2025-26",
+  "description": "Rebate under Section 87A reduces income tax before cess. Referenced by rules as TaxTable:2024.rebates.87A.",
+  "assessment_year": "AY2025-26",
+  "finance_act": "Finance Act 2024",
+  "authority": "Section 87A, Income Tax Act 1961",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+
+  "87A": {
+    "new_regime": {
+      "income_limit": 1200000,
+      "max_rebate": 60000,
+      "rebate_formula": "min(income_tax_before_rebate, 60000) if total_income <= 1200000 else 0",
+      "applies_to": "slab_tax_only",
+      "does_not_apply_to": [
+        "LTCG under Section 112A",
+        "STCG under Section 111A",
+        "Lottery and games under Section 115BB",
+        "VDA under Section 115BBH"
+      ],
+      "effective_from": "AY2024-25",
+      "note": "New Regime 87A rebate raised from ₹25,000 to ₹60,000 and income limit raised from ₹7L to ₹12L by Finance Act 2023 for AY2024-25 onwards."
+    },
+    "old_regime": {
+      "income_limit": 500000,
+      "max_rebate": 12500,
+      "rebate_formula": "min(income_tax_before_rebate, 12500) if total_income <= 500000 else 0",
+      "applies_to": "slab_tax_only",
+      "does_not_apply_to": ["special_rate_income_taxes"],
+      "effective_from": "AY2019-20",
+      "note": "Old Regime 87A limit and rebate amount unchanged since AY2019-20."
+    }
+  }
+}

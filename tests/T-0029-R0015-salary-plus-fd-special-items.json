@@ -1,0 +1,45 @@
+{
+  "id": "T-0029",
+  "title": "R-0015: Salary + FD interest + LTCG — special-rate items segregated",
+  "target_type": "rule",
+  "target_ref": "R-0015",
+  "test_type": "positive",
+  "input": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 800000 }],
+      "head_2_house_property": [],
+      "head_3_business": [],
+      "head_4_capital_gains": [
+        { "source": "Broker Statement", "section": "112A", "amount": 200000, "transaction_date": "2024-10-15" }
+      ],
+      "head_5_other_sources": [
+        { "source": "AIS", "category": "interest_fd", "amount": 30000 }
+      ]
+    },
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true
+  },
+  "expected_output": {
+    "taxable_income_new_regime": 755000,
+    "taxable_income_old_regime": 780000,
+    "gross_total_income": 1030000,
+    "standard_deduction_applied_new": 75000,
+    "standard_deduction_applied_old": 50000,
+    "special_rate_items": [
+      {
+        "section": "112A",
+        "amount": 200000,
+        "rate_table_ref": "TaxTable:2024.special_rates.rates.ltcg_112A.post_july23",
+        "applicable_rate": 0.125,
+        "exemption": 125000,
+        "taxable_special_amount": 75000
+      }
+    ],
+    "assembly_status": "complete"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Salary ₹8L, FD interest ₹30K, LTCG 112A ₹2L (post 23-Jul-2024). New Regime taxable income = (8L - 75K) + 30K = 7.55L. LTCG ₹2L is segregated as special-rate item; taxable portion = 2L - 1.25L exemption = 75K at 12.5%. Note: LTCG amount included in gross_total_income but not in slab-taxable income."
+}

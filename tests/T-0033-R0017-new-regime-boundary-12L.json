@@ -1,0 +1,28 @@
+{
+  "id": "T-0033",
+  "title": "R-0017: New Regime — exactly ₹12L taxable income (boundary for 87A rebate eligibility)",
+  "target_type": "rule",
+  "target_ref": "R-0017",
+  "test_type": "boundary",
+  "input": {
+    "taxable_income_new_regime": 1200000,
+    "special_rate_items": []
+  },
+  "expected_output": {
+    "slab_schedule_ref": "TaxTable:2024.tax_slabs.new_regime.slabs",
+    "slab_computation": [
+      { "band": "0–₹3,00,000",         "applicable_income": 300000, "rate": 0.00, "tax": 0 },
+      { "band": "₹3,00,001–₹7,00,000", "applicable_income": 400000, "rate": 0.05, "tax": 20000 },
+      { "band": "₹7,00,001–₹10,00,000","applicable_income": 300000, "rate": 0.10, "tax": 30000 },
+      { "band": "₹10,00,001–₹12,00,000","applicable_income": 200000, "rate": 0.15, "tax": 30000 }
+    ],
+    "slab_tax_new_regime": 80000,
+    "special_rate_tax_new_regime": [],
+    "total_before_rebate_new_regime": 80000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Boundary test: taxable income exactly ₹12L. Slab tax = 0 + 20,000 + 30,000 + 30,000 = ₹80,000. R-0019 will then apply 87A rebate of min(80,000, 60,000) = ₹60,000, resulting in net slab tax of ₹20,000. This is the maximum income at which 87A rebate applies in New Regime."
+}

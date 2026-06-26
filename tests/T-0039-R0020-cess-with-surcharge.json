@@ -1,0 +1,26 @@
+{
+  "id": "T-0039",
+  "title": "R-0020: Cess on tax plus surcharge — high-income case",
+  "target_type": "rule",
+  "target_ref": "R-0020",
+  "test_type": "positive",
+  "input": {
+    "tax_after_rebate_new_regime": 300000,
+    "surcharge_new_regime": 30000,
+    "tax_after_rebate_old_regime": 330000,
+    "surcharge_old_regime": 49500
+  },
+  "expected_output": {
+    "cess_rate_used": 0.04,
+    "cess_table_ref": "TaxTable:2024.cess.cess.rate",
+    "cess_new_regime": 13200,
+    "cess_old_regime": 15180,
+    "total_tax_new_regime": 343200,
+    "total_tax_old_regime": 394680
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Cess applies to (tax_after_rebate + surcharge). New: (300,000 + 30,000) × 4% = 13,200. Old: (330,000 + 49,500) × 4% = 15,180. Surcharge included in cess base — this is a common computation error to guard against."
+}

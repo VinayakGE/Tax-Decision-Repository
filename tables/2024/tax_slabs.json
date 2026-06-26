@@ -1,0 +1,67 @@
+{
+  "table_id": "2024.tax_slabs",
+  "title": "Income Tax Slabs — AY2025-26",
+  "description": "Income tax slab rates for both regimes under Finance Act 2024. Referenced by rules as TaxTable:2024.tax_slabs.new_regime or TaxTable:2024.tax_slabs.old_regime.",
+  "assessment_year": "AY2025-26",
+  "finance_act": "Finance Act 2024",
+  "authority": "Section 115BAC (New Regime), Finance Act First Schedule Part I (Old Regime)",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+
+  "new_regime": {
+    "standard_deduction": 75000,
+    "standard_deduction_section": "16(ia)",
+    "note": "Standard deduction of ₹75,000 introduced under New Regime from AY2024-25 onwards (Budget 2023 raised it; was ₹50,000 before AY2024-25).",
+    "slabs": [
+      { "from": 0,       "to": 300000,  "rate": 0.00, "tax_on_band": 0,      "description": "Nil" },
+      { "from": 300001,  "to": 700000,  "rate": 0.05, "tax_on_band": 20000,  "description": "5% on ₹3L–₹7L" },
+      { "from": 700001,  "to": 1000000, "rate": 0.10, "tax_on_band": 30000,  "description": "10% on ₹7L–₹10L" },
+      { "from": 1000001, "to": 1200000, "rate": 0.15, "tax_on_band": 30000,  "description": "15% on ₹10L–₹12L" },
+      { "from": 1200001, "to": 1500000, "rate": 0.20, "tax_on_band": 60000,  "description": "20% on ₹12L–₹15L" },
+      { "from": 1500001, "to": null,    "rate": 0.30, "tax_on_band": null,   "description": "30% above ₹15L" }
+    ],
+    "cumulative_tax_at_band_top": {
+      "300000":  0,
+      "700000":  20000,
+      "1000000": 50000,
+      "1200000": 80000,
+      "1500000": 140000
+    },
+    "allowed_deductions": ["standard_deduction", "nps_employer_80ccd2"],
+    "disallowed_deductions": ["80C", "80D", "80E", "80G", "HRA_10_13A", "LTA_10_5", "interest_24b_SOP"]
+  },
+
+  "old_regime": {
+    "standard_deduction": 50000,
+    "standard_deduction_section": "16(ia)",
+    "age_brackets": {
+      "general":      { "min_age": 0,  "max_age": 59,   "description": "Below 60 years" },
+      "senior":       { "min_age": 60, "max_age": 79,   "description": "60 years or above but below 80" },
+      "super_senior": { "min_age": 80, "max_age": null,  "description": "80 years or above" }
+    },
+    "slabs": {
+      "general": [
+        { "from": 0,       "to": 250000,  "rate": 0.00, "description": "Nil" },
+        { "from": 250001,  "to": 500000,  "rate": 0.05, "description": "5% on ₹2.5L–₹5L" },
+        { "from": 500001,  "to": 1000000, "rate": 0.20, "description": "20% on ₹5L–₹10L" },
+        { "from": 1000001, "to": null,    "rate": 0.30, "description": "30% above ₹10L" }
+      ],
+      "senior": [
+        { "from": 0,       "to": 300000,  "rate": 0.00, "description": "Nil (basic exemption ₹3L for seniors)" },
+        { "from": 300001,  "to": 500000,  "rate": 0.05, "description": "5% on ₹3L–₹5L" },
+        { "from": 500001,  "to": 1000000, "rate": 0.20, "description": "20% on ₹5L–₹10L" },
+        { "from": 1000001, "to": null,    "rate": 0.30, "description": "30% above ₹10L" }
+      ],
+      "super_senior": [
+        { "from": 0,       "to": 500000,  "rate": 0.00, "description": "Nil (basic exemption ₹5L for super-seniors)" },
+        { "from": 500001,  "to": 1000000, "rate": 0.20, "description": "20% on ₹5L–₹10L" },
+        { "from": 1000001, "to": null,    "rate": 0.30, "description": "30% above ₹10L" }
+      ]
+    },
+    "cumulative_tax_at_band_top": {
+      "general":      { "250000": 0, "500000": 12500, "1000000": 112500 },
+      "senior":       { "300000": 0, "500000": 10000, "1000000": 110000 },
+      "super_senior": { "500000": 0, "1000000": 100000 }
+    }
+  }
+}

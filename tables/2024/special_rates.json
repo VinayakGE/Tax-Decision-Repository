@@ -1,0 +1,95 @@
+{
+  "table_id": "2024.special_rates",
+  "title": "Special Tax Rates for Capital Gains, Lottery, and VDA — AY2025-26",
+  "description": "Special tax rates that apply outside normal slab computation. Finance Act 2024 changed capital gains rates effective 23 July 2024. Referenced by rules as TaxTable:2024.special_rates.",
+  "assessment_year": "AY2025-26",
+  "finance_act": "Finance Act 2024 (rates effective 23 July 2024)",
+  "authority": "Sections 111A, 112A, 112, 115BB, 115BBH, Income Tax Act 1961",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+
+  "rate_change_cutoff": "2024-07-22",
+  "note": "For AY2025-26, capital gains transactions on or before 22 July 2024 use pre-July-23 rates. Transactions from 23 July 2024 use the new rates introduced by Finance Act 2024.",
+
+  "rates": {
+    "stcg_111A": {
+      "section": "111A",
+      "applicable_to": "Short-term capital gains on listed equity shares and equity-oriented MFs held < 12 months",
+      "post_july23": {
+        "rate": 0.20,
+        "effective_from": "2024-07-23"
+      },
+      "pre_july23": {
+        "rate": 0.15,
+        "effective_until": "2024-07-22"
+      },
+      "rebate_87A_applies": false,
+      "note": "Rate changed from 15% to 20% by Finance Act 2024. 87A rebate does NOT apply against STCG 111A tax."
+    },
+    "ltcg_112A": {
+      "section": "112A",
+      "applicable_to": "Long-term capital gains on listed equity shares and equity-oriented MFs held ≥ 12 months",
+      "post_july23": {
+        "rate": 0.125,
+        "exemption": 125000,
+        "effective_from": "2024-07-23"
+      },
+      "pre_july23": {
+        "rate": 0.10,
+        "exemption": 100000,
+        "effective_until": "2024-07-22"
+      },
+      "rebate_87A_applies": false,
+      "surcharge_cap": 0.15,
+      "note": "Rate changed 10%→12.5%, exemption ₹1L→₹1.25L. Compute net LTCG after ₹1.25L exemption for post-July-23 transactions. 87A rebate does NOT apply against LTCG 112A tax."
+    },
+    "ltcg_112": {
+      "section": "112",
+      "applicable_to": "Long-term capital gains on non-equity assets (property, debt MFs, gold) held ≥ 24 months",
+      "post_july23": {
+        "rate": 0.125,
+        "indexation_available": false,
+        "effective_from": "2024-07-23"
+      },
+      "pre_july23": {
+        "rate": 0.20,
+        "indexation_available": true,
+        "effective_until": "2024-07-22"
+      },
+      "grandfathering_option": {
+        "applicable_to": "Property acquired before 23 July 2024",
+        "rule": "Taxpayer may compute tax both ways (20% with indexation vs 12.5% without) and apply the lower of the two.",
+        "authority": "Finance Act 2024 — transitional provision"
+      },
+      "rebate_87A_applies": false
+    },
+    "stcg_other": {
+      "section": null,
+      "applicable_to": "Short-term capital gains on non-equity assets (property, debt, gold) held < 24 months",
+      "rate": "slab_rate",
+      "note": "Taxed at normal slab rate of the relevant regime. Added to total income for slab computation."
+    },
+    "lottery_115BB": {
+      "section": "115BB",
+      "applicable_to": "Winnings from lottery, crossword puzzle, card game, horse racing, TV game show",
+      "rate": 0.30,
+      "no_basic_exemption_offset": true,
+      "deduction_allowed": "none",
+      "rebate_87A_applies": false,
+      "note": "Taxed at flat 30% with no deduction and no basic exemption offset. TDS u/s 194B at 30% if winnings > ₹10,000."
+    },
+    "vda_115BBH": {
+      "section": "115BBH",
+      "applicable_to": "Virtual Digital Assets — cryptocurrency, NFTs, tokens",
+      "rate": 0.30,
+      "allowed_deductions": ["cost_of_acquisition"],
+      "loss_setoff_allowed": false,
+      "loss_carry_forward": false,
+      "tds_section": "194S",
+      "tds_rate": 0.01,
+      "effective_from": "2022-04-01",
+      "rebate_87A_applies": false,
+      "note": "Flat 30% on VDA transfer gains. Only cost of acquisition deductible. Losses from VDA cannot be set off against any other income."
+    }
+  }
+}
