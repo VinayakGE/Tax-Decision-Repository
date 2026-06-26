@@ -1,0 +1,17 @@
+{
+  "case_id": "GM-0016",
+  "description": "80CCD(1B): taxpayer 40y, salary \u20b912L, 80C \u20b91.5L + NPS \u20b950K (at cap). Old regime stacks both deductions \u2014 \u20b92L total before standard deduction. Demonstrates the \u20b950K NPS ceiling is independent of 80C.",
+  "generated_at": "2026-06-26T11:33:33.699838Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "salary",
+    "old_regime",
+    "80c_at_cap",
+    "80ccd1b_at_cap",
+    "nps_stacking",
+    "deduction_engine",
+    "demand"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

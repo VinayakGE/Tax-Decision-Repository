@@ -1,0 +1,20 @@
+{
+  "id": "T-0066",
+  "title": "R-0032: rent_paid < 10% of basic → hra_candidate_3 = 0",
+  "target_type": "rule",
+  "target_ref": "R-0032",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "rent_paid": 30000,
+    "basic_salary": 500000
+  },
+  "expected_output": {
+    "hra_candidate_3": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "c3 = max(0, 30000 - 50000) = 0. Low rent means no HRA exemption via this candidate."
+}

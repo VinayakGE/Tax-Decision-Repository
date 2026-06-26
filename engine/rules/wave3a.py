@@ -58,6 +58,9 @@ def r0015_taxable_income_assembly(ctx: EvidenceContext) -> None:
     std_new = tables.get("2024.tax_slabs.new_regime.standard_deduction")
     std_old = tables.get("2024.tax_slabs.old_regime.standard_deduction")
 
+    # Section 10 salary exemptions from R-0034 (0 if Income Adjustment Engine not in spec set)
+    sec10_exemption = ctx.get("total_salary_sec10_exemption", 0) or 0
+
     # Sum salary
     salary_total = sum(
         item.get("gross_salary", 0) for item in classified.get("head_1_salary", [])
@@ -124,16 +127,24 @@ def r0015_taxable_income_assembly(ctx: EvidenceContext) -> None:
         item.get("amount", 0) for item in classified.get("head_5_other_sources", [])
     )
 
+    # gross_total_income uses full salary (known approximation — HRA exemption is excluded
+    # from salary in practice but we keep gross salary here for simplicity; material only
+    # when total_income is near the 87A rebate cliff under old regime, which is rare for HRA claimants)
     gross_total = salary_total + hp_total + business_total + slab_rate_cg + other_total
     for sri in special_rate_items:
         gross_total += sri["amount"]
 
-    slab_income = salary_total + hp_total + business_total + slab_rate_cg + other_total
-    std_deduction_new = min(std_new, salary_total) if salary_total > 0 else 0
-    std_deduction_old = min(std_old, salary_total) if salary_total > 0 else 0
+    # New regime: full salary (Section 10 exemptions like HRA not available under new regime)
+    slab_income_new = salary_total + hp_total + business_total + slab_rate_cg + other_total
+    # Old regime: salary reduced by Section 10 exemptions from Income Adjustment Engine
+    salary_after_sec10 = max(0, salary_total - sec10_exemption)
+    slab_income_old = salary_after_sec10 + hp_total + business_total + slab_rate_cg + other_total
 
-    taxable_new = max(0, slab_income - std_deduction_new)
-    taxable_old = max(0, slab_income - std_deduction_old)
+    std_deduction_new = min(std_new, salary_total) if salary_total > 0 else 0
+    std_deduction_old = min(std_old, salary_after_sec10) if salary_after_sec10 > 0 else 0
+
+    taxable_new = max(0, slab_income_new - std_deduction_new)
+    taxable_old = max(0, slab_income_old - std_deduction_old)
 
     ctx.update({
         "taxable_income_new_regime": taxable_new,

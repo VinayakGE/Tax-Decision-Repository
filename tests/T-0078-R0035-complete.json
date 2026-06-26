@@ -1,0 +1,26 @@
+{
+  "id": "T-0078",
+  "title": "R-0035: old_regime, self + parents premiums with all age brackets → COMPLETE",
+  "target_type": "rule",
+  "target_ref": "R-0035",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "deduction_80d_self_premium": 20000,
+    "deduction_80d_parents_premium": 30000,
+    "age_bracket": "general",
+    "parent_age_bracket": "senior"
+  },
+  "expected_output": {
+    "deduction_80d_evidence_status": {
+      "status": "COMPLETE",
+      "missing_fields": [],
+      "suggested_questions": []
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "All required fields present — R-0036 and R-0037 can apply their caps."
+}

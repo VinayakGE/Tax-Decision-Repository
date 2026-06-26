@@ -1,0 +1,22 @@
+{
+  "case_id": "GM-0014",
+  "description": "80D general: taxpayer 35y (general) + parents below_60 → 80D self ₹20K + parents ₹20K = ₹40K. Plus 80C ₹50K. Salary ₹10L, old regime → demand.",
+  "taxpayer": { "name": "Rahul Verma", "age": 35, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1000000, "employer": "HDFC Bank Ltd", "tan": "MUMB54321B" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "deduction_80d_self_premium": 20000,
+    "deduction_80d_parents_premium": 20000,
+    "parent_age_bracket": "below_60",
+    "investments_80C": 50000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "MUMB54321B", "section": "192", "amount": 70000, "employer": "HDFC Bank Ltd" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

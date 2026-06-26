@@ -1,0 +1,22 @@
+{
+  "id": "T-0069",
+  "title": "R-0033: c2 (non-metro salary %) is limiting — hra_exemption = c2",
+  "target_type": "rule",
+  "target_ref": "R-0033",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "hra_candidate_1": 300000,
+    "hra_candidate_2": 240000,
+    "hra_candidate_3": 252000
+  },
+  "expected_output": {
+    "hra_exemption": 240000,
+    "hra_limiting_candidate": "c2"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "min(300000, 240000, 252000) = 240000. Models GM-0010 (non-metro, 40% basic is binding)."
+}

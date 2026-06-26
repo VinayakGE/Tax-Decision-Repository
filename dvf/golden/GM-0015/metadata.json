@@ -1,0 +1,16 @@
+{
+  "case_id": "GM-0015",
+  "description": "80D self-only: taxpayer 40y (general), health insurance self \u20b924K (below_60, under \u20b925K cap), no parents premium. 80C \u20b91L. Salary \u20b912L, old regime \u2192 demand.",
+  "generated_at": "2026-06-26T11:33:33.699079Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "salary",
+    "old_regime",
+    "80d_self_only",
+    "80c_partial",
+    "deduction_engine",
+    "demand"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

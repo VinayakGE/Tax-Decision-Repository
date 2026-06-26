@@ -1,0 +1,20 @@
+{
+  "id": "T-0083",
+  "title": "R-0037: COMPLETE, parents below_60, premium ₹20K < ₹25K cap → deduction_80d_parents = 20000",
+  "target_type": "rule",
+  "target_ref": "R-0037",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "deduction_80d_parents_premium": 20000,
+    "parent_age_bracket": "below_60"
+  },
+  "expected_output": {
+    "deduction_80d_parents": 20000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Parents below 60 → ₹25K limit applies; actual ₹20K is under cap."
+}

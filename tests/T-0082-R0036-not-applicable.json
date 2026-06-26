@@ -1,0 +1,18 @@
+{
+  "id": "T-0082",
+  "title": "R-0036: NOT_APPLICABLE status → deduction_80d_self = 0",
+  "target_type": "rule",
+  "target_ref": "R-0036",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "NOT_APPLICABLE", "reason": "No 80D premium declared", "missing_fields": [], "suggested_questions": [] }
+  },
+  "expected_output": {
+    "deduction_80d_self": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "NOT_APPLICABLE propagates → zero self deduction."
+}

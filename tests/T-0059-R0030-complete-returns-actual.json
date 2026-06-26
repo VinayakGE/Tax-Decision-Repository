@@ -1,0 +1,19 @@
+{
+  "id": "T-0059",
+  "title": "R-0030: COMPLETE status → hra_candidate_1 = hra_actual",
+  "target_type": "rule",
+  "target_ref": "R-0030",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "hra_actual": 250000
+  },
+  "expected_output": {
+    "hra_candidate_1": 250000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Candidate 1 is always the actual HRA received, no cap or formula."
+}

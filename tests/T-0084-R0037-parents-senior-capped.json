@@ -1,0 +1,20 @@
+{
+  "id": "T-0084",
+  "title": "R-0037: COMPLETE, parents senior, premium ₹60K > ₹50K cap → deduction_80d_parents = 50000",
+  "target_type": "rule",
+  "target_ref": "R-0037",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "deduction_80d_parents_premium": 60000,
+    "parent_age_bracket": "senior"
+  },
+  "expected_output": {
+    "deduction_80d_parents": 50000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Senior parents (≥60) → ₹50K limit applies; excess premium capped."
+}

@@ -39,8 +39,8 @@
     "80CCD_1B": {
       "limit": 50000,
       "section": "80CCD(1B)",
-      "note": "Additional NPS contribution over and above ₹1.5L limit. This deduction is available under New Regime too.",
-      "new_regime_available": true
+      "note": "Additional NPS contribution over and above ₹1.5L limit. Old Regime ONLY — Section 115BAC(2) excludes this. Only 80CCD(2) (employer contribution) is available under New Regime.",
+      "new_regime_available": false
     },
     "80CCD_2": {
       "limit": null,

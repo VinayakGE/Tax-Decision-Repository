@@ -1,0 +1,21 @@
+{
+  "id": "T-0091",
+  "title": "R-0039: old_regime, NPS contribution ₹75K > ₹50K cap → deduction_80CCD1B = 50000",
+  "target_type": "rule",
+  "target_ref": "R-0039",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "nps_contribution_80ccd1b": 75000
+  },
+  "expected_output": {
+    "deduction_80CCD1B": 50000,
+    "deduction_80CCD1B_declared": 75000,
+    "deduction_80CCD1B_capped": true
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Contribution exceeds ₹50K cap — capped at limit."
+}

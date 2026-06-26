@@ -20,13 +20,67 @@ from engine.rules.wave3a import (
 )
 from engine.rules.wave3b import (
     r0024_deduction_80c,
+    r0039_deduction_80ccd1b,
+    r0035_80d_evidence_completeness,
+    r0036_80d_self_cap,
+    r0037_80d_parents_cap,
+    r0038_80d_total,
     r0028_deduction_aggregator,
 )
+from engine.rules.income_adjustment import (
+    r0029_hra_evidence_completeness,
+    r0030_hra_candidate_1,
+    r0031_hra_candidate_2,
+    r0032_hra_candidate_3,
+    r0033_hra_final_exemption,
+    r0034_income_adjustment_aggregator,
+)
+
+INCOME_ADJUSTMENT_SPECS = [
+    RuleSpec(
+        rule_id="R-0029",
+        requires=["regime_chosen", "classified_income"],
+        produces=["hra_evidence_status"],
+        fn=r0029_hra_evidence_completeness,
+    ),
+    RuleSpec(
+        rule_id="R-0030",
+        requires=["hra_evidence_status"],
+        produces=["hra_candidate_1"],
+        fn=r0030_hra_candidate_1,
+    ),
+    RuleSpec(
+        rule_id="R-0031",
+        requires=["hra_evidence_status"],
+        produces=["hra_candidate_2", "hra_city_is_metro"],
+        fn=r0031_hra_candidate_2,
+    ),
+    RuleSpec(
+        rule_id="R-0032",
+        requires=["hra_evidence_status"],
+        produces=["hra_candidate_3"],
+        fn=r0032_hra_candidate_3,
+    ),
+    RuleSpec(
+        rule_id="R-0033",
+        requires=["hra_candidate_1", "hra_candidate_2", "hra_candidate_3"],
+        produces=["hra_exemption", "hra_limiting_candidate"],
+        fn=r0033_hra_final_exemption,
+    ),
+    RuleSpec(
+        rule_id="R-0034",
+        requires=["hra_exemption"],
+        produces=["total_salary_sec10_exemption", "adjustment_breakdown",
+                  "adjustment_trace", "adjustment_status"],
+        fn=r0034_income_adjustment_aggregator,
+    ),
+]
 
 WAVE3A_SPECS = [
     RuleSpec(
         rule_id="R-0015",
-        requires=["classified_income", "evidence_integrity_checks_passed"],
+        requires=["classified_income", "evidence_integrity_checks_passed",
+                  "total_salary_sec10_exemption"],
         produces=["taxable_income_new_regime", "taxable_income_old_pre_deductions",
                   "gross_total_income", "total_income"],
         fn=r0015_taxable_income_assembly,
@@ -90,12 +144,42 @@ WAVE3B_SPECS = [
         fn=r0024_deduction_80c,
     ),
     RuleSpec(
+        rule_id="R-0039",
+        requires=["regime_chosen"],
+        produces=["deduction_80CCD1B"],
+        fn=r0039_deduction_80ccd1b,
+    ),
+    RuleSpec(
+        rule_id="R-0035",
+        requires=["regime_chosen"],
+        produces=["deduction_80d_evidence_status"],
+        fn=r0035_80d_evidence_completeness,
+    ),
+    RuleSpec(
+        rule_id="R-0036",
+        requires=["deduction_80d_evidence_status"],
+        produces=["deduction_80d_self"],
+        fn=r0036_80d_self_cap,
+    ),
+    RuleSpec(
+        rule_id="R-0037",
+        requires=["deduction_80d_evidence_status"],
+        produces=["deduction_80d_parents"],
+        fn=r0037_80d_parents_cap,
+    ),
+    RuleSpec(
+        rule_id="R-0038",
+        requires=["deduction_80d_self", "deduction_80d_parents"],
+        produces=["deduction_80D"],
+        fn=r0038_80d_total,
+    ),
+    RuleSpec(
         rule_id="R-0028",
-        requires=["taxable_income_old_pre_deductions", "deduction_80C"],
+        requires=["taxable_income_old_pre_deductions", "deduction_80C", "deduction_80CCD1B", "deduction_80D"],
         produces=["taxable_income_old_regime", "total_deductions_old", "deduction_breakdown"],
         fn=r0028_deduction_aggregator,
     ),
 ]
 
 # Combined spec set used by all production paths
-ALL_SPECS = WAVE3A_SPECS + WAVE3B_SPECS
+ALL_SPECS = INCOME_ADJUSTMENT_SPECS + WAVE3A_SPECS + WAVE3B_SPECS

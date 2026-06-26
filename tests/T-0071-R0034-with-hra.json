@@ -1,0 +1,22 @@
+{
+  "id": "T-0071",
+  "title": "R-0034: hra_exemption > 0, COMPLETE → all four API fields populated",
+  "target_type": "rule",
+  "target_ref": "R-0034",
+  "test_type": "positive",
+  "input": {
+    "hra_exemption": 204000,
+    "hra_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "hra_limiting_candidate": "c3"
+  },
+  "expected_output": {
+    "total_salary_sec10_exemption": 204000,
+    "adjustment_breakdown": { "HRA_10_13A": 204000 },
+    "adjustment_status": "COMPLETE"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Frozen API: total_salary_sec10_exemption, adjustment_breakdown, adjustment_trace, adjustment_status. Trace not checked here — structural check is in decision_trace regression."
+}

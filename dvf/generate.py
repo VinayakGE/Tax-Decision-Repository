@@ -32,6 +32,14 @@ CASE_COVERAGE = {
     "GM-0006": ["salary", "old_regime", "80c_partial", "deduction_engine", "demand"],
     "GM-0007": ["salary", "old_regime", "80c_over_limit_capped", "deduction_engine", "demand"],
     "GM-0008": ["salary", "new_regime", "80c_declared_not_applied", "deduction_engine", "refund"],
+    "GM-0009": ["salary", "old_regime", "hra_metro", "c3_limiting", "income_adjustment_engine", "demand"],
+    "GM-0010": ["salary", "old_regime", "hra_non_metro", "c2_limiting", "income_adjustment_engine", "demand"],
+    "GM-0011": ["salary", "old_regime", "hra_c3_zero", "low_rent", "income_adjustment_engine", "demand"],
+    "GM-0012": ["salary", "old_regime", "hra_incomplete", "missing_city_type", "income_adjustment_engine", "demand"],
+    "GM-0013": ["salary", "old_regime", "senior_taxpayer", "80d_max", "self_and_parents_senior", "deduction_engine", "demand"],
+    "GM-0014": ["salary", "old_regime", "80d_self_and_parents", "80c_partial", "deduction_engine", "demand"],
+    "GM-0015": ["salary", "old_regime", "80d_self_only", "80c_partial", "deduction_engine", "demand"],
+    "GM-0016": ["salary", "old_regime", "80c_at_cap", "80ccd1b_at_cap", "nps_stacking", "deduction_engine", "demand"],
 }
 
 

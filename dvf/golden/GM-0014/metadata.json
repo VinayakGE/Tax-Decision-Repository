@@ -1,0 +1,16 @@
+{
+  "case_id": "GM-0014",
+  "description": "80D general: taxpayer 35y (general) + parents below_60 \u2192 80D self \u20b920K + parents \u20b920K = \u20b940K. Plus 80C \u20b950K. Salary \u20b910L, old regime \u2192 demand.",
+  "generated_at": "2026-06-26T11:33:33.698315Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "salary",
+    "old_regime",
+    "80d_self_and_parents",
+    "80c_partial",
+    "deduction_engine",
+    "demand"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "T-0087",
+  "title": "R-0038: COMPLETE, self ₹60K + parents ₹60K = ₹120K → capped at ₹1L aggregate",
+  "target_type": "rule",
+  "target_ref": "R-0038",
+  "test_type": "positive",
+  "input": {
+    "deduction_80d_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "deduction_80d_self": 60000,
+    "deduction_80d_parents": 60000
+  },
+  "expected_output": {
+    "deduction_80D": 100000
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Aggregate cap (₹1L) kicks in: 60K + 60K = 120K → capped at 100K."
+}

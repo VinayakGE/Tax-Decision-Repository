@@ -1,0 +1,20 @@
+{
+  "case_id": "GM-0016",
+  "description": "80CCD(1B): taxpayer 40y, salary ₹12L, 80C ₹1.5L + NPS ₹50K (at cap). Old regime stacks both deductions — ₹2L total before standard deduction. Demonstrates the ₹50K NPS ceiling is independent of 80C.",
+  "taxpayer": { "name": "Sanjay Pillai", "age": 40, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1200000, "employer": "Tata Consultancy Services", "tan": "MUMB11111A" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "investments_80C": 150000,
+    "nps_contribution_80ccd1b": 50000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "MUMB11111A", "section": "192", "amount": 80000, "employer": "Tata Consultancy Services" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

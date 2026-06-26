@@ -1,0 +1,23 @@
+{
+  "id": "T-0077",
+  "title": "R-0035: old_regime, parents_premium present but parent_age_bracket missing → INCOMPLETE",
+  "target_type": "rule",
+  "target_ref": "R-0035",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "deduction_80d_parents_premium": 30000,
+    "age_bracket": "general"
+  },
+  "expected_output": {
+    "deduction_80d_evidence_status": {
+      "status": "INCOMPLETE",
+      "missing_fields": ["parent_age_bracket"]
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Parents premium declared but parent age bracket missing — cannot determine parents' limit (25K vs 50K)."
+}

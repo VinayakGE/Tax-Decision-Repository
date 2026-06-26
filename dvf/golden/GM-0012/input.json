@@ -1,0 +1,22 @@
+{
+  "case_id": "GM-0012",
+  "description": "HRA INCOMPLETE: city_type not provided. R-0029 produces INCOMPLETE status → hra_exemption=0 despite hra_actual=₹2L and rent_paid=₹1.8L. Engine produces suggested_questions for intake.",
+  "taxpayer": { "name": "Rajan Sharma", "age": 38, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1000000, "employer": "HCL Technologies", "tan": "NOID34567D" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "basic_salary": 500000,
+    "hra_actual": 200000,
+    "rent_paid": 180000,
+    "investments_80C": 100000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "NOID34567D", "section": "192", "amount": 60000, "employer": "HCL Technologies" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "schedule": [
+    {
+      "wave": 1,
+      "rules": [
+        "R-0029",
+        "R-0024",
+        "R-0039",
+        "R-0035"
+      ]
+    },
+    {
+      "wave": 2,
+      "rules": [
+        "R-0030",
+        "R-0032",
+        "R-0031",
+        "R-0036",
+        "R-0037"
+      ]
+    },
+    {
+      "wave": 3,
+      "rules": [
+        "R-0033",
+        "R-0038"
+      ]
+    },
+    {
+      "wave": 4,
+      "rules": [
+        "R-0034"
+      ]
+    },
+    {
+      "wave": 5,
+      "rules": [
+        "R-0015"
+      ]
+    },
+    {
+      "wave": 6,
+      "rules": [
+        "R-0028",
+        "R-0017"
+      ]
+    },
+    {
+      "wave": 7,
+      "rules": [
+        "R-0016"
+      ]
+    },
+    {
+      "wave": 8,
+      "rules": [
+        "R-0019"
+      ]
+    },
+    {
+      "wave": 9,
+      "rules": [
+        "R-0021"
+      ]
+    },
+    {
+      "wave": 10,
+      "rules": [
+        "R-0020"
+      ]
+    },
+    {
+      "wave": 11,
+      "rules": [
+        "R-0022",
+        "R-0018"
+      ]
+    },
+    {
+      "wave": 12,
+      "rules": [
+        "R-0023"
+      ]
+    }
+  ],
+  "execution_order": [
+    "R-0029",
+    "R-0024",
+    "R-0039",
+    "R-0035",
+    "R-0030",
+    "R-0032",
+    "R-0031",
+    "R-0036",
+    "R-0037",
+    "R-0033",
+    "R-0038",
+    "R-0034",
+    "R-0015",
+    "R-0028",
+    "R-0017",
+    "R-0016",
+    "R-0019",
+    "R-0021",
+    "R-0020",
+    "R-0022",
+    "R-0018",
+    "R-0023"
+  ],
+  "execution_depth": 12,
+  "rules_executed": 22,
+  "rule_outputs": {
+    "R-0029": {
+      "hra_evidence_status": {
+        "status": "COMPLETE",
+        "missing_fields": [],
+        "suggested_questions": []
+      }
+    },
+    "R-0024": {
+      "deduction_80C": 150000
+    },
+    "R-0039": {
+      "deduction_80CCD1B": 0
+    },
+    "R-0035": {
+      "deduction_80d_evidence_status": {
+        "status": "NOT_APPLICABLE",
+        "reason": "No 80D health insurance premium declared",
+        "missing_fields": [],
+        "suggested_questions": []
+      }
+    },
+    "R-0030": {
+      "hra_candidate_1": 300000
+    },
+    "R-0032": {
+      "hra_candidate_3": 204000
+    },
+    "R-0031": {
+      "hra_candidate_2": 300000,
+      "hra_city_is_metro": true
+    },
+    "R-0036": {
+      "deduction_80d_self": 0
+    },
+    "R-0037": {
+      "deduction_80d_parents": 0
+    },
+    "R-0033": {
+      "hra_exemption": 204000,
+      "hra_limiting_candidate": "c3"
+    },
+    "R-0038": {
+      "deduction_80D": 0
+    },
+    "R-0034": {
+      "total_salary_sec10_exemption": 204000,
+      "adjustment_breakdown": {
+        "HRA_10_13A": 204000
+      },
+      "adjustment_trace": [
+        {
+          "section": "10(13A)",
+          "type": "HRA",
+          "evidence_status": "COMPLETE",
+          "exemption": 204000,
+          "limiting_candidate": "c3"
+        }
+      ],
+      "adjustment_status": "COMPLETE"
+    },
+    "R-0015": {
+      "taxable_income_new_regime": 1125000,
+      "taxable_income_old_pre_deductions": 946000,
+      "gross_total_income": 1200000,
+      "total_income": 1200000
+    },
+    "R-0028": {
+      "taxable_income_old_regime": 796000,
+      "total_deductions_old": 150000,
+      "deduction_breakdown": {
+        "80C": 150000
+      }
+    },
+    "R-0017": {
+      "slab_tax_new_regime": 68750,
+      "total_before_rebate_new_regime": 68750
+    },
+    "R-0016": {
+      "slab_tax_old_regime": 71700,
+      "total_before_rebate_old_regime": 71700
+    },
+    "R-0019": {
+      "tax_after_rebate_new_regime": 8750,
+      "tax_after_rebate_old_regime": 71700,
+      "rebate_applied": true
+    },
+    "R-0021": {
+      "surcharge_new_regime": 0,
+      "surcharge_old_regime": 0,
+      "surcharge_amount": 0
+    },
+    "R-0020": {
+      "total_tax_new_regime": 9100,
+      "total_tax_old_regime": 74568,
+      "cess_new_regime": 350,
+      "cess_old_regime": 2868
+    },
+    "R-0022": {
+      "total_interest": 2237,
+      "interest_234A": 0,
+      "interest_234B": {
+        "applicable": true,
+        "shortfall": 74568,
+        "months": 3,
+        "interest_amount": 2237,
+        "note": "Return filed by due date so 234A = 0. 234B: April 1 to July 15 = 3 months (April, May, June = 3 full or part months)"
+      },
+      "interest_234C": {
+        "applicable": false,
+        "reason": "Salary taxpayer \u2014 employer TDS satisfies advance tax obligation"
+      }
+    },
+    "R-0018": {
+      "regime_recommendation": "new_regime",
+      "tax_saving_amount": 65468,
+      "new_regime_is_better": true
+    },
+    "R-0023": {
+      "outcome": "demand",
+      "refund_amount": null,
+      "demand_amount": 16805
+    }
+  }
+}

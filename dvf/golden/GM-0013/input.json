@@ -1,0 +1,21 @@
+{
+  "case_id": "GM-0013",
+  "description": "80D senior: taxpayer 62y (senior) + senior parents → max 80D (₹50K self + ₹50K parents = ₹100K). Salary ₹15L, old regime, no 80C → demand.",
+  "taxpayer": { "name": "Anita Krishnan", "age": 62, "age_bracket": "senior" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1500000, "employer": "State Bank of India", "tan": "CHEN12345C" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "deduction_80d_self_premium": 60000,
+    "deduction_80d_parents_premium": 60000,
+    "parent_age_bracket": "senior",
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "CHEN12345C", "section": "192", "amount": 200000, "employer": "State Bank of India" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

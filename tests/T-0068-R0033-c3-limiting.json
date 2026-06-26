@@ -1,0 +1,22 @@
+{
+  "id": "T-0068",
+  "title": "R-0033: c3 (rent test) is limiting — hra_exemption = c3",
+  "target_type": "rule",
+  "target_ref": "R-0033",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "hra_candidate_1": 300000,
+    "hra_candidate_2": 300000,
+    "hra_candidate_3": 204000
+  },
+  "expected_output": {
+    "hra_exemption": 204000,
+    "hra_limiting_candidate": "c3"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "min(300000, 300000, 204000) = 204000. c1=c2 so c3 is the effective limit. Models GM-0009."
+}
