@@ -1,0 +1,155 @@
+{
+  "id": "PAT-008",
+  "title": "Specified Professional — Presumptive Income u/s 44ADA (No Salary)",
+  "description": "Self-employed specified professional (CA, doctor, lawyer, architect, engineer, film artist, interior decorator, authorised representative) with gross receipts ≤ ₹75 lakh, opting for presumptive taxation under Section 44ADA. Declares 50% of gross receipts as income. No need to maintain books of accounts. Uses ITR-4.",
+  "prevalence": {
+    "tier": "moderate",
+    "description": "Common among independent professionals, especially in Tier 2/3 cities.",
+    "estimated_pct_of_filers": 3
+  },
+  "profile_signature": {
+    "income_heads": ["business-presumptive-44ADA", "other-sources-interest"],
+    "resident_status": ["ROR"],
+    "complexity": "moderate",
+    "typical_total_income_range": { "min": 300000, "max": 3750000 },
+    "flags": {
+      "is_director": false,
+      "holds_unlisted_shares": false,
+      "has_foreign_assets": false,
+      "multiple_employers": false,
+      "has_home_loan": null
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS is the primary source for professional receipts. Look for professional income entries. Clients who paid > ₹30,000 per engagement may have deducted TDS u/s 194J."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS for TDS u/s 194J (professional/technical services, 10%). Multiple clients may have deducted TDS."
+    },
+    {
+      "evidence_ref": "E-005",
+      "required": false,
+      "notes": "Form 16A from clients who deducted TDS. Should match 26AS."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "Presumptive professional income under 44ADA → ITR-4 if no disqualifiers and total income ≤ ₹50L."
+    },
+    {
+      "decision_ref": "D-005",
+      "order": 2,
+      "notes": "Confirm 44ADA eligibility: specified profession, gross receipts ≤ ₹75L, resident status, no disqualifiers."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 3,
+      "notes": "Regime selection. For 44ADA professionals, 50% of receipts is the income (the other 50% is deemed expenses). The actual expense claim is irrelevant in presumptive — so the Old Regime's deductions only apply to the net income figure."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 4,
+      "notes": "TDS from clients u/s 194J. Multiple clients means multiple TDS entries in 26AS."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 5,
+      "notes": "Advance tax is relevant here — self-employed professionals are required to pay advance tax if tax liability > ₹10,000. Many miss this."
+    }
+  ],
+  "applicable_rules": ["R-0004", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "often",
+      "notes": "Form 16A from clients vs 26AS reconciliation. Common when clients file quarterly TDS returns late."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "always",
+      "notes": "Professional receipts in AIS must all be accounted for. AIS may show the gross payment, which equals the receipts for 44ADA purposes."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "sometimes",
+      "notes": "Advance tax may be due — check if advance tax was paid in 26AS Part C."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT008-01",
+      "question": "What is your profession?",
+      "purpose": "Confirm the profession is in the specified list for 44ADA eligibility. If not listed, 44ADA does not apply — must use 44AD or maintain books.",
+      "field_populated": "taxpayer.profession_type",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["Chartered Accountant / Company Secretary / Cost Accountant", "Doctor / Medical Professional", "Lawyer / Advocate / Legal Professional", "Architect / Interior Decorator", "Engineer (consulting)", "Film Artist / Entertainer", "Authorised Representative", "Other (specify)"]
+    },
+    {
+      "id": "IQ-PAT008-02",
+      "question": "What were your total gross receipts from your profession in FY 2024-25 (before any deductions)?",
+      "purpose": "Must be ≤ ₹75 lakh for 44ADA eligibility.",
+      "field_populated": "taxpayer.income.professional_receipts",
+      "conditional_on": null,
+      "answer_type": "number",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT008-03",
+      "question": "Do you want to declare income lower than 50% of your gross receipts?",
+      "purpose": "If actual income is < 50% of receipts, books must be maintained and audit may be required. Presumptive scheme is not available.",
+      "field_populated": "taxpayer.income.below_50pct_flag",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT008-04",
+      "question": "Did you pay advance tax in FY 2024-25?",
+      "purpose": "Self-employed professionals are required to pay advance tax if liability > ₹10,000. Non-payment triggers interest u/s 234B/234C.",
+      "field_populated": "taxpayer.advance_tax_paid",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-4",
+    "itr_form_alternatives": ["ITR-3"],
+    "tax_regime_default": "new",
+    "common_refund_or_due": "varies",
+    "typical_audit_risk": "medium"
+  },
+  "edge_cases": [
+    {
+      "condition": "Gross receipts > ₹75 lakh",
+      "consequence": "44ADA threshold breached. Books of accounts must be maintained. Audit required if income < 50% of receipts. Must use ITR-3.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Also has salary income (employed + self-employed)",
+      "consequence": "Pattern upgrades to PAT-002 (Salary + Gig). Salary + 44ADA professional income → still ITR-4.",
+      "escalation": "upgrade-pattern",
+      "upgrade_to_pattern": "PAT-002"
+    },
+    {
+      "condition": "Previously opted out of 44ADA (declared income < 50% in a prior year)",
+      "consequence": "Once opted out, the professional cannot use 44ADA for 5 assessment years. Must maintain books and use ITR-3.",
+      "escalation": "human-review",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": [],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "This pattern is for pure self-employment. No salary. If the professional has any salary from a part-time employment, PAT-002 applies instead. Advance tax is the most commonly missed obligation in this pattern."
+}

@@ -1,0 +1,27 @@
+{
+  "id": "T-0001",
+  "title": "Business income disqualifies ITR-1",
+  "target_type": "rule",
+  "target_ref": "R-0001",
+  "input": {
+    "taxpayer.resident_status": "ROR",
+    "taxpayer.income.salary": 600000,
+    "taxpayer.income.business_income": 120000,
+    "taxpayer.income.total": 720000,
+    "taxpayer.income.capital_gains": false,
+    "taxpayer.is_director": false,
+    "taxpayer.holds_unlisted_shares": false,
+    "taxpayer.has_foreign_assets": false,
+    "taxpayer.income.house_property_count": 0
+  },
+  "expected_output": {
+    "itr1_valid": false,
+    "reason": "Business income exists — ITR-1 ineligible",
+    "applicable_rule": "R-0001"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Even a small amount of business income (freelance, gig) disqualifies ITR-1."
+}

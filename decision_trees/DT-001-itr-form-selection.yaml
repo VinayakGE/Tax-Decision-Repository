@@ -1,0 +1,163 @@
+# Decision Tree: ITR Form Selection
+# ID: DT-001
+# Decision: D-001
+# Version: 1.0.0
+# Assessment Year: AY2025-26
+#
+# This tree determines which ITR form a taxpayer must file.
+# Read top to bottom. First matching branch wins.
+# Every leaf cites the Rule IDs that produce the outcome.
+
+decision: D-001
+title: "Which ITR form must be filed?"
+version: "1.0.0"
+assessment_years:
+  - AY2025-26
+
+# ─────────────────────────────────────────────
+# STEP 1: Check Hard Disqualifiers (any → ITR-2 minimum)
+# ─────────────────────────────────────────────
+tree:
+  id: node-001
+  question: "Is taxpayer a Non-Resident (NR) or Resident Not Ordinarily Resident (RNOR)?"
+  type: boolean
+  branches:
+    yes:
+      outcome: ITR-2
+      reason: "Non-residents and RNORs cannot use ITR-1 or ITR-4."
+      rules: []
+      note: "Evaluate ITR-3 if business income also exists."
+    no:
+      next: node-002
+
+  - id: node-002
+    question: "Does the taxpayer have any foreign assets, foreign income, or signing authority over a foreign account?"
+    type: boolean
+    rules_checked: [R-0003]
+    branches:
+      yes:
+        outcome: ITR-2
+        reason: "Foreign assets/income requires Schedule FA — only available in ITR-2 and ITR-3."
+        rules: [R-0003]
+        note: "Upgrade to ITR-3 if business income also exists."
+      no:
+        next: node-003
+
+  - id: node-003
+    question: "Is the taxpayer a Director in any company?"
+    type: boolean
+    branches:
+      yes:
+        outcome: ITR-2
+        reason: "Directors must disclose Schedule DI — not available in ITR-1 or ITR-4."
+        rules: []
+      no:
+        next: node-004
+
+  - id: node-004
+    question: "Does the taxpayer hold any unlisted equity shares?"
+    type: boolean
+    branches:
+      yes:
+        outcome: ITR-2
+        reason: "Unlisted shares require Schedule UL — not available in ITR-1 or ITR-4."
+        rules: []
+      no:
+        next: node-005
+
+# ─────────────────────────────────────────────
+# STEP 2: Check for Business Income
+# ─────────────────────────────────────────────
+  - id: node-005
+    question: "Does the taxpayer have business or profession income?"
+    type: boolean
+    branches:
+      no:
+        next: node-010
+      yes:
+        next: node-006
+
+  - id: node-006
+    question: "Is the business income computed under presumptive taxation (Section 44AD or 44ADA or 44AE)?"
+    type: boolean
+    rules_checked: [R-0004]
+    branches:
+      no:
+        outcome: ITR-3
+        reason: "Non-presumptive business income requires ITR-3 with full books of accounts."
+        rules: []
+      yes:
+        next: node-007
+
+  - id: node-007
+    question: "Does the taxpayer have any Capital Gains income?"
+    type: boolean
+    branches:
+      yes:
+        outcome: ITR-3
+        reason: "Capital gains with business income requires ITR-3. ITR-4 cannot accommodate Schedule CG."
+        rules: []
+      no:
+        next: node-008
+
+  - id: node-008
+    question: "Is total income (from all heads) ≤ ₹50 lakh?"
+    type: boolean
+    branches:
+      no:
+        outcome: ITR-3
+        reason: "Total income exceeds ₹50 lakh — ITR-4 income ceiling breached."
+        rules: [R-0004]
+      yes:
+        outcome: ITR-4
+        reason: "Presumptive business income, no capital gains, no disqualifiers, total income ≤ ₹50L."
+        rules: [R-0004]
+
+# ─────────────────────────────────────────────
+# STEP 3: No Business Income — Check Capital Gains
+# ─────────────────────────────────────────────
+  - id: node-010
+    question: "Does the taxpayer have Capital Gains income?"
+    type: boolean
+    branches:
+      yes:
+        outcome: ITR-2
+        reason: "Capital gains (Schedule CG) not supported in ITR-1."
+        rules: []
+      no:
+        next: node-011
+
+  - id: node-011
+    question: "Is the taxpayer's total income ≤ ₹50 lakh?"
+    type: boolean
+    branches:
+      no:
+        outcome: ITR-2
+        reason: "Total income exceeds ITR-1 ceiling of ₹50 lakh."
+        rules: [R-0002]
+      yes:
+        next: node-012
+
+  - id: node-012
+    question: "Does the taxpayer have more than one house property, or have brought-forward house property loss?"
+    type: boolean
+    branches:
+      yes:
+        outcome: ITR-2
+        reason: "ITR-1 supports only one self-occupied house property with no carried-forward losses."
+        rules: [R-0002]
+      no:
+        next: node-013
+
+  - id: node-013
+    question: "Does the taxpayer have income from lottery, race horses, or other special rate income u/s 115BB?"
+    type: boolean
+    branches:
+      yes:
+        outcome: ITR-2
+        reason: "Special rate income not supported in ITR-1."
+        rules: []
+      no:
+        outcome: ITR-1
+        reason: "Salary/pension + one HP + other sources, total ≤ ₹50L, resident, no disqualifiers."
+        rules: [R-0002]

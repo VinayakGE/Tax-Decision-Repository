@@ -1,0 +1,27 @@
+{
+  "id": "T-0027",
+  "title": "Lineage graph cannot be completed — income item has no traceable source",
+  "target_type": "rule",
+  "target_ref": "R-0014",
+  "test_type": "negative",
+  "input": {
+    "classified_income": {
+      "head_5_other": { "net": 50000, "source_field": null, "source_evidence": null, "user_declared": false }
+    }
+  },
+  "expected_output": {
+    "lineage_graph_complete": false,
+    "orphaned_nodes": [
+      { "label": "head_5_other_sources", "value": 50000, "type": "computed", "source_ref": null }
+    ],
+    "failure_reason": "Income of ₹50,000 in Head 5 has no traceable source — not from any evidence document and not user-declared",
+    "action": "lineage_incomplete",
+    "pipeline_stage_13_blocked": true,
+    "error_message": "Cannot generate explanation for an income item without provenance. This indicates a bug in Engine 2 (Income Classification) — an income item was classified without a source reference."
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "The lineage graph must be complete before Stage 13 can run. An orphaned node — a computed value with no traceable source — indicates a bug in Engine 2 that allowed an income item to be classified without recording its origin. This test verifies that R-0014 detects this condition and blocks Stage 13 rather than generating an unexplainable result."
+}

@@ -1,0 +1,32 @@
+{
+  "id": "R-0003",
+  "title": "ITR-2 Required — Foreign Assets or Foreign Income",
+  "description": "Any resident taxpayer who holds foreign assets (bank accounts, immovable property, equity, trusts) or has signing authority over a foreign account, or has any foreign source income, must file ITR-2 or higher. ITR-1 and ITR-4 are disqualified.",
+  "logic": {
+    "if": "taxpayer.has_foreign_assets == true OR taxpayer.has_foreign_income == true OR taxpayer.has_foreign_signing_authority == true",
+    "then": "itr_form = ITR-1 INVALID, ITR-4 INVALID. Minimum form = ITR-2.",
+    "else": "Foreign assets disqualifier does not apply."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 139(1) read with Schedule FA and ITR-2 Instructions",
+    "proviso": null,
+    "notification": null,
+    "circular": "CBDT Circular on Schedule FA disclosure",
+    "finance_act": null,
+    "effective_from": "2015-04-01",
+    "url": null
+  },
+  "effective_date": "2015-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "superseded_by": null,
+  "tags": ["itr-form", "eligibility", "itr2", "foreign-assets", "schedule-fa"],
+  "evidence_refs": ["E-001", "E-003"],
+  "decision_refs": ["D-001"],
+  "test_refs": ["T-0005"],
+  "change_refs": ["CH-0001"],
+  "notes": "Schedule FA in ITR-2/3 requires disclosure of all foreign assets held at any time during the financial year, even if no income arose from them."
+}

@@ -1,0 +1,149 @@
+{
+  "id": "PAT-006",
+  "title": "Pensioner — Pension + FD / Savings Interest",
+  "description": "Retired individual with pension income (treated as salary) and interest from fixed deposits, savings accounts, or post office schemes. Often eligible for ITR-1. Senior citizens (≥60) get enhanced basic exemption and 80TTB deduction (up to ₹50,000 on interest income). Super seniors (≥80) cannot file ITR-1 — must use ITR-2.",
+  "prevalence": {
+    "tier": "common",
+    "description": "Large and growing segment as India's population ages. Many first-time filers in this category due to TDS on FDs.",
+    "estimated_pct_of_filers": 7
+  },
+  "profile_signature": {
+    "income_heads": ["pension", "other-sources-interest"],
+    "resident_status": ["ROR"],
+    "complexity": "simple",
+    "typical_total_income_range": { "min": 200000, "max": 2000000 },
+    "flags": {
+      "is_director": false,
+      "holds_unlisted_shares": false,
+      "has_foreign_assets": false,
+      "multiple_employers": false,
+      "has_home_loan": false
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-004",
+      "required": false,
+      "notes": "Form 16 from pension-disbursing bank (e.g. SBI, PNB for government pensioners). Not always issued; use 26AS and pension passbook instead."
+    },
+    {
+      "evidence_ref": "E-005",
+      "required": false,
+      "notes": "Form 16A from banks for TDS on FD interest. Required if TDS was deducted (FD interest > ₹50,000 for senior citizens)."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS is the authoritative source for all TDS credits — pension TDS and FD TDS."
+    },
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS to verify full interest income from all banks and post office. Senior citizens often have FDs spread across multiple banks."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "Pension is treated as salary for ITR purposes. If age ≥ 80 (super senior), ITR-1 is not available — ITR-2 is required."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 2,
+      "notes": "New Regime is default. However, senior citizens with significant medical expenses (80D) or Section 80TTB interest deduction of ₹50,000 may benefit from Old Regime. Must compute both."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 3,
+      "notes": "Pension TDS + FD TDS. Banks deduct TDS on FD at 10% if PAN is furnished, 20% if not. Senior citizen threshold for FD TDS is ₹50,000."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 4,
+      "notes": "Refund is common — many pensioners with income below taxable limit still have TDS deducted on FDs."
+    }
+  ],
+  "applicable_rules": ["R-0002", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "often",
+      "notes": "Pension TDS from bank may not match 26AS — especially for government pensions where quarterly TDS filing by disbursing bank may be delayed."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "always",
+      "notes": "FD interest from multiple banks is commonly missed. AIS now shows interest from all SFT-reporting banks. Senior citizens often have FDs in 3-4 banks."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "always",
+      "notes": "Refund very common — TDS on FDs often exceeds actual tax liability for seniors with income near basic exemption."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT006-01",
+      "question": "What is your age as of 31 March 2025?",
+      "purpose": "Determines age category: General (< 60), Senior Citizen (60-79), Super Senior (≥ 80). Super seniors cannot use ITR-1.",
+      "field_populated": "taxpayer.age",
+      "conditional_on": null,
+      "answer_type": "number",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT006-02",
+      "question": "Do you receive a government / central / state pension?",
+      "purpose": "Government pensions are disbursed through banks. Private pensions from annuity plans are also treated as salary but sourcing of Form 16 differs.",
+      "field_populated": "taxpayer.pension_type",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["Government / PSU pension (via bank)", "Private pension / annuity plan", "Both"]
+    },
+    {
+      "id": "IQ-PAT006-03",
+      "question": "How many banks do you have Fixed Deposits with?",
+      "purpose": "FD interest from all banks must be declared. Helps estimate AIS coverage requirement.",
+      "field_populated": "taxpayer.fd_bank_count",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["One", "Two or three", "Four or more"]
+    },
+    {
+      "id": "IQ-PAT006-04",
+      "question": "Have you submitted Form 15H (declaration for no TDS) to your banks?",
+      "purpose": "If Form 15H was submitted and total income is still below basic exemption, no TDS should have been deducted. If TDS was deducted despite Form 15H, that's an error.",
+      "field_populated": "taxpayer.form15h_submitted",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-1",
+    "itr_form_alternatives": ["ITR-2"],
+    "tax_regime_default": "depends",
+    "common_refund_or_due": "usually-refund",
+    "typical_audit_risk": "low"
+  },
+  "edge_cases": [
+    {
+      "condition": "Taxpayer age ≥ 80 (super senior citizen)",
+      "consequence": "Super seniors cannot use ITR-1. Must use ITR-2. They also cannot pay advance tax and must pay self-assessment tax only.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Post office MIS / NSC / PPF maturity received",
+      "consequence": "Post office scheme maturity may be taxable (NSC interest) or exempt (PPF, Sukanya Samridhi). Must categorise correctly. NSC interest appears in AIS.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": [],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "Section 80TTB allows senior citizens (≥60) to deduct up to ₹50,000 of interest income from savings accounts AND FDs. This is more generous than 80TTA (only savings interest, max ₹10,000 for non-seniors) and is only available in the Old Regime."
+}

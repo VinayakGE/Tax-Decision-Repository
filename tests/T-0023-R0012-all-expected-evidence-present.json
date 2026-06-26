@@ -1,0 +1,24 @@
+{
+  "id": "T-0023",
+  "title": "All expected evidence documents loaded for salary + gig profile",
+  "target_type": "rule",
+  "target_ref": "R-0012",
+  "test_type": "positive",
+  "input": {
+    "documents_loaded": ["E-001", "E-002", "E-003", "E-004"],
+    "documents_missing": [],
+    "income_profile": { "has_salary": true, "has_business_presumptive": true, "tds_192_in_26as": true }
+  },
+  "expected_output": {
+    "missing_evidence_detected": false,
+    "all_expected_present": true,
+    "ecs_impact": 0,
+    "confidence_band_cap": null,
+    "halt_pipeline": false
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "All four expected documents for PAT-002 (salary + gig) are present. No ECS reduction. Confidence band is not constrained by missing evidence — only by the quality of what was found in the documents."
+}

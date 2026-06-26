@@ -1,0 +1,25 @@
+{
+  "id": "T-0015",
+  "title": "AIS shows income Prefill JSON does not have — Prefill is stale",
+  "target_type": "rule",
+  "target_ref": "R-0008",
+  "test_type": "negative",
+  "input": {
+    "ais": { "salary": 840000, "interest_fd": 18000 },
+    "prefill": { "salary": 840000, "interest_fd": null, "assessment_year": "AY2025-26" }
+  },
+  "expected_output": {
+    "reconciliation_status_salary": "reconciled",
+    "reconciliation_status_interest": "acceptable_absent",
+    "note": "FD interest present in AIS but absent in Prefill. Prefill was generated before this interest was reported to ITD. Use AIS value. No conflict — Prefill simply did not have it.",
+    "value_to_use_interest": 18000,
+    "source_interest": "ais",
+    "conflict_log_entry": null,
+    "ecs_impact": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Income in AIS but absent in Prefill is the most common case and is not a conflict — it simply means the Prefill was generated before the income was reported to ITD. The engine uses AIS. This is normal behaviour and should not alarm the taxpayer."
+}

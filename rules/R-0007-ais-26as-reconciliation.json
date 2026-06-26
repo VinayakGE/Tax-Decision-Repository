@@ -1,0 +1,39 @@
+{
+  "id": "R-0007",
+  "title": "Source Reconciliation — AIS vs 26AS",
+  "description": "For each income category and TDS entry, compare the Annual Information Statement (AIS, Section 285BB) against Form 26AS (Section 203AA). Compute the variance as a percentage of the higher-authority value. Classify the reconciliation status and produce a conflict entry for any discrepancy above the auto-resolve threshold. 26AS is the higher-authority source for TDS credit amounts; AIS is the higher-authority source for income amounts.",
+  "logic": {
+    "if": "AIS is loaded (E-001) AND 26AS is loaded (E-002)",
+    "then": "for each income_category in {salary, interest, dividend, business_receipts, capital_gains, rent}: locate matching entry in both AIS and 26AS; compute delta = |AIS.amount - 26AS.amount| / max(AIS.amount, 26AS.amount); apply threshold_table: delta < 0.01 → reconciled (use 26AS value for TDS, AIS value for income); 0.01 ≤ delta ≤ 0.05 → minor_variance (warn, proceed); delta > 0.05 → major_variance (conflict, add to conflict_log, reduce ECS); entry in AIS only → presence_mismatch (trigger V-002 candidate); entry in 26AS only → presence_mismatch (investigate: may be TDS on exempt income)",
+    "else": "if AIS not loaded: mark all AIS-sourced income fields as missing_source (DS=0 in ECS); if 26AS not loaded: mark all TDS credits as unverified (PU=0.5 in ECS); do not proceed with TDS claim computation until 26AS is loaded"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 285BB (AIS) and Section 203AA (Form 26AS)",
+    "proviso": null,
+    "notification": "CBDT Notification No. 83/2020 (AIS introduction)",
+    "circular": null,
+    "finance_act": "Finance Act 2020",
+    "effective_from": "2021-11-01",
+    "url": null
+  },
+  "effective_date": "2021-11-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "evidence-integrity",
+    "reconciliation",
+    "ais",
+    "26as",
+    "source-reconciliation",
+    "wave-2",
+    "module-a"
+  ],
+  "evidence_refs": ["E-001", "E-002"],
+  "decision_refs": ["D-003"],
+  "test_refs": ["T-0011", "T-0012", "T-0013"],
+  "change_refs": ["CH-0007"],
+  "notes": "AIS and 26AS are both sourced from the Income Tax Department but maintained by different sub-systems. Small discrepancies (< 1%) are common due to timing differences in TDS deposit and AIS update cycles. Discrepancies > 5% almost always indicate either a genuine underpayment by the employer or a data entry error in AIS — both require the taxpayer to resolve before filing. Authority hierarchy: 26AS > AIS for TDS credit claims (only 26AS TDS is claimable as credit). AIS > 26AS for income amounts (AIS has broader coverage of income sources)."
+}

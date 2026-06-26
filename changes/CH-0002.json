@@ -1,0 +1,14 @@
+{
+  "id": "CH-0002",
+  "date": "2026-06-26",
+  "author": "Vinayak Gautham",
+  "type": "add",
+  "object_type": "docs",
+  "object_id": "registry, dependency_graph, docs/rule-lifecycle, docs/confidence-model, docs/conflict-resolver, docs/rule-authoring-guide",
+  "summary": "Added five missing architectural modules required for 10,000-rule scalability: Repository Index (operating system — all registries), Dependency Graph (impact analysis when law changes), Rule Lifecycle (7-stage quality gate), Confidence Model (evidence-completeness-based decision confidence), Conflict Resolver (formalized evidence conflict resolution), and Rule Authoring Guide (self-sufficient contributor guide). Updated ARCHITECTURE.md sections 10–15. Updated README.",
+  "authority": null,
+  "prior_version": "1.0.0",
+  "new_version": "1.1.0",
+  "git_commit": null,
+  "notes": "This commit does not add tax rules. It strengthens the infrastructure that makes 10,000 rules maintainable."
+}

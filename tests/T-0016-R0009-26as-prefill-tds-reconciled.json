@@ -1,0 +1,23 @@
+{
+  "id": "T-0016",
+  "title": "26AS TDS entry matches Prefill JSON TDS credit — reconciled",
+  "target_type": "rule",
+  "target_ref": "R-0009",
+  "test_type": "positive",
+  "input": {
+    "26as_tds": [{ "tan": "BLRX12345A", "section": "192", "amount": 28600, "quarter": "Q4" }],
+    "prefill_tds": [{ "tan": "BLRX12345A", "section": "192", "amount": 28600, "quarter": "Q4" }]
+  },
+  "expected_output": {
+    "reconciliation_status": "reconciled",
+    "credit_to_claim": 28600,
+    "credit_source": "26AS",
+    "prefill_corroborates": true,
+    "conflict_log_entry": null
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Both 26AS and Prefill show the same TDS. 26AS is used as the authoritative source for the credit amount. Prefill corroborates."
+}

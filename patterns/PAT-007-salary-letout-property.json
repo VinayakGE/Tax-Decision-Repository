@@ -1,0 +1,144 @@
+{
+  "id": "PAT-007",
+  "title": "Salary + Let-Out House Property",
+  "description": "Taxpayer has salary income and rental income from a let-out property. Rent is taxable under 'Income from House Property' after a standard deduction of 30% and municipal taxes paid. Home loan interest (u/s 24b) is fully deductible from let-out HP income (no ₹2L cap that applies to SOP). Can file ITR-1 if total income ≤ ₹50L and only one HP.",
+  "prevalence": {
+    "tier": "moderate",
+    "description": "Urban property owners who have moved cities for work and let out their original property.",
+    "estimated_pct_of_filers": 4
+  },
+  "profile_signature": {
+    "income_heads": ["salary", "house-property-letout", "other-sources-interest"],
+    "resident_status": ["ROR"],
+    "complexity": "moderate",
+    "typical_total_income_range": { "min": 500000, "max": 5000000 },
+    "flags": {
+      "is_director": null,
+      "holds_unlisted_shares": null,
+      "has_foreign_assets": false,
+      "multiple_employers": null,
+      "has_home_loan": null
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-004",
+      "required": true,
+      "notes": "Form 16 for salary income."
+    },
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS may show rent received (SFT-002 for rent > ₹50,000 per transaction). Cross-check with actual rent received."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS for TDS on rent if tenant deducted TDS u/s 194I (rent > ₹50,000/month from a business tenant) or u/s 194IB (rent > ₹50,000/month from individual tenant)."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "Let-out HP income does not by itself disqualify ITR-1. ITR-1 can accommodate one HP (SOP or let-out). If TWO properties exist, ITR-2 is needed."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 2,
+      "notes": "Old Regime allows full deduction of home loan interest on let-out property (no cap). New Regime restricts this. If home loan interest is substantial, Old Regime may be better."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 3,
+      "notes": "TDS on rent may be present. Verify in 26AS Part A2 (u/s 194IB — individual tenant) or Part A (u/s 194I — business tenant)."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 4,
+      "notes": "Tax due or refund depends on net rental income and home loan interest deduction."
+    }
+  ],
+  "applicable_rules": ["R-0002", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "often",
+      "notes": "Employer TDS mismatch."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "sometimes",
+      "notes": "AIS may show rent received (if tenant filed Form 26QC). Cross-check actual rent with AIS."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "sometimes",
+      "notes": "Outcome varies — home loan interest may create a net loss from HP, which reduces overall tax."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT007-01",
+      "question": "How many properties do you own?",
+      "purpose": "Two or more properties → ITR-2 required (cannot use ITR-1).",
+      "field_populated": "taxpayer.income.house_property_count",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["One", "Two", "Three or more"]
+    },
+    {
+      "id": "IQ-PAT007-02",
+      "question": "What was the total annual rent received from all let-out properties in FY 2024-25?",
+      "purpose": "Compute Gross Annual Value (GAV) for HP income computation.",
+      "field_populated": "taxpayer.income.annual_rent_received",
+      "conditional_on": null,
+      "answer_type": "number",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT007-03",
+      "question": "Did you pay municipal taxes (property tax) on the let-out property during FY 2024-25?",
+      "purpose": "Municipal taxes paid are deductible from GAV to arrive at Net Annual Value (NAV).",
+      "field_populated": "taxpayer.income.municipal_tax_paid",
+      "conditional_on": null,
+      "answer_type": "number",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT007-04",
+      "question": "Do you have a home loan on the let-out property? If yes, what was the interest paid during FY 2024-25?",
+      "purpose": "Home loan interest on let-out property is fully deductible u/s 24b (no cap). Creates a large deduction in Old Regime.",
+      "field_populated": "taxpayer.deductions.home_loan_interest_letout",
+      "conditional_on": null,
+      "answer_type": "number",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-1",
+    "itr_form_alternatives": ["ITR-2"],
+    "tax_regime_default": "depends",
+    "common_refund_or_due": "varies",
+    "typical_audit_risk": "low"
+  },
+  "edge_cases": [
+    {
+      "condition": "Two or more properties (even if one is SOP and one is let-out)",
+      "consequence": "One of the properties is deemed let-out and rental income must be imputed. ITR-1 can handle only ONE HP. Must use ITR-2.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Net loss from house property due to large home loan interest",
+      "consequence": "Loss from HP can be set off against salary income up to ₹2L per year in Old Regime (New Regime: no setoff). Carry forward of balance loss.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": [],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "New Regime does not allow deduction of home loan interest on let-out property (unlike the Old Regime where it is unlimited). This is a significant factor in regime selection for this pattern."
+}

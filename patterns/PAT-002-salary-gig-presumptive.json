@@ -1,0 +1,184 @@
+{
+  "id": "PAT-002",
+  "title": "Salary + Gig / Freelance Income (Presumptive u/s 44AD)",
+  "description": "Taxpayer has primary salary income plus freelance, consulting, or gig income that qualifies for presumptive taxation under Section 44AD or 44ADA. Common among software engineers, designers, consultants, and professionals who moonlight. Requires ITR-4, not ITR-1.",
+  "prevalence": {
+    "tier": "common",
+    "description": "Growing rapidly with the gig economy. Platform workers, freelancers on Upwork/Toptal/Fiverr, independent consultants.",
+    "estimated_pct_of_filers": 12
+  },
+  "profile_signature": {
+    "income_heads": ["salary", "business-presumptive-44AD"],
+    "resident_status": ["ROR"],
+    "complexity": "moderate",
+    "typical_total_income_range": { "min": 400000, "max": 5000000 },
+    "flags": {
+      "is_director": false,
+      "holds_unlisted_shares": false,
+      "has_foreign_assets": null,
+      "multiple_employers": null,
+      "has_home_loan": null
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-004",
+      "required": true,
+      "notes": "Form 16 for salary income."
+    },
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS is the primary source for freelance/gig receipts. Look for entries under SFT-001 (salary) and other income categories. Freelance receipts may appear as 'professional receipts' or 'business receipts'."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS for TDS credit. Note: most gig platforms (domestic) do not deduct TDS unless payment > ₹30,000 per engagement. Foreign clients never deduct Indian TDS."
+    },
+    {
+      "evidence_ref": "E-003",
+      "required": false,
+      "notes": "Prefill JSON. Freelance receipts may not appear in prefill if not SFT-reported."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "D-001 will resolve to ITR-4 if presumptive income qualifies under 44AD/44ADA and no disqualifiers. If capital gains also exist, resolves to ITR-3."
+    },
+    {
+      "decision_ref": "D-005",
+      "order": 2,
+      "notes": "Confirm ITR-4 eligibility specifically — check turnover threshold, income ceiling, and all disqualifiers."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 3,
+      "notes": "Regime selection. New Regime is default. For freelancers with high business expenses, old regime may be irrelevant (presumptive income is fixed at 6%/8%, not expense-deductible)."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 4,
+      "notes": "TDS credit. Salary TDS from employer + any TDS on professional income from clients."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 5,
+      "notes": "Refund or tax due. Common outcome: employer deducted TDS on salary only; new regime tax may be lower than combined TDS, producing a refund."
+    }
+  ],
+  "applicable_rules": ["R-0001", "R-0004", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "often",
+      "notes": "Employer TDS mismatch. Same as PAT-001."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "often",
+      "notes": "Freelance receipts in AIS but not declared. This is a high-risk gap — IT Department specifically cross-checks AIS business receipts against ITR-4 filings."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "always",
+      "notes": "Refund common due to salary-only TDS."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT002-01",
+      "question": "What was your approximate total freelance / gig income for FY 2024-25 (the amount clients paid you, before any deductions)?",
+      "purpose": "Determine turnover to check 44AD eligibility (≤ ₹3 Cr digital, ≤ ₹3 Cr total) or 44ADA eligibility (≤ ₹75L).",
+      "field_populated": "taxpayer.income.freelance_turnover",
+      "conditional_on": null,
+      "answer_type": "number",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT002-02",
+      "question": "Is your freelance work classified as a 'profession' (CA, doctor, lawyer, architect, engineer, film artist, interior decorator, authorised representative) or as a 'business' (all other services)?",
+      "purpose": "Determines 44AD vs 44ADA. Professional income → 44ADA (50% presumptive rate). Business income → 44AD (6%/8%).",
+      "field_populated": "taxpayer.income.freelance_type",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["Specified Profession (CA/Doctor/Lawyer/etc.)", "Other Business/Service"]
+    },
+    {
+      "id": "IQ-PAT002-03",
+      "question": "What proportion of your freelance receipts came through digital / non-cash channels (bank transfer, UPI, card)?",
+      "purpose": "For 44AD: digital receipts threshold is ₹3 Cr; cash receipts limit is 5% of total. This affects which threshold applies.",
+      "field_populated": "taxpayer.income.freelance_digital_pct",
+      "conditional_on": {
+        "field": "taxpayer.income.freelance_type",
+        "value": "Other Business/Service"
+      },
+      "answer_type": "enum",
+      "answer_options": ["95-100% digital", "50-95% digital", "Less than 50% digital"]
+    },
+    {
+      "id": "IQ-PAT002-04",
+      "question": "Did you have any capital gains income this year (from selling stocks, mutual funds, or property)?",
+      "purpose": "Capital gains with presumptive income → must use ITR-3, not ITR-4.",
+      "field_populated": "taxpayer.income.capital_gains_flag",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT002-05",
+      "question": "Do you want to declare income lower than the presumptive rate (6%/8% of turnover for 44AD, 50% for 44ADA)?",
+      "purpose": "If yes, books of accounts must be maintained and audit may be required. This breaks the 44AD/44ADA presumptive scheme for 5 years.",
+      "field_populated": "taxpayer.income.below_presumptive_flag",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-4",
+    "itr_form_alternatives": ["ITR-3"],
+    "tax_regime_default": "new",
+    "common_refund_or_due": "usually-refund",
+    "typical_audit_risk": "low"
+  },
+  "edge_cases": [
+    {
+      "condition": "Freelance turnover > ₹3 Cr (44AD threshold breach)",
+      "consequence": "Presumptive scheme under 44AD is not available. Must maintain books and use ITR-3.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "44ADA professional receipts > ₹75 lakh",
+      "consequence": "44ADA not available. Books must be maintained. Audit required if income < 50% of receipts.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Capital gains income exists",
+      "consequence": "ITR-4 cannot accommodate Schedule CG. Must use ITR-3.",
+      "escalation": "upgrade-pattern",
+      "upgrade_to_pattern": "PAT-003"
+    },
+    {
+      "condition": "Freelancer chooses to declare income below presumptive rate",
+      "consequence": "Books of accounts required. Audit mandatory if turnover > ₹1 Cr (cash) or ₹10 Cr (digital). Presumptive scheme unavailable for next 5 years.",
+      "escalation": "human-review",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Income from foreign clients",
+      "consequence": "Foreign receipts still count toward 44AD turnover if income arises in India. GST registration may be required. No Indian TDS — full income must be declared.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": ["C-000001"],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "The most common pattern for the new working class: salaried job + side freelance. The AIS check is critical here — the IT Department now has near-complete visibility into platform-reported receipts."
+}

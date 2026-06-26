@@ -1,0 +1,170 @@
+{
+  "id": "PAT-001",
+  "title": "Salaried Employee — Single Employer, No Other Income",
+  "description": "The most common individual filing pattern in India. Taxpayer has salary income from one employer, possibly savings/FD interest, at most one self-occupied house property, and no other income. This pattern covers a large fraction of salaried employees in the formal sector.",
+  "prevalence": {
+    "tier": "very-common",
+    "description": "Covers the majority of salaried employees in organised sector employment.",
+    "estimated_pct_of_filers": 45
+  },
+  "profile_signature": {
+    "income_heads": ["salary", "other-sources-interest"],
+    "resident_status": ["ROR"],
+    "complexity": "simple",
+    "typical_total_income_range": { "min": 300000, "max": 5000000 },
+    "flags": {
+      "is_director": false,
+      "holds_unlisted_shares": false,
+      "has_foreign_assets": false,
+      "multiple_employers": false,
+      "has_home_loan": null
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-004",
+      "required": true,
+      "notes": "Form 16 from single employer is the primary document. Part A (TRACES) verifies TDS. Part B provides salary breakdown and deductions."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS to verify TDS credit matches Form 16 Part A. Also verifies advance tax / SAT if any."
+    },
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS to confirm no additional income exists (business receipts, capital gains, rent) beyond salary and interest."
+    },
+    {
+      "evidence_ref": "E-003",
+      "required": false,
+      "notes": "Prefill JSON from IT Portal to auto-populate bank account, personal details, and AIS summary."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "With this pattern, D-001 will almost always resolve to ITR-1. Run anyway to confirm no disqualifiers."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 2,
+      "notes": "Regime selection. For most taxpayers in this pattern, the New Regime is better unless deductions are substantial."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 3,
+      "notes": "TDS credit. Cross-check Form 16 Part A against 26AS. This is the most likely source of error in this pattern."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 4,
+      "notes": "Refund or tax due. For most in this pattern, refund arises from excess TDS by employer."
+    }
+  ],
+  "applicable_rules": ["R-0001", "R-0002", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "often",
+      "notes": "Employer TDS mismatch with 26AS is common. Employer may have made corrections mid-year that aren't reflected in Form 16."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "sometimes",
+      "notes": "FD interest in AIS is commonly missed by taxpayers who don't receive Form 16A from bank."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "always",
+      "notes": "Always check bank pre-validation. Refunds are common in this pattern."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT001-01",
+      "question": "Did you receive salary from only one employer during FY 2024-25?",
+      "purpose": "Confirm single employer. If multiple employers, upgrade to PAT-004.",
+      "field_populated": "taxpayer.multiple_employers",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT001-02",
+      "question": "Did you have any income other than salary and bank interest this year — for example, freelance work, stock market gains, rental income, or dividend income above ₹5,000?",
+      "purpose": "Screen for other income heads that would change the pattern.",
+      "field_populated": "taxpayer.other_income_flag",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT001-03",
+      "question": "How many properties do you own or live in?",
+      "purpose": "Confirm single house property. More than one may require ITR-2.",
+      "field_populated": "taxpayer.income.house_property_count",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["None", "One (self-occupied)", "Two or more"]
+    },
+    {
+      "id": "IQ-PAT001-04",
+      "question": "Is your total income from all sources likely to exceed ₹50 lakh this year?",
+      "purpose": "Check ITR-1 income ceiling.",
+      "field_populated": "taxpayer.income.total_exceeds_50L",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT001-05",
+      "question": "Are you a director in any company (even a dormant or family company)?",
+      "purpose": "Director flag disqualifies ITR-1 and ITR-4.",
+      "field_populated": "taxpayer.is_director",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-1",
+    "itr_form_alternatives": ["ITR-2"],
+    "tax_regime_default": "new",
+    "common_refund_or_due": "usually-refund",
+    "typical_audit_risk": "low"
+  },
+  "edge_cases": [
+    {
+      "condition": "Taxpayer changed jobs during the year — has salary from two employers",
+      "consequence": "Two Form 16s. Combined salary must be declared. Employer 2 may not have known about Employer 1 income, causing under-TDS.",
+      "escalation": "upgrade-pattern",
+      "upgrade_to_pattern": "PAT-004"
+    },
+    {
+      "condition": "Total income exceeds ₹50 lakh",
+      "consequence": "ITR-1 income ceiling breached.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Taxpayer has a let-out house property (not just SOP)",
+      "consequence": "Rental income must be declared. ITR-1 supports only SOP or one let-out HP, but let-out requires additional schedule.",
+      "escalation": "upgrade-pattern",
+      "upgrade_to_pattern": "PAT-007"
+    },
+    {
+      "condition": "AIS shows dividend income > ₹10",
+      "consequence": "Dividend is taxable at slab rate from AY2021-22. Must be declared even if small. ITR-1 can accommodate this.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": [],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "This is the golden path pattern. If Jarviz works well for PAT-001, it covers approximately 45% of individual filers with high confidence and low complexity."
+}

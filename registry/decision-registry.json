@@ -1,0 +1,53 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "type": "decision-registry",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "decisions": [
+    {
+      "id": "D-001",
+      "question": "Which ITR form must be filed?",
+      "status": "active",
+      "tree_ref": "DT-001",
+      "rule_refs": ["R-0001", "R-0002", "R-0003", "R-0004"],
+      "file": "docs/decision-catalogue.md#d-001"
+    },
+    {
+      "id": "D-002",
+      "question": "Which tax regime is optimal?",
+      "status": "active",
+      "tree_ref": "DT-002",
+      "rule_refs": ["R-0005"],
+      "file": "docs/decision-catalogue.md#d-002"
+    },
+    {
+      "id": "D-003",
+      "question": "What is the correct TDS credit?",
+      "status": "active",
+      "tree_ref": "DT-003",
+      "rule_refs": [],
+      "file": "docs/decision-catalogue.md#d-003"
+    },
+    {
+      "id": "D-004",
+      "question": "What is the refund or tax due?",
+      "status": "active",
+      "tree_ref": "DT-004",
+      "rule_refs": [],
+      "file": "docs/decision-catalogue.md#d-004"
+    },
+    {
+      "id": "D-005",
+      "question": "Is the taxpayer eligible for ITR-4?",
+      "status": "active",
+      "tree_ref": "DT-005",
+      "rule_refs": ["R-0004"],
+      "file": "docs/decision-catalogue.md#d-005"
+    },
+    { "id": "D-006", "question": "Are there carry-forward losses?", "status": "draft", "tree_ref": null, "rule_refs": [] },
+    { "id": "D-007", "question": "Is advance tax applicable?", "status": "draft", "tree_ref": null, "rule_refs": [] },
+    { "id": "D-008", "question": "Is audit required?", "status": "draft", "tree_ref": null, "rule_refs": [] },
+    { "id": "D-009", "question": "Are there foreign assets to report?", "status": "draft", "tree_ref": null, "rule_refs": [] },
+    { "id": "D-010", "question": "Which deductions can be claimed?", "status": "draft", "tree_ref": null, "rule_refs": [] }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "type": "section-registry",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "description": "Every legal section cited in any rule. This is the dependency graph's anchor layer. When a Finance Act amends a section, look it up here to find all affected objects.",
+  "sections": [
+    {
+      "id": "SEC-001",
+      "act": "Income Tax Act, 1961",
+      "section": "Section 139(1)",
+      "short_title": "Mandatory filing of return of income",
+      "description": "Governs who must file a return of income and by when. ITR form eligibility conditions are embedded in the instructions issued under this section.",
+      "last_amended_by": "Finance Act 2024",
+      "last_amended_date": "2024-04-01",
+      "rule_refs": ["R-0001", "R-0002", "R-0003"],
+      "decision_refs": ["D-001"],
+      "dependency_file": "dependency_graph/SEC-001-section-139.json",
+      "change_risk": "medium",
+      "notes": "ITR form eligibility conditions change annually via instructions/notifications, not always via Finance Act."
+    },
+    {
+      "id": "SEC-002",
+      "act": "Income Tax Act, 1961",
+      "section": "Section 44AD",
+      "short_title": "Special provision for computing profits of business on presumptive basis",
+      "description": "Allows eligible businesses to declare income at 6% (digital receipts) or 8% (cash) of turnover without maintaining books of accounts.",
+      "last_amended_by": "Finance Act 2023",
+      "last_amended_date": "2023-04-01",
+      "key_thresholds": {
+        "turnover_limit_cash": 20000000,
+        "turnover_limit_digital": 30000000,
+        "presumptive_rate_digital": "6%",
+        "presumptive_rate_cash": "8%"
+      },
+      "rule_refs": ["R-0004"],
+      "decision_refs": ["D-001", "D-005"],
+      "dependency_file": "dependency_graph/SEC-002-section-44AD.json",
+      "change_risk": "high",
+      "notes": "Finance Act 2023 doubled the digital receipts threshold from ₹1 Cr to ₹3 Cr. This is a frequently amended section — high change risk."
+    },
+    {
+      "id": "SEC-003",
+      "act": "Income Tax Act, 1961",
+      "section": "Section 44ADA",
+      "short_title": "Special provision for computing profits of profession on presumptive basis",
+      "description": "Allows specified professionals to declare income at 50% of gross receipts without maintaining books.",
+      "last_amended_by": "Finance Act 2023",
+      "last_amended_date": "2023-04-01",
+      "key_thresholds": {
+        "receipts_limit": 7500000,
+        "presumptive_rate": "50%"
+      },
+      "rule_refs": ["R-0004"],
+      "decision_refs": ["D-001", "D-005"],
+      "dependency_file": "dependency_graph/SEC-003-section-44ADA.json",
+      "change_risk": "medium",
+      "notes": "Finance Act 2023 increased limit from ₹50L to ₹75L."
+    },
+    {
+      "id": "SEC-004",
+      "act": "Income Tax Act, 1961",
+      "section": "Section 115BAC",
+      "short_title": "Tax on income of individuals and Hindu undivided family — New Regime",
+      "description": "Provides for an alternative (new) tax regime with lower slab rates but fewer deductions. Made the default regime from AY2024-25 by Finance Act 2023.",
+      "last_amended_by": "Finance Act 2023",
+      "last_amended_date": "2023-04-01",
+      "key_thresholds": {
+        "slab_0": 300000,
+        "slab_5pct": 700000,
+        "slab_10pct": 1000000,
+        "slab_15pct": 1200000,
+        "slab_20pct": 1500000,
+        "rebate_87A_limit": 1200000,
+        "standard_deduction": 75000
+      },
+      "rule_refs": ["R-0005"],
+      "decision_refs": ["D-002"],
+      "dependency_file": "dependency_graph/SEC-004-section-115BAC.json",
+      "change_risk": "high",
+      "notes": "Slabs and standard deduction were updated by Finance Act 2024. Standard deduction raised from ₹50,000 to ₹75,000 under new regime. Rebate u/s 87A extended to ₹12L from AY2025-26."
+    },
+    {
+      "id": "SEC-005",
+      "act": "Income Tax Act, 1961",
+      "section": "Section 87A",
+      "short_title": "Rebate of income-tax",
+      "description": "Provides a rebate that effectively makes tax zero for taxpayers below a certain income threshold.",
+      "last_amended_by": "Finance Act 2025",
+      "last_amended_date": "2025-04-01",
+      "key_thresholds": {
+        "new_regime_income_limit": 1200000,
+        "new_regime_max_rebate": 60000,
+        "old_regime_income_limit": 500000,
+        "old_regime_max_rebate": 12500
+      },
+      "rule_refs": [],
+      "decision_refs": ["D-002", "D-004"],
+      "dependency_file": "dependency_graph/SEC-005-section-87A.json",
+      "change_risk": "high",
+      "notes": "New Regime rebate limit raised to ₹12L (from ₹7L) by Finance Act 2025. This section is frequently amended and has cascading effects on refund computations."
+    }
+  ]
+}

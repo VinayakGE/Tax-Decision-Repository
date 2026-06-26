@@ -1,0 +1,16 @@
+{
+  "id": "V-002",
+  "title": "Income in AIS Not Reported in Return",
+  "type": "completeness",
+  "severity": "critical",
+  "condition": "AIS shows income head X with amount > 0 AND taxpayer has not included income head X in the return",
+  "failure_message": "AIS shows {income_type} income of ₹{ais_amount} from {source}, but this has not been included in the return. The IT Department's system will flag this discrepancy automatically.",
+  "remediation": "Review all income entries in AIS. Either include the income in the return, or file an AIS feedback disputing the entry before filing. Do not ignore AIS entries — they generate automated notices.",
+  "rule_refs": [],
+  "evidence_refs": ["E-001"],
+  "decision_refs": ["D-001", "D-004"],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "AIS is built from third-party SFT (Statement of Financial Transactions) data. Even if the taxpayer disputes an entry, it should be addressed via AIS feedback, not silently ignored."
+}

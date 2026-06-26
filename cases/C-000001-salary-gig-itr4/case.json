@@ -1,0 +1,96 @@
+{
+  "id": "C-000001",
+  "title": "Salary + Gig Income (Freelance) → ITR-4, New Regime",
+  "assessment_year": "AY2025-26",
+  "profile": {
+    "resident_status": "ROR",
+    "age_category": "general",
+    "income_heads": ["salary", "business-presumptive-44AD"],
+    "is_director": false,
+    "holds_unlisted_shares": false,
+    "has_foreign_assets": false
+  },
+  "inputs": [
+    {
+      "evidence_ref": "E-004",
+      "summary": "Form 16 from employer — salary ₹8,40,000, TDS ₹28,600",
+      "key_values": {
+        "gross_salary": 840000,
+        "standard_deduction": 75000,
+        "net_salary": 765000,
+        "tds_by_employer": 28600,
+        "employer_tan": "BNGE12345A"
+      }
+    },
+    {
+      "evidence_ref": "E-001",
+      "summary": "AIS showing freelance receipts ₹3,20,000 and FD interest ₹18,000",
+      "key_values": {
+        "freelance_receipts": 320000,
+        "fd_interest": 18000
+      }
+    },
+    {
+      "evidence_ref": "E-002",
+      "summary": "26AS confirming TDS ₹28,600 from employer and ₹1,800 TDS on FD",
+      "key_values": {
+        "total_tds_credit": 30400,
+        "employer_tds": 28600,
+        "bank_tds_on_fd": 1800
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "decision_ref": "D-001",
+      "outcome": "ITR-4",
+      "explanation": "Taxpayer has salary income + presumptive business income (44AD on freelance receipts of ₹3.2L). Total income ≤ ₹50L. No capital gains, no foreign assets, not a director. ITR-4 is valid."
+    },
+    {
+      "decision_ref": "D-002",
+      "outcome": "New Regime",
+      "explanation": "New Regime is default. Taxpayer's deductions under Old Regime (80C: ₹40,000, 80D: ₹12,000) do not exceed the tax saving from New Regime's lower slabs. New Regime produces lower tax liability."
+    },
+    {
+      "decision_ref": "D-003",
+      "outcome": "TDS Credit: ₹30,400",
+      "explanation": "₹28,600 from employer (verified in 26AS) + ₹1,800 bank TDS on FD (verified in 26AS). No mismatches found."
+    },
+    {
+      "decision_ref": "D-004",
+      "outcome": "Refund: ₹56,310",
+      "explanation": "Tax liability under New Regime: ₹Nil (taxable income after std deduction ≤ basic exemption? Recompute.) minus TDS of ₹30,400. See explanation.md for full computation."
+    }
+  ],
+  "rules_used": ["R-0001", "R-0002", "R-0004", "R-0005"],
+  "validations": [
+    {
+      "validation_ref": "V-001",
+      "result": "pass",
+      "notes": "Form 16 TDS ₹28,600 matches 26AS Part A for BNGE12345A."
+    },
+    {
+      "validation_ref": "V-002",
+      "result": "pass",
+      "notes": "All AIS entries (salary, freelance, FD interest) included in return."
+    },
+    {
+      "validation_ref": "V-003",
+      "result": "pass",
+      "notes": "Refund bank account pre-validated on IT Portal."
+    }
+  ],
+  "final_output": {
+    "itr_form": "ITR-4",
+    "tax_regime": "new",
+    "taxable_income": 1059000,
+    "tax_liability": 0,
+    "tds_credit": 30400,
+    "refund_amount": 30400,
+    "tax_due": 0
+  },
+  "explanation_ref": "cases/C-000001-salary-gig-itr4/explanation.md",
+  "source": "synthetic",
+  "verified": false,
+  "notes": "Template case for salary + gig income scenario. Numbers are illustrative. Replace with actual figures from real filing."
+}

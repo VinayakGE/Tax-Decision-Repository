@@ -1,0 +1,14 @@
+{
+  "id": "CH-0006",
+  "date": "2026-06-26",
+  "author": "Vinayak Gautham",
+  "type": "add",
+  "object_type": "rule",
+  "object_id": "R-0006",
+  "summary": "Added R-0006 (Income Classification Authority): the canonical lookup table mapping evidence sources, TDS sections, and AIS categories to the five heads of income under Section 14. This is a foundational Wave 1 rule — all income classification in subsequent rules references this mapping. Added four tests (T-0007 through T-0010) covering Form 16 → Head 1, 194J → Head 3 with confirmation, AIS FD interest → Head 5, and unknown source → escalation. Added JAB M-00 (Decision Coverage) as the north-star KPI. Updated GOVERNANCE.md with Wave 1-4 rule authoring priority structure. Extended rule-schema.json to support optional lookup_table in logic for mapping-type rules.",
+  "authority": "Income Tax Act, 1961 — Section 14",
+  "prior_version": "1.3.1",
+  "new_version": "2.0.0-dev",
+  "git_commit": null,
+  "notes": "Phase 5 (Knowledge Expansion) begins here. R-0006 is the first Wave 1 rule. Every income classification rule that follows references this mapping as the canonical authority."
+}

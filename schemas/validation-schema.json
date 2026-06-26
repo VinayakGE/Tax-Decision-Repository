@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "validation-schema.json",
+  "title": "Validation",
+  "description": "Schema for a validation check in the Jarviz Tax Decision Repository.",
+  "type": "object",
+  "required": ["id", "title", "type", "severity", "condition", "failure_message", "remediation", "rule_refs", "status", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^V-[0-9]{3}$",
+      "description": "Unique validation ID. Format: V-XXX"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short label."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["consistency", "completeness", "compliance", "cross-check"],
+      "description": "Category of validation."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"],
+      "description": "Impact of failure: critical blocks filing; high needs resolution; medium is advisory; low is informational."
+    },
+    "condition": {
+      "type": "string",
+      "description": "What is being checked. Plain English or pseudo-code."
+    },
+    "failure_message": {
+      "type": "string",
+      "description": "Message to display when this validation fails."
+    },
+    "remediation": {
+      "type": "string",
+      "description": "What the taxpayer or system should do to resolve the failure."
+    },
+    "rule_refs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^R-[0-9]{4}$" },
+      "description": "Rules that this validation enforces."
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^E-[0-9]{3}$" },
+      "description": "Evidence sources involved in this validation."
+    },
+    "decision_refs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^D-[0-9]{3}$" },
+      "description": "Decisions this validation runs after."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "deprecated"]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "assessment_years": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^AY[0-9]{4}-[0-9]{2}$" }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

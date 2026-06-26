@@ -1,0 +1,40 @@
+{
+  "id": "R-0009",
+  "title": "Source Reconciliation — 26AS vs Prefill JSON",
+  "description": "Compare Form 26AS TDS entries against the Prefill JSON pre-filled TDS credits. 26AS is always the authoritative source for TDS credit claims — only TDS that appears in 26AS can be claimed as a credit. Where Prefill shows TDS that is not in 26AS, the credit cannot be claimed. Where 26AS shows TDS not in Prefill, the taxpayer should add it to their return — the Prefill may have missed it.",
+  "logic": {
+    "if": "26AS is loaded (E-002) AND Prefill JSON is loaded (E-003)",
+    "then": "for each TDS entry (TAN + amount + quarter) in 26AS: check if corresponding entry exists in Prefill; if present and delta < 0.01 → reconciled; if present and delta > 0.01 → use 26AS value (Prefill is secondary for TDS); log Prefill value as stale for audit trail. For each TDS entry in Prefill NOT in 26AS: mark as unclaimed_credit_risk — this TDS cannot be claimed until it appears in 26AS; add to conflict_log with type presence_mismatch; notify taxpayer. For each TDS entry in 26AS NOT in Prefill: mark as prefill_omission — add to return; no conflict but note in explanation",
+    "else": "if Prefill JSON not loaded: skip this rule; ECS already reduced by R-0008. if 26AS not loaded: this is already a critical_missing from R-0012; halt TDS credit computation"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 203AA (Form 26AS) and Section 199 (TDS credit)",
+    "proviso": "Section 199: TDS credit available only for amounts appearing in 26AS",
+    "notification": null,
+    "circular": "CBDT Circular 2/2021 — TDS credit available only as per 26AS",
+    "finance_act": null,
+    "effective_from": "2020-06-01",
+    "url": null
+  },
+  "effective_date": "2020-06-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "evidence-integrity",
+    "reconciliation",
+    "26as",
+    "prefill",
+    "tds-credit",
+    "source-reconciliation",
+    "wave-2",
+    "module-a"
+  ],
+  "evidence_refs": ["E-002", "E-003"],
+  "decision_refs": ["D-003"],
+  "test_refs": ["T-0016", "T-0017"],
+  "change_refs": ["CH-0007"],
+  "notes": "The most common real-world failure: employer deposits TDS late, so it appears in 26AS after the taxpayer files. In this case, the taxpayer must either wait for 26AS to update or file without claiming the credit and file a revised return later. Never claim TDS that is not in 26AS — it will be rejected by the IT system automatically."
+}

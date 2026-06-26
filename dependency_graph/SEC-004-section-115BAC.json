@@ -1,0 +1,93 @@
+{
+  "$schema": "../schemas/dependency-schema.json",
+  "section_id": "SEC-004",
+  "section_ref": "Section 115BAC",
+  "act": "Income Tax Act, 1961",
+  "change_risk": "high",
+
+  "affected_objects": {
+    "layer_1_rules": [
+      {
+        "id": "R-0005",
+        "title": "New Tax Regime is Default from AY2024-25",
+        "dependency_type": "threshold",
+        "affected_fields": [
+          "logic.if (regime default condition)",
+          "authority.finance_act",
+          "notes (slab rates, standard deduction, rebate limit)"
+        ],
+        "change_required": "Update slab thresholds, standard deduction, rebate limit in notes. Increment MINOR version. If the default nature of the regime changes, increment MAJOR."
+      }
+    ],
+    "layer_2_decisions": [
+      {
+        "id": "D-002",
+        "title": "Which tax regime is optimal?",
+        "via_rule": "R-0005",
+        "change_required": "Recompute comparison logic. If slab rates or standard deduction changed, the breakeven point shifts. Update D-002 description and computation examples."
+      },
+      {
+        "id": "D-004",
+        "title": "What is the refund or tax due?",
+        "via_rule": "R-0005",
+        "change_required": "Slab rate changes directly affect tax liability computation. Update any hardcoded examples."
+      }
+    ],
+    "layer_3_decision_trees": [
+      {
+        "id": "DT-002",
+        "via_decision": "D-002",
+        "change_required": "Update slab thresholds in any node conditions referencing specific income amounts."
+      }
+    ],
+    "layer_4_validations": [],
+    "layer_5_cases": [
+      {
+        "id": "C-000001",
+        "title": "Salary + Gig Income → ITR-4, New Regime",
+        "change_required": "Recompute tax_liability, refund_amount in case.json and rewrite explanation.md tax computation table."
+      }
+    ],
+    "layer_6_tests": [
+      {
+        "id": "T-0008",
+        "change_required": "Update expected tax output if slabs changed. Add new boundary tests at updated slab thresholds."
+      }
+    ],
+    "layer_7_prompts": [
+      {
+        "id": "P-002",
+        "change_required": "Update all slab values in the computation template. Update standard_deduction and rebate_87A_limit values."
+      }
+    ]
+  },
+
+  "impact_summary": {
+    "total_objects_affected": 8,
+    "rules_affected": 1,
+    "decisions_affected": 2,
+    "validations_affected": 0,
+    "cases_affected": 1,
+    "tests_affected": 1,
+    "prompts_affected": 1,
+    "estimated_update_effort": "medium"
+  },
+
+  "update_procedure": [
+    "1. Read the Finance Act amendment — identify new slab rates, standard deduction, rebate limit, and effective AY.",
+    "2. Update SEC-004 in section-registry.json: all key_thresholds, last_amended_by, last_amended_date.",
+    "3. Create CH-XXXX.json change entries for each affected object.",
+    "4. Update R-0005: update notes with new slab values, increment MINOR version. If default status changes, increment MAJOR.",
+    "5. Update D-002 description and any computation examples that reference old slab values.",
+    "6. Update DT-002 if any nodes contain hardcoded income thresholds.",
+    "7. Update C-000001: recompute case.json final_output and rewrite explanation.md tax table.",
+    "8. Update T-0008: update expected_output with new tax computation.",
+    "9. Add new boundary tests: one at each new slab threshold, one at rebate limit.",
+    "10. Update P-002: all slab values in the computation template.",
+    "11. Run all tests. All affected tests must pass before marking update complete.",
+    "12. Update registry/index.json, CHANGELOG.md.",
+    "13. Git commit: '[SEC-004] Finance Act YYYY — Section 115BAC slab update (AY-XXXX-XX)'"
+  ],
+
+  "last_verified": "2026-06-26"
+}

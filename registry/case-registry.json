@@ -1,0 +1,22 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "type": "case-registry",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "cases": [
+    {
+      "id": "C-000001",
+      "title": "Salary + Gig Income → ITR-4, New Regime",
+      "assessment_year": "AY2025-26",
+      "income_heads": ["salary", "business-presumptive-44AD"],
+      "itr_form": "ITR-4",
+      "tax_regime": "new",
+      "source": "synthetic",
+      "verified": false,
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+      "rule_refs": ["R-0001", "R-0002", "R-0004", "R-0005"],
+      "validation_refs": ["V-001", "V-002", "V-003"],
+      "file": "cases/C-000001-salary-gig-itr4/"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "id": "PAT-003",
+  "title": "Salary + Capital Gains (Equity / Mutual Funds / Property)",
+  "description": "Taxpayer has salary income plus capital gains from equity shares, mutual funds, or property sales. Requires ITR-2. Growing rapidly as retail investment in equity markets increases. Capital gains from AY2025-26 are subject to revised rates following Finance Act 2024.",
+  "prevalence": {
+    "tier": "common",
+    "description": "Growing rapidly with increased retail participation in stock markets and mutual funds via apps like Zerodha, Groww, Kite.",
+    "estimated_pct_of_filers": 10
+  },
+  "profile_signature": {
+    "income_heads": ["salary", "capital-gains-equity", "capital-gains-mf", "other-sources-interest", "other-sources-dividend"],
+    "resident_status": ["ROR"],
+    "complexity": "moderate",
+    "typical_total_income_range": { "min": 400000, "max": 10000000 },
+    "flags": {
+      "is_director": null,
+      "holds_unlisted_shares": null,
+      "has_foreign_assets": false,
+      "multiple_employers": null,
+      "has_home_loan": null
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-004",
+      "required": true,
+      "notes": "Form 16 for salary."
+    },
+    {
+      "evidence_ref": "E-007",
+      "required": true,
+      "notes": "Broker Capital Gains Statement (for equity) and/or Consolidated Account Statement / CAS from CAMS or KFintech (for mutual funds). This is the primary document for capital gains — AIS is secondary and may have errors."
+    },
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS to cross-check capital gains figures reported by broker/AMC. Also shows dividend income."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS for TDS credit including TDS on equity/MF redemptions if any."
+    },
+    {
+      "evidence_ref": "E-003",
+      "required": false,
+      "notes": "Prefill JSON. Capital gains figures in prefill are often incomplete — always use broker statement."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "Capital gains present → ITR-1 is eliminated. ITR-2 is the default here (no business income)."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 2,
+      "notes": "Regime selection. Capital gains under 112A (listed equity LTCG) and 111A (STCG) are taxed at flat rates regardless of regime. The regime choice mainly affects salary income taxation and deductions."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 3,
+      "notes": "TDS credit. Salary TDS + any TDS on MF redemptions (10% TDS on LTCG for NRIs, but typically not applicable for residents on listed equity/MF)."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 4,
+      "notes": "Tax due often arises in this pattern — taxpayers may owe tax on capital gains not covered by TDS."
+    }
+  ],
+  "applicable_rules": ["R-0002", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "often",
+      "notes": "Employer TDS mismatch."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "always",
+      "notes": "Capital gains in AIS vs broker statement mismatch is extremely common. AIS may show gross sale value where the taxpayer declares net gain. Must reconcile before filing."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "sometimes",
+      "notes": "Tax due (not refund) is more common in this pattern. Still check bank pre-validation in case there's a salary TDS refund."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT003-01",
+      "question": "Did you sell any listed equity shares or equity mutual funds during FY 2024-25?",
+      "purpose": "Identify STCG u/s 111A (15%) and LTCG u/s 112A (12.5% above ₹1.25L) applicability.",
+      "field_populated": "taxpayer.income.capital_gains_equity_flag",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT003-02",
+      "question": "Did you sell any property (flat, plot, commercial) during FY 2024-25?",
+      "purpose": "Property sale may have large capital gains and requires separate Schedule in ITR-2. Also triggers indexation / LTCG rate questions.",
+      "field_populated": "taxpayer.income.capital_gains_property_flag",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT003-03",
+      "question": "For your equity / MF sales — do you have the full Capital Gains Statement from your broker and/or CAS from CAMS / KFintech?",
+      "purpose": "Without the broker statement, capital gains computation is not possible. Confidence drops to Band D.",
+      "field_populated": "taxpayer.evidence.capital_gains_statement_present",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT003-04",
+      "question": "Do you have any unlisted shares (shares of a private company not listed on NSE/BSE)?",
+      "purpose": "Unlisted shares disqualify ITR-1 and ITR-4. In this pattern, ITR-2 is already used, but unlisted equity requires the unlisted shares schedule.",
+      "field_populated": "taxpayer.holds_unlisted_shares",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT003-05",
+      "question": "Did you have any business or freelance income this year?",
+      "purpose": "Business income + capital gains → ITR-3, not ITR-2.",
+      "field_populated": "taxpayer.income.business_income_flag",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-2",
+    "itr_form_alternatives": ["ITR-3"],
+    "tax_regime_default": "depends",
+    "common_refund_or_due": "varies",
+    "typical_audit_risk": "medium"
+  },
+  "edge_cases": [
+    {
+      "condition": "Business income also exists",
+      "consequence": "Capital gains + business income requires ITR-3.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "LTCG on listed equity > ₹1.25 lakh (AY2025-26 threshold)",
+      "consequence": "Tax at 12.5% on amount above ₹1.25L. Below this threshold, LTCG on listed equity is exempt u/s 112A.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Property sold with TDS deducted by buyer u/s 194IA (Form 26QB)",
+      "consequence": "TDS on property purchase price (not gain). Verify 26AS Part A1. TDS credit claimable. Separate schedule required.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Capital loss (sale at loss)",
+      "consequence": "Capital loss can be carried forward (LTCL → LTCG; STCL → STCG or LTCG). Must be declared in ITR-2 Schedule CFL to get credit in future years.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": [],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "Finance Act 2024 made significant changes to capital gains rates and holding periods effective from 23 July 2024. For transactions before and after this date in the same AY, the applicable rate may differ. This is a known complexity in AY2025-26 filings."
+}

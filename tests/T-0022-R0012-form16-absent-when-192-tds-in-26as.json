@@ -1,0 +1,27 @@
+{
+  "id": "T-0022",
+  "title": "26AS shows TDS u/s 192 but Form 16 not uploaded — expected_missing",
+  "target_type": "rule",
+  "target_ref": "R-0012",
+  "test_type": "negative",
+  "input": {
+    "documents_loaded": ["E-001", "E-002", "E-003"],
+    "documents_missing": ["E-004"],
+    "income_profile": { "has_salary": true, "tds_192_in_26as": true, "tan_count": 1 }
+  },
+  "expected_output": {
+    "missing_evidence_detected": true,
+    "classification": "expected_missing",
+    "missing_item": "E-004 (Form 16)",
+    "reason": "26AS shows TDS u/s 192 from TAN BLRX12345A. Form 16 from this employer is expected but not uploaded.",
+    "ecs_impact": -15,
+    "confidence_band_cap": "C",
+    "halt_pipeline": false,
+    "user_action": "Request Form 16 Part A and Part B from your employer. Required to verify gross salary, exempt allowances, and TDS details."
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Form 16 is expected whenever 192 TDS appears in 26AS. Its absence does not halt the pipeline — the engine can infer salary from AIS and 26AS — but reduces confidence. The taxpayer is prompted to upload Form 16 to improve accuracy."
+}

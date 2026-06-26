@@ -1,0 +1,30 @@
+{
+  "id": "T-0020",
+  "title": "Same TDS appears in both 26AS and Form 16 — Form 16 is corroborating, not a second credit",
+  "target_type": "rule",
+  "target_ref": "R-0011",
+  "test_type": "positive",
+  "input": {
+    "tds_credits_before_dedup": [
+      { "source": "26AS", "tan": "BLRX12345A", "section": "192", "amount": 28600, "quarter": "Q4" },
+      { "source": "Form 16", "tan": "BLRX12345A", "section": "192", "amount": 28600, "quarter": "Q4" }
+    ]
+  },
+  "expected_output": {
+    "duplicate_tds_detected": true,
+    "resolution": "retain_26as_as_credit_source",
+    "credit_claimed": 28600,
+    "form16_entry_status": "corroborating_source",
+    "conflict_log_entry": {
+      "type": "duplicate_tds",
+      "tan": "BLRX12345A",
+      "section": "192",
+      "resolution_method": "retain_26as_credit_discard_form16_credit_claim"
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "The Form 16 TDS entry and the 26AS entry refer to the same TDS deduction. Only the 26AS entry can be claimed as a credit (Section 199). Form 16 confirms that the deduction was made — it is a verification source, not an independent credit. Total TDS credit = ₹28,600, not ₹57,200."
+}

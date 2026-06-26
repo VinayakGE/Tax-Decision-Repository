@@ -1,0 +1,37 @@
+{
+  "id": "T-0010",
+  "title": "Unrecognised evidence source triggers unclassified_pending and escalation",
+  "target_type": "rule",
+  "target_ref": "R-0006",
+  "test_type": "negative",
+  "input": {
+    "evidence_item": {
+      "source": "Bank statement entry",
+      "tds_section": null,
+      "ais_category": null,
+      "gross_amount": 50000,
+      "transaction_narration": "NEFT CR — received from unknown counterparty",
+      "bank_name": "SBI"
+    }
+  },
+  "expected_output": {
+    "income_head": null,
+    "sub_classification": null,
+    "requires_confirmation": true,
+    "classification_status": "unclassified_pending",
+    "conflict_log_entry": {
+      "conflict_type": "classification_mismatch",
+      "field": "income_head",
+      "sources": ["bank_statement_entry"],
+      "resolution": "pending_intake_question"
+    },
+    "ecs_impact": "reduced_by_item_weight",
+    "intake_question_triggered": "IQ-CLASS-001",
+    "applicable_rule": "R-0006"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "A bank credit with no AIS category and no TDS section cannot be classified by R-0006. The rule correctly returns unclassified_pending, adds to the conflict log, reduces ECS, and triggers an intake question asking the taxpayer to identify the income source. This tests the else branch of R-0006."
+}

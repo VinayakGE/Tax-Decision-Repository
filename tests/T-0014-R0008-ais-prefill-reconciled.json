@@ -1,0 +1,24 @@
+{
+  "id": "T-0014",
+  "title": "AIS and Prefill JSON salary amounts agree — reconciled",
+  "target_type": "rule",
+  "target_ref": "R-0008",
+  "test_type": "positive",
+  "input": {
+    "ais": { "salary": 840000 },
+    "prefill": { "salary": 840000, "assessment_year": "AY2025-26" }
+  },
+  "expected_output": {
+    "reconciliation_status": "reconciled",
+    "ais_value": 840000,
+    "prefill_value": 840000,
+    "value_to_use": 840000,
+    "source": "ais",
+    "conflict_log_entry": null
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "When AIS and Prefill agree, the AIS value is used (it is always the primary authority). Prefill serves only as a corroborating signal."
+}

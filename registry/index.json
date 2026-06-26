@@ -1,0 +1,87 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "version": "1.0.0",
+  "generated": "2026-06-26",
+  "assessment_year_scope": "AY2025-26",
+  "description": "Master index for the Jarviz Tax Decision Repository. Every object count and health metric lives here.",
+
+  "description": "Master index for the Jarviz Tax Decision Repository. Every object count and health metric lives here.",
+
+  "counts": {
+    "rules": {
+      "total": 14,
+      "active": 14,
+      "draft": 0,
+      "deprecated": 0,
+      "superseded": 0
+    },
+    "decisions": {
+      "total": 10,
+      "active": 5,
+      "draft": 5
+    },
+    "evidence_sources": {
+      "total": 7,
+      "active": 7
+    },
+    "validations": {
+      "total": 3,
+      "active": 3,
+      "critical": 2,
+      "high": 1,
+      "medium": 0,
+      "low": 0
+    },
+    "cases": {
+      "total": 1,
+      "real": 0,
+      "synthetic": 1,
+      "verified": 0
+    },
+    "tests": {
+      "total": 27,
+      "pass": 0,
+      "fail": 0,
+      "pending": 27
+    },
+    "decision_trees": {
+      "total": 1,
+      "active": 1
+    },
+    "prompts": {
+      "total": 2,
+      "active": 2
+    },
+    "patterns": {
+      "total": 8,
+      "active": 8,
+      "estimated_coverage_pct": 95
+    }
+  },
+
+  "health": {
+    "rules_without_tests": [],
+    "rules_without_authority": [],
+    "decisions_with_draft_rules": [],
+    "cases_unverified": ["C-000001"],
+    "tests_failing": [],
+    "last_health_check": "2026-06-26"
+  },
+
+  "cross_reference": {
+    "sections_cited": ["Section 44AD", "Section 44ADA", "Section 115BAC", "Section 139(1)", "Section 87A"],
+    "finance_acts_referenced": ["Finance Act 2023", "Finance Act 2024"],
+    "assessment_years_covered": ["AY2024-25", "AY2025-26"]
+  },
+
+  "registries": {
+    "rules": "registry/rule-registry.json",
+    "decisions": "registry/decision-registry.json",
+    "evidence": "registry/evidence-registry.json",
+    "validations": "registry/validation-registry.json",
+    "cases": "registry/case-registry.json",
+    "sections": "registry/section-registry.json",
+    "versions": "registry/version-registry.json",
+    "patterns": "registry/pattern-registry.json"
+  }
+}

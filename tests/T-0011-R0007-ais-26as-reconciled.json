@@ -1,0 +1,23 @@
+{
+  "id": "T-0011",
+  "title": "AIS and 26AS salary amounts agree within 1% — reconciled",
+  "target_type": "rule",
+  "target_ref": "R-0007",
+  "test_type": "positive",
+  "input": {
+    "ais": { "salary": 840000 },
+    "26as": { "salary_tds_section_192": { "gross_salary": 840000, "tds_deducted": 28600, "tan": "BLRX12345A" } }
+  },
+  "expected_output": {
+    "reconciliation_status": "reconciled",
+    "variance_pct": 0.0,
+    "authoritative_value_source": "26AS",
+    "conflict_log_entry": null,
+    "ecs_impact": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Canonical positive case. Salary in AIS matches 26AS exactly. No conflict, no ECS reduction. TDS credit of ₹28,600 taken from 26AS."
+}

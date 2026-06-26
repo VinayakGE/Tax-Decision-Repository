@@ -1,0 +1,32 @@
+{
+  "id": "R-0002",
+  "title": "ITR-1 Eligible — Salary, One House Property, Other Sources, Income ≤ ₹50L",
+  "description": "A Resident individual is eligible for ITR-1 if their total income does not exceed ₹50 lakh and arises only from: (a) Salary/Pension, (b) One house property (not brought forward loss), (c) Other Sources excluding winnings from lotteries and race horses.",
+  "logic": {
+    "if": "taxpayer.resident_status == 'ROR' AND taxpayer.income.total <= 5000000 AND taxpayer.income.has_business == false AND taxpayer.income.capital_gains == false AND taxpayer.income.foreign_income == false AND taxpayer.is_director == false AND taxpayer.holds_unlisted_shares == false AND taxpayer.has_foreign_assets == false AND taxpayer.income.house_property_count <= 1 AND taxpayer.income.lottery_income == false",
+    "then": "itr_form = ITR-1 is VALID",
+    "else": "ITR-1 not eligible — evaluate ITR-2, ITR-3, or ITR-4"
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 139(1) read with ITR-1 Instructions AY2025-26",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2024",
+    "effective_from": "2024-04-01",
+    "url": null
+  },
+  "effective_date": "2024-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "superseded_by": null,
+  "tags": ["itr-form", "eligibility", "itr1", "salary"],
+  "evidence_refs": ["E-001", "E-003", "E-004"],
+  "decision_refs": ["D-001"],
+  "test_refs": ["T-0003", "T-0004"],
+  "change_refs": ["CH-0001"],
+  "notes": "All conditions must be satisfied simultaneously. Any one disqualifier pushes to ITR-2 or higher."
+}
