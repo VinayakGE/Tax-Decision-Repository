@@ -11,8 +11,9 @@
 
   "standard_deduction": {
     "new_regime": 75000,
-    "old_regime": 50000,
-    "section": "16(ia)"
+    "old_regime": 75000,
+    "section": "16(ia)",
+    "note": "Raised to ₹75,000 for AY2025-26 under Finance (No. 2) Act 2024 — applies to both regimes."
   },
 
   "chapter_via": {
