@@ -1,0 +1,73 @@
+{
+  "_comment": "Real Case Template — AY2025-26. Replace all placeholder values. Remove fields that don't apply. human_expected must be independently computed (from ITR portal, CA computation, or manual working).",
+
+  "case_id": "RC-0001",
+  "source": "real",
+  "anonymized": true,
+  "assessment_year": "AY2025-26",
+  "submitted_by": "",
+  "verified": false,
+
+  "taxpayer": {
+    "name": "Anonymized-01",
+    "age": 35,
+    "age_bracket": "general"
+  },
+
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [
+        {
+          "source": "Form 16",
+          "gross_salary": 1000000,
+          "employer": "Employer Name (anonymized)",
+          "tan": "XXXX00000X"
+        }
+      ],
+      "head_2_house_property": [],
+      "head_3_business": [],
+      "head_4_capital_gains": [],
+      "head_5_other_sources": []
+    },
+
+    "basic_salary": null,
+    "hra_actual": null,
+    "rent_paid": null,
+    "city_type": null,
+
+    "investments_80C": null,
+    "nps_contribution_80ccd1b": null,
+    "deduction_80d_self_premium": null,
+    "deduction_80d_parents_premium": null,
+    "parent_age_bracket": null,
+
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+
+    "tds_credits_from_26AS": [
+      { "tan": "XXXX00000X", "section": "192", "amount": 0, "employer": "Employer Name (anonymized)" }
+    ],
+    "advance_tax_paid": 0,
+    "self_assessment_tax_paid": 0,
+
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15",
+    "due_date": "2025-07-31",
+    "income_type": "salary_only"
+  },
+
+  "human_expected": {
+    "_comment": "Fill in the fields you have. Only declared fields are validated. Tolerance: ±1 rupee for amounts.",
+    "taxable_income_old_regime": null,
+    "taxable_income_new_regime": null,
+    "total_tax_old_regime": null,
+    "total_tax_new_regime": null,
+    "regime_recommendation": null,
+    "outcome": null,
+    "refund_amount": null,
+    "demand_amount": null
+  },
+
+  "notes": "",
+  "entity_pressure_observed": []
+}
