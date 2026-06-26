@@ -5,6 +5,8 @@
   "assessment_year_scope": "AY2025-26",
   "description": "Master index for the Jarviz Tax Decision Repository. Every object count and health metric lives here.",
 
+  "description": "Master index for the Jarviz Tax Decision Repository. Every object count and health metric lives here.",
+
   "counts": {
     "rules": {
       "total": 5,
@@ -49,6 +51,11 @@
     "prompts": {
       "total": 2,
       "active": 2
+    },
+    "patterns": {
+      "total": 8,
+      "active": 8,
+      "estimated_coverage_pct": 95
     }
   },
 
@@ -74,6 +81,7 @@
     "validations": "registry/validation-registry.json",
     "cases": "registry/case-registry.json",
     "sections": "registry/section-registry.json",
-    "versions": "registry/version-registry.json"
+    "versions": "registry/version-registry.json",
+    "patterns": "registry/pattern-registry.json"
   }
 }

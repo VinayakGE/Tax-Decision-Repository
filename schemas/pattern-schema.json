@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pattern-schema.json",
+  "title": "Pattern",
+  "description": "Schema for a recurring filing pattern. Patterns are coarse-grained taxpayer profiles that Jarviz matches against before applying detailed rules. A matched pattern narrows the decision space, orders the questions, and surfaces the most likely validations — before a single rule is evaluated.",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "description",
+    "prevalence",
+    "profile_signature",
+    "typical_evidence",
+    "applicable_decisions",
+    "applicable_rules",
+    "common_validations",
+    "intake_questions",
+    "expected_outcomes",
+    "edge_cases",
+    "status",
+    "version",
+    "assessment_years"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^PAT-[0-9]{3}$",
+      "description": "Unique pattern ID. Format: PAT-XXX"
+    },
+    "title": {
+      "type": "string",
+      "description": "Short, plain-English name for this pattern. Should be recognisable to a taxpayer."
+    },
+    "description": {
+      "type": "string",
+      "description": "What this pattern covers. Who it applies to. Why it is a distinct pattern."
+    },
+    "prevalence": {
+      "type": "object",
+      "required": ["tier", "description"],
+      "properties": {
+        "tier": {
+          "type": "string",
+          "enum": ["very-common", "common", "moderate", "uncommon", "rare"],
+          "description": "Rough frequency estimate across individual filers."
+        },
+        "description": {
+          "type": "string",
+          "description": "Qualitative description of how common this pattern is."
+        },
+        "estimated_pct_of_filers": {
+          "type": ["number", "null"],
+          "description": "Estimated percentage of individual filers this pattern covers. Null if unknown."
+        }
+      }
+    },
+    "profile_signature": {
+      "type": "object",
+      "description": "The observable characteristics that identify this pattern. Used for pattern matching.",
+      "required": ["income_heads", "resident_status", "complexity"],
+      "properties": {
+        "income_heads": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "salary",
+              "business-regular",
+              "business-presumptive-44AD",
+              "business-presumptive-44ADA",
+              "business-presumptive-44AE",
+              "capital-gains-equity",
+              "capital-gains-property",
+              "capital-gains-mf",
+              "house-property-sop",
+              "house-property-letout",
+              "other-sources-interest",
+              "other-sources-dividend",
+              "other-sources-gifts",
+              "other-sources-lottery",
+              "pension",
+              "agricultural"
+            ]
+          },
+          "description": "Income heads present in this pattern."
+        },
+        "resident_status": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["ROR", "RNOR", "NR"] },
+          "description": "Resident statuses this pattern applies to."
+        },
+        "complexity": {
+          "type": "string",
+          "enum": ["simple", "moderate", "complex"],
+          "description": "Filing complexity for this pattern."
+        },
+        "typical_total_income_range": {
+          "type": "object",
+          "properties": {
+            "min": { "type": ["number", "null"] },
+            "max": { "type": ["number", "null"] }
+          }
+        },
+        "flags": {
+          "type": "object",
+          "properties": {
+            "is_director": { "type": ["boolean", "null"] },
+            "holds_unlisted_shares": { "type": ["boolean", "null"] },
+            "has_foreign_assets": { "type": ["boolean", "null"] },
+            "multiple_employers": { "type": ["boolean", "null"] },
+            "has_home_loan": { "type": ["boolean", "null"] }
+          }
+        }
+      }
+    },
+    "typical_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_ref", "required", "notes"],
+        "properties": {
+          "evidence_ref": { "type": "string", "pattern": "^E-[0-9]{3}$" },
+          "required": { "type": "boolean" },
+          "notes": { "type": "string" }
+        }
+      },
+      "description": "Documents that are typically present for this pattern, in priority order."
+    },
+    "applicable_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["decision_ref", "order", "notes"],
+        "properties": {
+          "decision_ref": { "type": "string", "pattern": "^D-[0-9]{3}$" },
+          "order": { "type": "integer", "minimum": 1 },
+          "notes": { "type": "string" }
+        }
+      },
+      "description": "Decisions to run, in execution order."
+    },
+    "applicable_rules": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^R-[0-9]{4}$" },
+      "description": "Rules most relevant to this pattern. Not exhaustive — the rule engine applies all applicable rules."
+    },
+    "common_validations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["validation_ref", "likelihood", "notes"],
+        "properties": {
+          "validation_ref": { "type": "string", "pattern": "^V-[0-9]{3}$" },
+          "likelihood": {
+            "type": "string",
+            "enum": ["always", "often", "sometimes", "rarely"],
+            "description": "How often this validation triggers for this pattern."
+          },
+          "notes": { "type": "string" }
+        }
+      },
+      "description": "Validations that commonly trigger for this pattern, with likelihood."
+    },
+    "intake_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "question", "purpose", "field_populated"],
+        "properties": {
+          "id": { "type": "string" },
+          "question": { "type": "string" },
+          "purpose": { "type": "string" },
+          "field_populated": { "type": "string" },
+          "conditional_on": {
+            "type": ["object", "null"],
+            "description": "Only ask this question if condition is met.",
+            "properties": {
+              "field": { "type": "string" },
+              "value": {}
+            }
+          },
+          "answer_type": {
+            "type": "string",
+            "enum": ["boolean", "number", "string", "date", "enum", "document-upload"]
+          },
+          "answer_options": {
+            "type": ["array", "null"],
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "description": "Ordered questions Jarviz asks to confirm the pattern and fill gaps. Fewest necessary questions to reach a confident decision."
+    },
+    "expected_outcomes": {
+      "type": "object",
+      "required": ["itr_form", "tax_regime_default"],
+      "properties": {
+        "itr_form": {
+          "type": "string",
+          "description": "Most common ITR form for this pattern."
+        },
+        "itr_form_alternatives": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Alternative forms if certain flags are present."
+        },
+        "tax_regime_default": {
+          "type": "string",
+          "enum": ["new", "old", "depends"],
+          "description": "Which regime is typically better for this pattern."
+        },
+        "common_refund_or_due": {
+          "type": "string",
+          "enum": ["usually-refund", "usually-nil", "usually-due", "varies"],
+          "description": "Typical tax outcome for this pattern."
+        },
+        "typical_audit_risk": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        }
+      }
+    },
+    "edge_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["condition", "consequence", "escalation"],
+        "properties": {
+          "condition": { "type": "string" },
+          "consequence": { "type": "string" },
+          "escalation": {
+            "type": "string",
+            "enum": ["upgrade-pattern", "upgrade-itr-form", "apply-additional-rule", "human-review"]
+          },
+          "upgrade_to_pattern": {
+            "type": ["string", "null"],
+            "pattern": "^PAT-[0-9]{3}$"
+          }
+        }
+      },
+      "description": "Conditions that break this pattern and what to do."
+    },
+    "linked_cases": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^C-[0-9]{6}$" },
+      "description": "Case IDs that exemplify this pattern."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "deprecated"]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "assessment_years": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^AY[0-9]{4}-[0-9]{2}$" },
+      "minItems": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

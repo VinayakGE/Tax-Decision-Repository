@@ -5,6 +5,29 @@ Format: `[CH-XXXX] YYYY-MM-DD — Type — Summary`
 
 ---
 
+## v1.2.0 — AY2025-26 (2026-06-26)
+
+**Pattern Repository — 8 filing patterns covering ~95% of individual filers.**
+
+### Added
+- [CH-0003] `schemas/pattern-schema.json` — JSON Schema for pattern objects
+- [CH-0003] `docs/pattern-matching.md` — Pattern matching process: document fingerprint → confirmation questions → pattern confirmation or escalation → rule engine
+- [CH-0003] `patterns/PAT-001` — Salaried, Single Employer (~45% of filers) → ITR-1
+- [CH-0003] `patterns/PAT-002` — Salary + Gig / Freelance 44AD (~12%) → ITR-4
+- [CH-0003] `patterns/PAT-003` — Salary + Capital Gains (~10%) → ITR-2
+- [CH-0003] `patterns/PAT-004` — Multiple Employers / Job Change (~8%) → ITR-1
+- [CH-0003] `patterns/PAT-005` — NRI with Indian Income (~3%) → ITR-2
+- [CH-0003] `patterns/PAT-006` — Pensioner + FD Interest (~7%) → ITR-1
+- [CH-0003] `patterns/PAT-007` — Salary + Let-Out House Property (~4%) → ITR-1
+- [CH-0003] `patterns/PAT-008` — Professional Presumptive 44ADA (~3%) → ITR-4
+- [CH-0003] `patterns/README.md` — Pattern index and usage guide
+- [CH-0003] `registry/pattern-registry.json` — Pattern registry ordered by prevalence
+
+### Updated
+- [CH-0003] `registry/index.json` — Added pattern count (8 active, ~95% estimated coverage)
+
+---
+
 ## v1.1.0 — AY2025-26 (2026-06-26)
 
 **Scalability architecture — five missing modules.**

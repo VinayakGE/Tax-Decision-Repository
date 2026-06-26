@@ -1,0 +1,158 @@
+{
+  "id": "PAT-005",
+  "title": "Non-Resident Indian (NRI) — Indian Source Income",
+  "description": "Taxpayer is a Non-Resident (NR) or Resident Not Ordinarily Resident (RNOR) who has income from Indian sources: interest on NRO accounts, dividends, rental income, or capital gains on Indian assets. Cannot use ITR-1 or ITR-4. Requires ITR-2 (or ITR-3 if business income). TDS rates for NRIs differ significantly from residents.",
+  "prevalence": {
+    "tier": "moderate",
+    "description": "Large Indian diaspora with Indian investments. Common among NRIs in USA, UK, UAE, Singapore, Canada.",
+    "estimated_pct_of_filers": 3
+  },
+  "profile_signature": {
+    "income_heads": ["other-sources-interest", "other-sources-dividend", "house-property-letout", "capital-gains-equity", "capital-gains-property"],
+    "resident_status": ["NR", "RNOR"],
+    "complexity": "complex",
+    "typical_total_income_range": { "min": 100000, "max": null },
+    "flags": {
+      "is_director": null,
+      "holds_unlisted_shares": null,
+      "has_foreign_assets": true,
+      "multiple_employers": null,
+      "has_home_loan": null
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS will show interest income from NRO accounts, dividends, and any Indian capital gains. NRE account interest is exempt and should NOT appear in AIS or the return."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS critical — NRI TDS rates are higher (interest: 30%, dividends: 20%, capital gains: varies). TDS credit must be verified."
+    },
+    {
+      "evidence_ref": "E-005",
+      "required": false,
+      "notes": "Form 16A from banks for TDS on NRO interest income."
+    },
+    {
+      "evidence_ref": "E-007",
+      "required": false,
+      "notes": "If capital gains on Indian equity/MF: broker statement required."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "NR status → ITR-1 and ITR-4 are immediately disqualified. ITR-2 is the minimum form."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 2,
+      "notes": "NRIs cannot opt for the New Regime if they have income chargeable at special rates. Regime selection is more restricted. DTAA benefits may also apply."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 3,
+      "notes": "TDS for NRIs is deducted at higher rates (u/s 195). TDS credit in 26AS is the primary source."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 4,
+      "notes": "Refund is very common for NRIs — TDS is deducted at the flat rate but actual liability after DTAA or basic exemption may be lower."
+    }
+  ],
+  "applicable_rules": ["R-0003", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "often",
+      "notes": "TDS on NRO accounts deducted by banks needs to be verified against 26AS."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "always",
+      "notes": "AIS income coverage critical. NRIs often have income that appears in AIS but they are unaware of."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "always",
+      "notes": "Refund almost always present. Bank account pre-validation is especially important — NRI refunds go to NRO account only."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT005-01",
+      "question": "What is your residential status for FY 2024-25? (How many days did you spend in India?)",
+      "purpose": "Determine NR vs RNOR vs ROR. Days in India determines status. ≥ 182 days = ROR typically.",
+      "field_populated": "taxpayer.resident_status",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["Non-Resident (< 60 days in India)", "RNOR (returned to India recently)", "Unsure — need to calculate"]
+    },
+    {
+      "id": "IQ-PAT005-02",
+      "question": "What types of Indian income did you receive? Select all that apply.",
+      "purpose": "Identify income heads to determine ITR form and applicable TDS rates.",
+      "field_populated": "taxpayer.income.nri_income_types",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["NRO account interest", "NRE account interest (usually exempt)", "Dividend from Indian companies", "Rental income from Indian property", "Capital gains on Indian equity/MF", "Capital gains on Indian property", "Pension from Indian employer"]
+    },
+    {
+      "id": "IQ-PAT005-03",
+      "question": "Do you want to claim benefits under a Double Taxation Avoidance Agreement (DTAA) between India and your country of residence?",
+      "purpose": "DTAA may reduce applicable tax rate. Requires Tax Residency Certificate (TRC) from the country of residence.",
+      "field_populated": "taxpayer.dtaa_claim",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT005-04",
+      "question": "Do you have a Tax Residency Certificate (TRC) from your country of residence?",
+      "purpose": "Required to claim DTAA benefits. Without TRC, DTAA cannot be claimed.",
+      "field_populated": "taxpayer.trc_available",
+      "conditional_on": {
+        "field": "taxpayer.dtaa_claim",
+        "value": true
+      },
+      "answer_type": "boolean",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-2",
+    "itr_form_alternatives": ["ITR-3"],
+    "tax_regime_default": "depends",
+    "common_refund_or_due": "usually-refund",
+    "typical_audit_risk": "medium"
+  },
+  "edge_cases": [
+    {
+      "condition": "NRI has business income from India",
+      "consequence": "ITR-3 required instead of ITR-2.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "NRE account interest included as income",
+      "consequence": "NRE account interest is exempt u/s 10(4). Must not be included in taxable income. If it appears in AIS, raise AIS feedback.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "NRI total Indian income < basic exemption limit (₹2.5L) with no special rate income",
+      "consequence": "No tax liability. Filing may still be required if TDS was deducted (to claim refund).",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": [],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "NRI tax is significantly more complex than resident tax due to DTAA, special TDS rates, and restricted regime options. This pattern only covers basic NRI scenarios. Complex cases (NRI with business PE in India, foreign tax credit, etc.) require human CA review."
+}

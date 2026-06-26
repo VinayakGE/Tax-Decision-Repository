@@ -1,0 +1,144 @@
+{
+  "id": "PAT-004",
+  "title": "Multiple Employers — Job Change During the Year",
+  "description": "Taxpayer received salary from more than one employer during FY 2024-25, typically due to a job change. The second employer usually did not account for the income and TDS from the first employer, resulting in under-deduction of TDS and a potential tax due at filing. This pattern catches a very common and financially significant surprise.",
+  "prevalence": {
+    "tier": "common",
+    "description": "High attrition in Indian IT, finance, and startup sectors makes this pattern increasingly common.",
+    "estimated_pct_of_filers": 8
+  },
+  "profile_signature": {
+    "income_heads": ["salary", "other-sources-interest"],
+    "resident_status": ["ROR"],
+    "complexity": "moderate",
+    "typical_total_income_range": { "min": 600000, "max": 8000000 },
+    "flags": {
+      "is_director": null,
+      "holds_unlisted_shares": null,
+      "has_foreign_assets": false,
+      "multiple_employers": true,
+      "has_home_loan": null
+    }
+  },
+  "typical_evidence": [
+    {
+      "evidence_ref": "E-004",
+      "required": true,
+      "notes": "Form 16 from EACH employer is required. Taxpayer may not receive Form 16 from the first employer if they left before June 15. In that case, use Employer 1's salary slips and 26AS."
+    },
+    {
+      "evidence_ref": "E-002",
+      "required": true,
+      "notes": "26AS is critical here — it shows TDS from both employers under separate TAN entries. Total TDS claimable = sum of all entries."
+    },
+    {
+      "evidence_ref": "E-001",
+      "required": true,
+      "notes": "AIS to confirm total salary from all sources and check for any additional income."
+    }
+  ],
+  "applicable_decisions": [
+    {
+      "decision_ref": "D-001",
+      "order": 1,
+      "notes": "Two employers still results in ITR-1 if all other conditions are met (total income ≤ ₹50L, ROR, no capital gains, no disqualifiers). The number of employers doesn't change the ITR form."
+    },
+    {
+      "decision_ref": "D-002",
+      "order": 2,
+      "notes": "Regime selection. Combined salary from both employers. New Regime is usually better unless substantial deductions."
+    },
+    {
+      "decision_ref": "D-003",
+      "order": 3,
+      "notes": "TDS from both employers must be reconciled against 26AS. CRITICAL: Employer 2 typically deducted TDS only on their portion of salary. The combined income pushes the taxpayer into a higher slab. This often produces a tax due."
+    },
+    {
+      "decision_ref": "D-004",
+      "order": 4,
+      "notes": "Tax due is common. Taxpayer may need to pay self-assessment tax before filing."
+    }
+  ],
+  "applicable_rules": ["R-0002", "R-0005"],
+  "common_validations": [
+    {
+      "validation_ref": "V-001",
+      "likelihood": "always",
+      "notes": "Two sets of Form 16 vs 26AS to reconcile. Both must match 26AS. Mismatches are very common when employers file quarterly TDS returns late."
+    },
+    {
+      "validation_ref": "V-002",
+      "likelihood": "sometimes",
+      "notes": "AIS may show the combined salary from both employers. Ensure both are included in the return."
+    },
+    {
+      "validation_ref": "V-003",
+      "likelihood": "sometimes",
+      "notes": "Tax due is common, so refund is less likely. But always verify."
+    }
+  ],
+  "intake_questions": [
+    {
+      "id": "IQ-PAT004-01",
+      "question": "From how many employers did you receive salary during FY 2024-25?",
+      "purpose": "Confirm multiple employers and count them.",
+      "field_populated": "taxpayer.employer_count",
+      "conditional_on": null,
+      "answer_type": "enum",
+      "answer_options": ["Two", "Three", "More than three"]
+    },
+    {
+      "id": "IQ-PAT004-02",
+      "question": "Did you give your Form 12B (declaration of previous employer's income) to your new employer?",
+      "purpose": "If yes, Employer 2 should have calculated combined TDS correctly. If no, under-deduction is almost certain.",
+      "field_populated": "taxpayer.form12b_submitted",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT004-03",
+      "question": "Do you have Form 16 from all employers?",
+      "purpose": "Missing Form 16 from the first employer is common if the exit happened before June 15. Salary slips + 26AS will be needed.",
+      "field_populated": "taxpayer.all_form16_present",
+      "conditional_on": null,
+      "answer_type": "boolean",
+      "answer_options": null
+    },
+    {
+      "id": "IQ-PAT004-04",
+      "question": "What was your approximate combined salary from all employers for the full year?",
+      "purpose": "Quick check on ITR-1 income ceiling and advance tax obligation.",
+      "field_populated": "taxpayer.income.total_salary_estimate",
+      "conditional_on": null,
+      "answer_type": "number",
+      "answer_options": null
+    }
+  ],
+  "expected_outcomes": {
+    "itr_form": "ITR-1",
+    "itr_form_alternatives": ["ITR-2"],
+    "tax_regime_default": "new",
+    "common_refund_or_due": "usually-due",
+    "typical_audit_risk": "low"
+  },
+  "edge_cases": [
+    {
+      "condition": "Taxpayer did not submit Form 12B to new employer",
+      "consequence": "Employer 2 deducted TDS only on their salary portion. Combined income is in a higher slab. Tax due at filing is common. Interest u/s 234B may apply if advance tax was not paid.",
+      "escalation": "apply-additional-rule",
+      "upgrade_to_pattern": null
+    },
+    {
+      "condition": "Total combined salary > ₹50 lakh",
+      "consequence": "ITR-1 income ceiling breached. Must use ITR-2.",
+      "escalation": "upgrade-itr-form",
+      "upgrade_to_pattern": null
+    }
+  ],
+  "linked_cases": [],
+  "status": "active",
+  "version": "1.0.0",
+  "assessment_years": ["AY2025-26"],
+  "notes": "The most common source of unexpected tax dues in salaried employees. Jarviz should proactively warn taxpayers about under-deduction risk as soon as multiple employers are confirmed."
+}

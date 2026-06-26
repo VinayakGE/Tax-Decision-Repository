@@ -1,0 +1,113 @@
+{
+  "$schema": "../schemas/registry-index-schema.json",
+  "type": "pattern-registry",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "description": "Registry of all filing patterns. Patterns are ordered by prevalence — Jarviz attempts matching from most to least common.",
+  "patterns": [
+    {
+      "id": "PAT-001",
+      "title": "Salaried Employee — Single Employer, No Other Income",
+      "prevalence_tier": "very-common",
+      "estimated_pct_of_filers": 45,
+      "status": "active",
+      "itr_form": "ITR-1",
+      "complexity": "simple",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+      "rule_refs": ["R-0001", "R-0002", "R-0005"],
+      "linked_cases": [],
+      "file": "patterns/PAT-001-salaried-single-employer.json"
+    },
+    {
+      "id": "PAT-002",
+      "title": "Salary + Gig / Freelance Income (Presumptive u/s 44AD)",
+      "prevalence_tier": "common",
+      "estimated_pct_of_filers": 12,
+      "status": "active",
+      "itr_form": "ITR-4",
+      "complexity": "moderate",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004", "D-005"],
+      "rule_refs": ["R-0001", "R-0004", "R-0005"],
+      "linked_cases": ["C-000001"],
+      "file": "patterns/PAT-002-salary-gig-presumptive.json"
+    },
+    {
+      "id": "PAT-003",
+      "title": "Salary + Capital Gains (Equity / Mutual Funds / Property)",
+      "prevalence_tier": "common",
+      "estimated_pct_of_filers": 10,
+      "status": "active",
+      "itr_form": "ITR-2",
+      "complexity": "moderate",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+      "rule_refs": ["R-0002", "R-0005"],
+      "linked_cases": [],
+      "file": "patterns/PAT-003-salary-capital-gains.json"
+    },
+    {
+      "id": "PAT-004",
+      "title": "Multiple Employers — Job Change During the Year",
+      "prevalence_tier": "common",
+      "estimated_pct_of_filers": 8,
+      "status": "active",
+      "itr_form": "ITR-1",
+      "complexity": "moderate",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+      "rule_refs": ["R-0002", "R-0005"],
+      "linked_cases": [],
+      "file": "patterns/PAT-004-multiple-employers.json"
+    },
+    {
+      "id": "PAT-006",
+      "title": "Pensioner — Pension + FD / Savings Interest",
+      "prevalence_tier": "common",
+      "estimated_pct_of_filers": 7,
+      "status": "active",
+      "itr_form": "ITR-1",
+      "complexity": "simple",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+      "rule_refs": ["R-0002", "R-0005"],
+      "linked_cases": [],
+      "file": "patterns/PAT-006-pensioner-fd-interest.json"
+    },
+    {
+      "id": "PAT-007",
+      "title": "Salary + Let-Out House Property",
+      "prevalence_tier": "moderate",
+      "estimated_pct_of_filers": 4,
+      "status": "active",
+      "itr_form": "ITR-1",
+      "complexity": "moderate",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+      "rule_refs": ["R-0002", "R-0005"],
+      "linked_cases": [],
+      "file": "patterns/PAT-007-salary-letout-property.json"
+    },
+    {
+      "id": "PAT-008",
+      "title": "Specified Professional — Presumptive Income u/s 44ADA (No Salary)",
+      "prevalence_tier": "moderate",
+      "estimated_pct_of_filers": 3,
+      "status": "active",
+      "itr_form": "ITR-4",
+      "complexity": "moderate",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004", "D-005"],
+      "rule_refs": ["R-0004", "R-0005"],
+      "linked_cases": [],
+      "file": "patterns/PAT-008-professional-presumptive-44ada.json"
+    },
+    {
+      "id": "PAT-005",
+      "title": "Non-Resident Indian (NRI) — Indian Source Income",
+      "prevalence_tier": "moderate",
+      "estimated_pct_of_filers": 3,
+      "status": "active",
+      "itr_form": "ITR-2",
+      "complexity": "complex",
+      "decision_refs": ["D-001", "D-002", "D-003", "D-004"],
+      "rule_refs": ["R-0003", "R-0005"],
+      "linked_cases": [],
+      "file": "patterns/PAT-005-nri-indian-income.json"
+    }
+  ]
+}

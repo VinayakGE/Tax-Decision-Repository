@@ -1,0 +1,14 @@
+{
+  "id": "CH-0003",
+  "date": "2026-06-26",
+  "author": "Vinayak Gautham",
+  "type": "add",
+  "object_type": "docs",
+  "object_id": "PAT-001 through PAT-008, pattern-schema, pattern-registry, docs/pattern-matching",
+  "summary": "Added Pattern Repository — a sibling to the Rule Repository. Eight filing patterns covering approximately 95% of individual filer profiles: PAT-001 (Salaried Single Employer), PAT-002 (Salary + Gig 44AD), PAT-003 (Salary + Capital Gains), PAT-004 (Multiple Employers), PAT-005 (NRI), PAT-006 (Pensioner), PAT-007 (Salary + Let-Out HP), PAT-008 (Professional 44ADA). Each pattern defines: profile signature for matching, typical evidence, ordered decisions, applicable rules, common validations, minimum intake questions, expected outcomes, and edge cases with escalation paths.",
+  "authority": null,
+  "prior_version": "1.1.0",
+  "new_version": "1.2.0",
+  "git_commit": null,
+  "notes": "Patterns reduce the number of questions Jarviz must ask from ~20 (full decision tree) to ≤5 (pattern confirmation). They do not replace the rule engine — they compress the entry point. Rule engine verdict always overrides pattern expectation."
+}
