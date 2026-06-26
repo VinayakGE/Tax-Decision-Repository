@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://jarviz.in/schemas/benchmark-schema.json",
+  "title": "Jarviz Accuracy Benchmark (JAB) Report Schema",
+  "description": "Schema for JAB release reports stored in benchmarks/reports/",
+  "type": "object",
+  "required": ["report_id", "assessment_year", "version", "generated_at", "gss_case_count", "gss_version", "metrics", "overall_passed", "blocking_failures", "release_recommendation"],
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "pattern": "^JAB-v[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Unique identifier for this report, e.g. JAB-v1.3.0"
+    },
+    "assessment_year": {
+      "type": "string",
+      "pattern": "^AY[0-9]{4}-[0-9]{2}$",
+      "description": "Assessment year this benchmark covers"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Jarviz version that produced this report"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "gss_case_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of Gold Standard Set cases used in this benchmark run"
+    },
+    "gss_version": {
+      "type": "string",
+      "pattern": "^GSS-[0-9]{3}$",
+      "description": "Version identifier of the Gold Standard Set used"
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "M01_itr_accuracy",
+        "M02_refund_accuracy",
+        "M03_classification_accuracy",
+        "M04_validation_precision",
+        "M05_validation_recall",
+        "M06_false_positive_rate",
+        "M07_avg_questions",
+        "M08_processing_time_ms",
+        "M09_human_override_rate"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "M01_itr_accuracy": {
+          "type": "object",
+          "required": ["value", "target", "passed", "critical_misses", "over_filing_misses"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 99.0 },
+            "passed": { "type": "boolean" },
+            "critical_misses": { "type": "integer", "minimum": 0 },
+            "over_filing_misses": { "type": "integer", "minimum": 0 },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M02_refund_accuracy": {
+          "type": "object",
+          "required": ["value", "target", "passed", "mean_error_pct", "cases_above_500_rupee_threshold"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0 },
+            "target": { "type": "number", "const": 0.5 },
+            "passed": { "type": "boolean" },
+            "mean_error_pct": { "type": "number", "minimum": 0 },
+            "cases_above_500_rupee_threshold": { "type": "integer", "minimum": 0 },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M03_classification_accuracy": {
+          "type": "object",
+          "required": ["value", "target", "passed", "missed_income_rate"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 98.0 },
+            "passed": { "type": "boolean" },
+            "missed_income_rate": { "type": "number", "minimum": 0, "maximum": 100 },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M04_validation_precision": {
+          "type": "object",
+          "required": ["value", "target", "passed", "false_positives"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 97.0 },
+            "passed": { "type": "boolean" },
+            "false_positives": { "type": "integer", "minimum": 0 },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M05_validation_recall": {
+          "type": "object",
+          "required": ["value", "target", "passed", "false_negatives", "critical_miss_rate"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 99.0 },
+            "passed": { "type": "boolean" },
+            "false_negatives": { "type": "integer", "minimum": 0 },
+            "critical_miss_rate": { "type": "number", "minimum": 0, "maximum": 100 },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M06_false_positive_rate": {
+          "type": "object",
+          "required": ["value", "target", "passed"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 1.0 },
+            "passed": { "type": "boolean" },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M07_avg_questions": {
+          "type": "object",
+          "required": ["value", "target", "passed", "p95_questions"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0 },
+            "target": { "type": "number", "const": 3.0 },
+            "passed": { "type": "boolean" },
+            "p95_questions": { "type": "number", "minimum": 0 },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M08_processing_time_ms": {
+          "type": "object",
+          "required": ["p50", "p95", "target_p50", "target_p95", "passed", "stages_1_to_12_p50"],
+          "additionalProperties": false,
+          "properties": {
+            "p50": { "type": "number", "minimum": 0 },
+            "p95": { "type": "number", "minimum": 0 },
+            "target_p50": { "type": "number", "const": 8000 },
+            "target_p95": { "type": "number", "const": 20000 },
+            "passed": { "type": "boolean" },
+            "stages_1_to_12_p50": { "type": "number", "minimum": 0 },
+            "details": { "type": ["string", "null"] }
+          }
+        },
+        "M09_human_override_rate": {
+          "type": "object",
+          "required": ["value", "target", "passed", "status", "cases_with_outcome_data"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 2.0 },
+            "passed": { "type": ["boolean", "null"] },
+            "status": { "type": "string", "enum": ["measured", "pending"] },
+            "cases_with_outcome_data": { "type": "integer", "minimum": 0 },
+            "override_breakdown": {
+              "type": "object",
+              "properties": {
+                "jarviz_error": { "type": "integer", "minimum": 0 },
+                "human_preference": { "type": "integer", "minimum": 0 },
+                "data_not_provided": { "type": "integer", "minimum": 0 },
+                "ambiguous": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "details": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "overall_passed": { "type": "boolean" },
+    "blocking_failures": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of metric IDs that blocked release (e.g. [\"M01\", \"M05\"])"
+    },
+    "release_recommendation": {
+      "type": "string",
+      "enum": ["APPROVED", "WARNED", "BLOCKED"]
+    },
+    "signed_off_by": {
+      "type": ["string", "null"],
+      "description": "Name/initials of the person who reviewed and signed off this report"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form notes about this benchmark run"
+    }
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "assessment_year": "AY2025-26",
+  "financial_year": "FY2024-25",
+  "effective_from": "2024-04-01",
+  "authority": "Finance Act 2024",
+  "version": "1.0.0",
+
+  "new_regime": {
+    "standard_deduction": 75000,
+    "slabs": [
+      { "from": 0,       "to": 300000,  "rate": 0.00 },
+      { "from": 300001,  "to": 700000,  "rate": 0.05 },
+      { "from": 700001,  "to": 1000000, "rate": 0.10 },
+      { "from": 1000001, "to": 1200000, "rate": 0.15 },
+      { "from": 1200001, "to": 1500000, "rate": 0.20 },
+      { "from": 1500001, "to": null,    "rate": 0.30 }
+    ],
+    "rebate_87A": {
+      "income_limit": 1200000,
+      "max_rebate": 60000,
+      "note": "Rebate applies only on slab tax, not on special rate income (LTCG, STCG, lottery, crypto)"
+    },
+    "allowed_deductions": [
+      { "code": "standard_deduction", "max": 75000, "section": "16(ia)" },
+      { "code": "nps_employer_80ccd2", "max": null, "section": "80CCD(2)", "note": "14% of salary for central govt employees, 10% for others" }
+    ],
+    "disallowed_deductions": [
+      "80C", "80D", "80E", "80G", "HRA", "LTA", "interest_24b_SOP"
+    ]
+  },
+
+  "old_regime": {
+    "standard_deduction": 50000,
+    "slabs": {
+      "general": [
+        { "from": 0,       "to": 250000,  "rate": 0.00 },
+        { "from": 250001,  "to": 500000,  "rate": 0.05 },
+        { "from": 500001,  "to": 1000000, "rate": 0.20 },
+        { "from": 1000001, "to": null,    "rate": 0.30 }
+      ],
+      "senior": [
+        { "from": 0,       "to": 300000,  "rate": 0.00 },
+        { "from": 300001,  "to": 500000,  "rate": 0.05 },
+        { "from": 500001,  "to": 1000000, "rate": 0.20 },
+        { "from": 1000001, "to": null,    "rate": 0.30 }
+      ],
+      "super_senior": [
+        { "from": 0,       "to": 500000,  "rate": 0.00 },
+        { "from": 500001,  "to": 1000000, "rate": 0.20 },
+        { "from": 1000001, "to": null,    "rate": 0.30 }
+      ]
+    },
+    "age_brackets": {
+      "general":       { "from_age": 0,  "to_age": 59 },
+      "senior":        { "from_age": 60, "to_age": 79 },
+      "super_senior":  { "from_age": 80, "to_age": null }
+    },
+    "rebate_87A": {
+      "income_limit": 500000,
+      "max_rebate": 12500,
+      "note": "Rebate applies only on slab tax"
+    },
+    "allowed_deductions": [
+      { "code": "standard_deduction",   "max": 50000,   "section": "16(ia)" },
+      { "code": "nps_employer_80ccd2",  "max": null,    "section": "80CCD(2)" },
+      { "code": "80C",                  "max": 150000,  "section": "80C" },
+      { "code": "80CCD1B",              "max": 50000,   "section": "80CCD(1B)", "note": "Additional NPS contribution" },
+      { "code": "80D_self_below60",     "max": 25000,   "section": "80D" },
+      { "code": "80D_self_senior",      "max": 50000,   "section": "80D" },
+      { "code": "80D_parents_below60",  "max": 25000,   "section": "80D" },
+      { "code": "80D_parents_senior",   "max": 50000,   "section": "80D" },
+      { "code": "80E",                  "max": null,    "section": "80E", "note": "Interest on education loan, no cap" },
+      { "code": "80G",                  "max": null,    "section": "80G", "note": "Donations, with/without cap per sub-section" },
+      { "code": "80TTA",                "max": 10000,   "section": "80TTA", "note": "Savings bank interest, not available to seniors" },
+      { "code": "80TTB",                "max": 50000,   "section": "80TTB", "note": "Interest for seniors (replaces 80TTA)" },
+      { "code": "HRA",                  "max": null,    "section": "10(13A)", "note": "Min(actual_HRA, 50%_or_40%_basic, rent_minus_10%_basic)" },
+      { "code": "LTA",                  "max": null,    "section": "10(5)", "note": "Actual travel cost for India travel, twice in 4-year block" },
+      { "code": "interest_24b_SOP",     "max": 200000,  "section": "24(b)", "note": "Home loan interest on self-occupied property" },
+      { "code": "interest_24b_LOP",     "max": null,    "section": "24(b)", "note": "Home loan interest on let-out property, no cap" }
+    ]
+  },
+
+  "special_rates": {
+    "stcg_111A": {
+      "rate": 0.20,
+      "section": "111A",
+      "applicable_to": "Listed equity shares and equity-oriented MFs held < 12 months",
+      "effective_from": "2024-07-23",
+      "previous_rate": 0.15,
+      "note": "Rate changed from 15% to 20% by Finance Act 2024 effective 23 July 2024. Transactions before this date taxed at 15%."
+    },
+    "stcg_111A_pre_july23": {
+      "rate": 0.15,
+      "section": "111A",
+      "applicable_to": "Listed equity shares and equity-oriented MFs — transactions on or before 22 July 2024",
+      "effective_until": "2024-07-22"
+    },
+    "ltcg_112A": {
+      "rate": 0.125,
+      "section": "112A",
+      "exemption": 125000,
+      "applicable_to": "Listed equity shares and equity-oriented MFs held ≥ 12 months",
+      "effective_from": "2024-07-23",
+      "previous_rate": 0.10,
+      "previous_exemption": 100000,
+      "note": "Rate changed from 10% to 12.5% and exemption from ₹1L to ₹1.25L by Finance Act 2024 effective 23 July 2024"
+    },
+    "ltcg_112A_pre_july23": {
+      "rate": 0.10,
+      "section": "112A",
+      "exemption": 100000,
+      "applicable_to": "Listed equity shares and equity-oriented MFs — transactions on or before 22 July 2024",
+      "effective_until": "2024-07-22"
+    },
+    "ltcg_112": {
+      "rate": 0.125,
+      "section": "112",
+      "applicable_to": "Non-equity assets (property, debt MFs, gold) held ≥ 24 months",
+      "effective_from": "2024-07-23",
+      "indexation_available": false,
+      "note": "Indexation removed by Finance Act 2024. For property acquired before 23 Jul 2024, taxpayer may opt for 20% with indexation (old Section 112 rate) if that results in lower tax"
+    },
+    "ltcg_112_pre_july23": {
+      "rate": 0.20,
+      "section": "112",
+      "applicable_to": "Non-equity assets — transactions on or before 22 July 2024",
+      "indexation_available": true,
+      "effective_until": "2024-07-22"
+    },
+    "stcg_other": {
+      "rate": "slab",
+      "section": null,
+      "applicable_to": "Non-equity assets held < 24 months — taxed at normal slab rate"
+    },
+    "lottery_115BB": {
+      "rate": 0.30,
+      "section": "115BB",
+      "applicable_to": "Lottery, crossword puzzle, game show, horse race winnings",
+      "note": "No deduction allowed against lottery income. No basic exemption offset."
+    },
+    "crypto_115BBH": {
+      "rate": 0.30,
+      "section": "115BBH",
+      "applicable_to": "Virtual Digital Assets (cryptocurrency, NFTs)",
+      "note": "1% TDS on transfer u/s 194S. No deduction except cost of acquisition. Losses cannot be set off.",
+      "effective_from": "2022-04-01"
+    }
+  },
+
+  "surcharge": {
+    "applicable_above": 5000000,
+    "brackets": [
+      { "income_above": 5000000,  "income_upto": 10000000, "rate": 0.10 },
+      { "income_above": 10000000, "income_upto": 20000000, "rate": 0.15 },
+      { "income_above": 20000000, "income_upto": 50000000, "rate": 0.25 },
+      { "income_above": 50000000, "income_upto": null,     "rate": 0.37 }
+    ],
+    "new_regime_cap": {
+      "max_rate": 0.25,
+      "note": "Surcharge capped at 25% under New Regime (Finance Act 2023). Old bracket of 37% applies only under Old Regime."
+    },
+    "ltcg_112A_surcharge_cap": {
+      "max_rate": 0.15,
+      "section": "112A",
+      "note": "Surcharge on LTCG u/s 112A capped at 15% regardless of income"
+    },
+    "marginal_relief": {
+      "applicable": true,
+      "note": "Marginal relief applicable where surcharge + tax exceeds income above the threshold. Compute and apply."
+    }
+  },
+
+  "cess": {
+    "rate": 0.04,
+    "name": "Health and Education Cess",
+    "applicable_on": "tax_after_rebate + surcharge",
+    "authority": "Finance Act 2018 — 3% Education Cess replaced by 4% H&E Cess"
+  },
+
+  "alternate_minimum_tax": {
+    "rate": 0.185,
+    "applicable_to": ["LLP", "non-company-persons-claiming-certain-deductions"],
+    "note": "AMT u/s 115JC applies when regular tax < 18.5% of adjusted total income. Not applicable to individuals unless claiming deductions under 10AA, 35AD, 80H-80RRB.",
+    "section": "115JC"
+  },
+
+  "advance_tax_schedule": {
+    "applicable_if_liability_exceeds": 10000,
+    "installments": [
+      { "due_by": "June 15",    "cumulative_pct": 15 },
+      { "due_by": "September 15", "cumulative_pct": 45 },
+      { "due_by": "December 15",  "cumulative_pct": 75 },
+      { "due_by": "March 15",     "cumulative_pct": 100 }
+    ],
+    "note": "Individuals with salary income only — TDS by employer covers advance tax. Business/professional income requires self-payment."
+  },
+
+  "interest_sections": {
+    "234A": {
+      "rate_per_month": 0.01,
+      "on": "tax_due",
+      "trigger": "Return filed after due date",
+      "note": "Simple interest from due date to actual filing date"
+    },
+    "234B": {
+      "rate_per_month": 0.01,
+      "on": "tax_due_minus_advance_tax",
+      "trigger": "Advance tax paid < 90% of tax liability",
+      "note": "From April 1 of AY to date of assessment/payment"
+    },
+    "234C": {
+      "rate_per_month": 0.01,
+      "on": "shortfall_in_installment",
+      "trigger": "Advance tax installment not paid on time",
+      "note": "3 months interest per deferred installment; 1 month for March installment"
+    }
+  },
+
+  "presumptive_taxation": {
+    "44AD": {
+      "eligible_turnover_max": 30000000,
+      "digital_receipt_rate": 0.06,
+      "cash_receipt_rate": 0.08,
+      "section": "44AD",
+      "note": "If cash receipts > 5% of total receipts, 8% rate applies to entire turnover. Otherwise 6%."
+    },
+    "44ADA": {
+      "eligible_receipts_max": 7500000,
+      "presumptive_rate": 0.50,
+      "section": "44ADA",
+      "eligible_professions": [
+        "legal", "medical", "engineering", "architecture", "accountancy",
+        "technical_consultancy", "interior_decoration", "film_artist", "authorized_representative",
+        "company_secretary", "information_technology"
+      ]
+    },
+    "44AE": {
+      "eligible_vehicles_max": 10,
+      "income_per_vehicle_per_month": 7500,
+      "section": "44AE",
+      "applicable_to": "Persons engaged in plying, hiring, leasing goods carriages"
+    }
+  },
+
+  "tds_rates_reference": {
+    "194A": { "rate": 0.10, "threshold": 40000, "applicable_to": "Interest from banks (FDs, RDs)", "senior_threshold": 50000 },
+    "194B": { "rate": 0.30, "threshold": 10000, "applicable_to": "Lottery and game show winnings" },
+    "194C": { "rate": 0.01, "threshold": 30000, "applicable_to": "Contractor payments to individuals/HUF" },
+    "194D": { "rate": 0.05, "threshold": 15000, "applicable_to": "Insurance commission" },
+    "194H": { "rate": 0.05, "threshold": 15000, "applicable_to": "Commission or brokerage" },
+    "194J": { "rate": 0.10, "threshold": 30000, "applicable_to": "Professional fees" },
+    "194S": { "rate": 0.01, "threshold": 50000, "applicable_to": "Transfer of Virtual Digital Assets" }
+  }
+}

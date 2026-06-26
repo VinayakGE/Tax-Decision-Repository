@@ -5,6 +5,31 @@ Format: `[CH-XXXX] YYYY-MM-DD — Type — Summary`
 
 ---
 
+## v1.3.0 — AY2025-26 (2026-06-26)
+
+**Processing Pipeline, five Sprint 1 engines, JAB, Decision Replay, DEL, and tax tables. Architecture feature-frozen.**
+
+### Added
+- [CH-0004] `docs/pipeline.md` — 14-stage Jarviz Processing Pipeline with stage contracts, invariants, and Repository→Pipeline mapping
+- [CH-0004] `docs/engines/engine-1-itr-selection.md` — ITR Selection Engine: contract, algorithm, missing field handling, 12 test cases, JAB metrics
+- [CH-0004] `docs/engines/engine-2-income-classification.md` — Income Classification Engine: 5 heads of income, AY2025-26 Finance Act 2024 rate split (23 Jul 2024), ambiguous cases
+- [CH-0004] `docs/engines/engine-3-tax-computation.md` — Tax Computation Engine: 14-step deterministic algorithm, both-regime comparison, precision rules, 8 test cases
+- [CH-0004] `docs/engines/engine-4-validation.md` — Validation Engine: 6 Sprint 1 validations (V-001 through V-006), selection logic, severity blocking, 8 test cases
+- [CH-0004] `docs/engines/engine-5-explanation.md` — Explanation Engine: AI in retrieval+narration mode only, constrained templates, 7 tone rules, 7 test cases
+- [CH-0004] `docs/benchmark-jab.md` — Jarviz Accuracy Benchmark: 9 metrics with formulas, GSS requirements, JAB report format, release gate rules
+- [CH-0004] `docs/decision-replay.md` — Decision Replay system: schema, post-filing outcome fields, corrections block, feedback loop to rule authoring, query patterns
+- [CH-0004] `docs/decision-execution-log.md` — Decision Execution Log (DEL): per-execution operational record, stage log, rules invoked, operational metrics
+- [CH-0004] `schemas/benchmark-schema.json` — JSON Schema for JAB report objects
+- [CH-0004] `schemas/replay-schema.json` — JSON Schema for combined DEL + Replay records
+- [CH-0004] `data/AY2025-26/tax-tables.json` — AY2025-26 tax computation data: New/Old Regime slabs, rebate 87A limits, special rates (111A/112A/112/lottery/crypto), surcharge brackets, cess 4%, presumptive rates, advance tax schedule, TDS reference rates
+- [CH-0004] `benchmarks/README.md` — GSS structure, benchmark run instructions, release gate summary
+- [CH-0004] `replays/README.md` — Replay directory structure, immutability policy, post-filing update instructions
+
+### Architecture Decision
+The architecture is declared **feature-frozen** as of v1.3.0. All future contributions must add at least one of: a deterministic rule, a real-world case, an automated test, a measurable engine improvement, or a user-facing workflow change. No further architectural abstractions will be accepted.
+
+---
+
 ## v1.2.0 — AY2025-26 (2026-06-26)
 
 **Pattern Repository — 8 filing patterns covering ~95% of individual filers.**

@@ -1,0 +1,14 @@
+{
+  "id": "CH-0004",
+  "date": "2026-06-26",
+  "author": "Vinayak Gautham",
+  "type": "add",
+  "object_type": "docs",
+  "object_id": "pipeline, engines 1-5, benchmark-jab, decision-replay, decision-execution-log, replay-schema, benchmark-schema, tax-tables",
+  "summary": "Added the Jarviz Processing Pipeline (14-stage immutable runtime architecture), five Sprint 1 engine specifications (ITR Selection, Income Classification, Tax Computation, Validation, Explanation), the Jarviz Accuracy Benchmark (JAB) with nine metrics, the Decision Replay system, the Decision Execution Log (DEL), corresponding schemas, and the AY2025-26 tax tables data file. Architecture is now feature-frozen.",
+  "authority": null,
+  "prior_version": "1.2.0",
+  "new_version": "1.3.0",
+  "git_commit": null,
+  "notes": "This completes the four-stage architecture build: (1) Knowledge Architecture, (2) Scalability Modules, (3) Pattern Repository, (4) Processing Pipeline. The architecture is declared feature-frozen from this point. All future contributions must add deterministic rules, real-world cases, automated tests, measurable engine improvements, or user-facing workflow changes. No further architectural abstractions."
+}
