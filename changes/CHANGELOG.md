@@ -7,6 +7,38 @@ Format: `[CH-XXXX] YYYY-MM-DD — Type — Summary`
 
 ## v2.0.0-dev — AY2025-26 (2026-06-26) [continued]
 
+**Wave 3A: Tax Computation Engine — R-0015 through R-0023. Tax Table Repository. JAB M-11. Capability Matrix.**
+
+### Added (Wave 3A)
+- [CH-0008] `tables/2024/tax_slabs.json` — New Regime slabs (6 brackets + cumulative tax at each band top), Old Regime slabs (general/senior/super_senior with age bracket definitions)
+- [CH-0008] `tables/2024/rebates.json` — Section 87A rebate: New Regime (₹60K if income ≤ ₹12L), Old Regime (₹12.5K if income ≤ ₹5L)
+- [CH-0008] `tables/2024/surcharge.json` — Surcharge brackets (10%/15%/25%/37%), New Regime cap (25%), LTCG 112A cap (15%), marginal relief rule
+- [CH-0008] `tables/2024/cess.json` — Health & Education Cess at 4%
+- [CH-0008] `tables/2024/deductions.json` — Chapter VI-A deduction limits (Wave 3B reference table): 80C ₹1.5L, 80CCD(1B) ₹50K, 80D ₹25K–₹1L, HRA formula, LTA, 24(b)
+- [CH-0008] `tables/2024/special_rates.json` — Finance Act 2024 capital gains rates with pre/post-23-Jul-2024 split; lottery 30%; VDA 30%
+- [CH-0008] `tables/README.md` — Tax Table Repository design principle, reference syntax (TaxTable:2024.<file>.<path>), versioning policy
+- [CH-0008] `rules/R-0015` — Taxable Income Assembly: aggregates income by head, applies standard deduction, segregates special-rate items; blocks if classification or integrity checks incomplete
+- [CH-0008] `rules/R-0016` — Slab Engine (Old Regime): age-bracket-aware slab computation (general/senior/super_senior), special-rate items at flat rates from TaxTable
+- [CH-0008] `rules/R-0017` — Slab Engine (New Regime): single slab schedule (no age differentiation), same special-rate handling as R-0016
+- [CH-0008] `rules/R-0018` — Regime Comparator: compares post-cess all-in tax under both regimes; produces regime_recommendation and savings_amount; does not override R-0005
+- [CH-0008] `rules/R-0019` — Section 87A Rebate: New Regime ₹60K if income ≤ ₹12L; Old Regime ₹12.5K if income ≤ ₹5L; rebate does not apply against STCG 111A, LTCG 112A, lottery, VDA
+- [CH-0008] `rules/R-0020` — Health & Education Cess: 4% on (tax_after_rebate + surcharge); computation order enforced: rebate → surcharge → cess
+- [CH-0008] `rules/R-0021` — Surcharge: progressive brackets, New Regime cap 25%, LTCG 112A cap 15%, marginal relief computation
+- [CH-0008] `rules/R-0022` — Interest 234A/B/C: late filing, advance tax shortfall, installment default; salary-only taxpayers with full TDS exempt from 234B/234C (Section 209A)
+- [CH-0008] `rules/R-0023` — Refund vs Demand: nets total_tax_due against 26AS TDS credits + advance tax; demand requires Section 140A payment before filing
+- [CH-0008] Tests T-0028 through T-0045 (18 tests covering all 9 Wave 3A rules)
+- [CH-0008] `docs/capability-matrix.md` — Jarviz Capability Matrix: product maturity by capability (✅/🟡/⏳/❌), replaces rule count as primary maturity measure
+
+### Updated (Wave 3A)
+- [CH-0008] `docs/benchmark-jab.md` — Added M-11 Explainability (100% target, release blocker); heading updated to "Twelve Metrics"; fixed stale example metric keys; updated release gate table
+- [CH-0008] `schemas/benchmark-schema.json` — Added M11_explainability with incomplete_trace_breakdown; added M11 to required array
+- [CH-0008] `registry/rule-registry.json` — Added R-0015 through R-0023
+- [CH-0008] `registry/index.json` — Rules: 14→23 active, Tests: 27→45 pending
+
+---
+
+## v2.0.0-dev — AY2025-26 (2026-06-26) [continued]
+
 **Wave 2: Evidence Integrity Engine — R-0007 through R-0014.**
 
 ### Added (Wave 2)

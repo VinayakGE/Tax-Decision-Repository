@@ -1,0 +1,18 @@
+{
+  "case_id": "GM-0007",
+  "taxpayer": { "name": "Meena Pillai", "age": 45, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1000000, "employer": "Infra Corp Ltd", "tan": "CHEN11223D" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "investments_80C": 200000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "CHEN11223D", "section": "192", "amount": 70000, "employer": "Infra Corp Ltd" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

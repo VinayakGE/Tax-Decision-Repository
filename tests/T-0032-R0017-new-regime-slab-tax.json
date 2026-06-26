@@ -1,0 +1,27 @@
+{
+  "id": "T-0032",
+  "title": "R-0017: New Regime slab tax — ₹9.25L taxable income (₹10L salary after ₹75K std deduction)",
+  "target_type": "rule",
+  "target_ref": "R-0017",
+  "test_type": "positive",
+  "input": {
+    "taxable_income_new_regime": 925000,
+    "special_rate_items": []
+  },
+  "expected_output": {
+    "slab_schedule_ref": "TaxTable:2024.tax_slabs.new_regime.slabs",
+    "slab_computation": [
+      { "band": "0–₹3,00,000",       "applicable_income": 300000, "rate": 0.00, "tax": 0 },
+      { "band": "₹3,00,001–₹7,00,000", "applicable_income": 400000, "rate": 0.05, "tax": 20000 },
+      { "band": "₹7,00,001–₹9,25,000", "applicable_income": 225000, "rate": 0.10, "tax": 22500 }
+    ],
+    "slab_tax_new_regime": 42500,
+    "special_rate_tax_new_regime": [],
+    "total_before_rebate_new_regime": 42500
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Gross salary ₹10L; standard deduction ₹75K applied in R-0015; taxable income = ₹9.25L. New Regime slab: 0 + 20,000 + (2.25L × 10%) = 20,000 + 22,500 = ₹42,500 before rebate. No age differentiation in New Regime — same slabs for all ages."
+}

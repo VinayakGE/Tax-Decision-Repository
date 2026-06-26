@@ -1,0 +1,22 @@
+{
+  "id": "T-0049",
+  "title": "R-0024: 80C investment ₹2L over cap — deduction capped at ₹1.5L",
+  "target_type": "rule",
+  "target_ref": "R-0024",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "investments_80C": 200000
+  },
+  "expected_output": {
+    "deduction_80C": 150000,
+    "deduction_80C_investments_declared": 200000,
+    "deduction_80C_cap": 150000,
+    "deduction_80C_capped": true
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Investment ₹2L > cap ₹1.5L. Deduction capped at ₹1.5L. capped=true indicates the cap was binding."
+}

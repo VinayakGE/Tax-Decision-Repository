@@ -1,0 +1,40 @@
+{
+  "id": "R-0022",
+  "title": "Interest under Sections 234A, 234B, and 234C — Advance Tax and Filing Defaults",
+  "description": "Computes interest liability for failure to file the return by the due date (234A), failure to pay advance tax (234B), and failure to pay advance tax installments on time (234C). Interest is simple interest at 1% per month or part thereof. For salary-only taxpayers whose entire tax is covered by TDS, no advance tax obligation exists and 234B/234C do not apply. Interest amounts are added to total tax liability before arriving at the final demand/refund position.",
+  "logic": {
+    "if": "total_tax_due (total_tax_new_regime or total_tax_old_regime per regime_selection) is computed AND tds_credit is known (from 26AS)",
+    "then": "Compute tax_due_net = total_tax_due - tds_credit. 234A (Late Filing): if return_filed_date > due_date (31 July for non-audit): months_late = ceil((return_filed_date - due_date).days / 30); interest_234A = tax_due_net * 0.01 * months_late. If return_filed_date is null (not yet filed): interest_234A = 0 (will be computed at time of filing). 234B (Advance Tax Shortfall): advance_tax_paid = sum(advance_tax_installments_paid); if advance_tax_paid < 0.90 * total_tax_due AND (advance_tax_paid + tds_credit) < 0.90 * total_tax_due: shortfall = total_tax_due - advance_tax_paid - tds_credit; months_234B = months from April 1 of AY to filing date (or March 31 if self-assessment); interest_234B = shortfall * 0.01 * months_234B. 234C (Installment Default): for each advance tax installment (June 15: 15%, Sep 15: 45%, Dec 15: 75%, Mar 15: 100%): if amount_paid_by_due_date < cumulative_pct * total_tax_due: installment_shortfall = cumulative_pct * total_tax_due - amount_paid; interest_234C_for_installment = installment_shortfall * 0.01 * (3 months for Jun/Sep/Dec; 1 month for Mar). Note: 234B and 234C do not apply if total tax liability <= ₹10,000. Output: { interest_234A, interest_234B, interest_234C, total_interest, interest_applicable: true/false }",
+    "else": "if total_tax_due <= 10000: interest_234A = 0, interest_234B = 0, interest_234C = 0, interest_applicable = false. If taxpayer is salary-only and TDS covers ≥ 90% of tax: interest_234B = 0, interest_234C = 0 (employer TDS satisfies advance tax requirement under Section 209A)."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 234A (late filing interest), Section 234B (advance tax shortfall), Section 234C (installment default), Section 209A (employer TDS as advance tax)",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": null,
+    "effective_from": "1989-04-01",
+    "url": null
+  },
+  "effective_date": "1989-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "advance-tax",
+    "interest",
+    "234a",
+    "234b",
+    "234c",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": ["E-002"],
+  "decision_refs": ["D-004"],
+  "test_refs": ["T-0042", "T-0043"],
+  "change_refs": ["CH-0008"],
+  "notes": "Interest under 234A, 234B, 234C is the most commonly misunderstood part of tax computation. Key points: (1) 234B starts from April 1 of the AY, not from the due date — even if the taxpayer filed on time; (2) salary taxpayers with complete TDS are exempt from 234B/234C; (3) the minimum liability threshold of ₹10,000 is on the gross tax liability, not the self-assessment tax; (4) for AY2025-26, the due date for non-audit taxpayers is 31 July 2025. Interest rates (1% per month) have not changed since the provision was introduced in 1989."
+}

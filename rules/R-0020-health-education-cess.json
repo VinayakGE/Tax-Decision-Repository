@@ -1,0 +1,37 @@
+{
+  "id": "R-0020",
+  "title": "Health and Education Cess — 4% on Tax After Rebate and Surcharge",
+  "description": "Computes the Health and Education Cess (H&E Cess) at 4% on the sum of income tax after rebate plus surcharge. Cess applies to both regime computations and is applied identically regardless of regime choice. The cess rate is sourced from TaxTable:2024.cess. No deduction or exemption is available against cess.",
+  "logic": {
+    "if": "tax_after_rebate is available (from R-0019) AND surcharge is computed (from R-0021)",
+    "then": "cess_rate = TaxTable:2024.cess.cess.rate (0.04). For New Regime: cess_new = (tax_after_rebate_new_regime + surcharge_new_regime) * cess_rate; total_tax_new_regime = tax_after_rebate_new_regime + surcharge_new_regime + cess_new. For Old Regime: cess_old = (tax_after_rebate_old_regime + surcharge_old_regime) * cess_rate; total_tax_old_regime = tax_after_rebate_old_regime + surcharge_old_regime + cess_old. Round cess to nearest rupee (round half up). Output: { cess_new_regime, cess_old_regime, total_tax_new_regime, total_tax_old_regime }",
+    "else": "if tax_after_rebate or surcharge unavailable: block on R-0019 and R-0021 outputs. Note: R-0020 and R-0021 are co-dependent — surcharge is computed on pre-cess tax; cess is computed on post-surcharge tax. Computation order: R-0019 (rebate) → R-0021 (surcharge on post-rebate tax) → R-0020 (cess on post-surcharge tax)."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Finance Act First Schedule — Health and Education Cess",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2018 (introduced H&E Cess; unchanged since)",
+    "effective_from": "2018-04-01",
+    "url": null
+  },
+  "effective_date": "2018-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "cess",
+    "health-education-cess",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": [],
+  "decision_refs": ["D-002"],
+  "test_refs": ["T-0038", "T-0039"],
+  "change_refs": ["CH-0008"],
+  "notes": "Cess is computed on the full income tax including surcharge. It is the final addition before arriving at total tax liability. No deduction is allowed against cess in any subsequent year. The cess rate has been 4% since AY2018-19 (replacing 3% Education Cess + 1% SHEC). The rate value must always be read from TaxTable:2024.cess to ensure Finance Act changes are automatically picked up."
+}

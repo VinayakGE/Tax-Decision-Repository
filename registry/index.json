@@ -9,8 +9,8 @@
 
   "counts": {
     "rules": {
-      "total": 14,
-      "active": 14,
+      "total": 23,
+      "active": 23,
       "draft": 0,
       "deprecated": 0,
       "superseded": 0
@@ -39,10 +39,10 @@
       "verified": 0
     },
     "tests": {
-      "total": 27,
+      "total": 45,
       "pass": 0,
       "fail": 0,
-      "pending": 27
+      "pending": 45
     },
     "decision_trees": {
       "total": 1,

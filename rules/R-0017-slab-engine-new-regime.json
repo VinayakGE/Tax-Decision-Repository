@@ -1,0 +1,38 @@
+{
+  "id": "R-0017",
+  "title": "Slab Engine — New Regime Tax Computation",
+  "description": "Computes income tax under the New Regime (Section 115BAC) using the six-bracket slab schedule introduced by Finance Act 2023 and applicable from AY2024-25 onwards. No age bracket differentiation — the same slabs apply to all age groups. Special-rate income (capital gains, lottery, VDA) is computed at flat rates from TaxTable:2024.special_rates, same as in R-0016. All rate values come from TaxTable:2024.tax_slabs.new_regime.",
+  "logic": {
+    "if": "taxable_income_new_regime is available (from R-0015)",
+    "then": "1. Load slab schedule from TaxTable:2024.tax_slabs.new_regime.slabs (single schedule, no age differentiation). 2. Compute slab tax: for each slab band: tax_on_band = (min(taxable_income_new_regime, band.to ?? Infinity) - band.from) * band.rate for each band where taxable_income > band.from; slab_tax_new = sum of tax_on_band values. 3. Compute special rate taxes identically to R-0016 step 4 — rates from TaxTable:2024.special_rates.rates. 4. Output: { slab_tax_new_regime, special_rate_tax_new_regime: [{ section, amount, rate, tax }], total_before_rebate_new_regime: slab_tax_new_regime + sum(special_rate_tax) }",
+    "else": "if taxable_income_new_regime is not available: block on R-0015 output."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 115BAC (New Tax Regime), Finance Act First Schedule Part I",
+    "proviso": null,
+    "notification": null,
+    "circular": "CBDT Circular 04/2023 (employer TDS under new regime)",
+    "finance_act": "Finance Act 2024",
+    "effective_from": "2024-04-01",
+    "url": null
+  },
+  "effective_date": "2024-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "slab-engine",
+    "new-regime",
+    "115bac",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003"],
+  "decision_refs": ["D-002"],
+  "test_refs": ["T-0032", "T-0033"],
+  "change_refs": ["CH-0008"],
+  "notes": "Unlike the Old Regime, the New Regime has a single slab schedule regardless of taxpayer age. This simplifies computation significantly. However, no deductions are available (except standard deduction already applied in R-0015 and employer NPS in R-0015). The standard deduction of ₹75,000 was added to the New Regime from AY2024-25; this is already subtracted by R-0015 before this rule runs."
+}

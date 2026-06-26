@@ -1,0 +1,26 @@
+{
+  "id": "T-0038",
+  "title": "R-0020: Cess computation — 4% on tax after rebate, no surcharge",
+  "target_type": "rule",
+  "target_ref": "R-0020",
+  "test_type": "positive",
+  "input": {
+    "tax_after_rebate_new_regime": 42500,
+    "surcharge_new_regime": 0,
+    "tax_after_rebate_old_regime": 82500,
+    "surcharge_old_regime": 0
+  },
+  "expected_output": {
+    "cess_rate_used": 0.04,
+    "cess_table_ref": "TaxTable:2024.cess.cess.rate",
+    "cess_new_regime": 1700,
+    "cess_old_regime": 3300,
+    "total_tax_new_regime": 44200,
+    "total_tax_old_regime": 85800
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Cess = 4% on (tax + surcharge). New: 42,500 × 4% = 1,700. Old: 82,500 × 4% = 3,300. Cess is rounded to nearest rupee. Surcharge is 0 (income assumed < ₹50L)."
+}

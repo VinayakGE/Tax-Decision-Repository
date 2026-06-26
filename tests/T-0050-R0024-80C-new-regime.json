@@ -1,0 +1,19 @@
+{
+  "id": "T-0050",
+  "title": "R-0024: 80C investments declared under new regime — deduction is zero",
+  "target_type": "rule",
+  "target_ref": "R-0024",
+  "test_type": "negative",
+  "input": {
+    "regime_chosen": "new_regime",
+    "investments_80C": 150000
+  },
+  "expected_output": {
+    "deduction_80C": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "80C deductions are not available under the New Regime. Even with ₹1.5L investment, deduction_80C = 0."
+}

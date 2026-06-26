@@ -1,0 +1,18 @@
+{
+  "case_id": "GM-0008",
+  "taxpayer": { "name": "Rohan Desai", "age": 32, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1000000, "employer": "FinServ India Ltd", "tan": "PUNE77889E" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "investments_80C": 150000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "PUNE77889E", "section": "192", "amount": 70000, "employer": "FinServ India Ltd" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "new_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

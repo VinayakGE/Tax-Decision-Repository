@@ -1,0 +1,15 @@
+{
+  "case_id": "GM-0005",
+  "description": "",
+  "generated_at": "2026-06-26T06:28:28.833532Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "salary",
+    "old_regime",
+    "80c_at_cap",
+    "deduction_engine",
+    "demand"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

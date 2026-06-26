@@ -1,0 +1,137 @@
+{
+  "schedule": [
+    {
+      "wave": 1,
+      "rules": [
+        "R-0015",
+        "R-0024"
+      ]
+    },
+    {
+      "wave": 2,
+      "rules": [
+        "R-0017",
+        "R-0028"
+      ]
+    },
+    {
+      "wave": 3,
+      "rules": [
+        "R-0016"
+      ]
+    },
+    {
+      "wave": 4,
+      "rules": [
+        "R-0019"
+      ]
+    },
+    {
+      "wave": 5,
+      "rules": [
+        "R-0021"
+      ]
+    },
+    {
+      "wave": 6,
+      "rules": [
+        "R-0020"
+      ]
+    },
+    {
+      "wave": 7,
+      "rules": [
+        "R-0018",
+        "R-0022"
+      ]
+    },
+    {
+      "wave": 8,
+      "rules": [
+        "R-0023"
+      ]
+    }
+  ],
+  "execution_order": [
+    "R-0015",
+    "R-0024",
+    "R-0017",
+    "R-0028",
+    "R-0016",
+    "R-0019",
+    "R-0021",
+    "R-0020",
+    "R-0018",
+    "R-0022",
+    "R-0023"
+  ],
+  "execution_depth": 8,
+  "rules_executed": 11,
+  "rule_outputs": {
+    "R-0015": {
+      "taxable_income_new_regime": 925000,
+      "taxable_income_old_pre_deductions": 950000,
+      "gross_total_income": 1000000,
+      "total_income": 1000000
+    },
+    "R-0024": {
+      "deduction_80C": 150000
+    },
+    "R-0017": {
+      "slab_tax_new_regime": 42500,
+      "total_before_rebate_new_regime": 42500
+    },
+    "R-0028": {
+      "taxable_income_old_regime": 800000,
+      "total_deductions_old": 150000,
+      "deduction_breakdown": {
+        "80C": 150000
+      }
+    },
+    "R-0016": {
+      "slab_tax_old_regime": 72500,
+      "total_before_rebate_old_regime": 72500
+    },
+    "R-0019": {
+      "tax_after_rebate_new_regime": 0,
+      "tax_after_rebate_old_regime": 72500,
+      "rebate_applied": true
+    },
+    "R-0021": {
+      "surcharge_new_regime": 0,
+      "surcharge_old_regime": 0,
+      "surcharge_amount": 0
+    },
+    "R-0020": {
+      "total_tax_new_regime": 0,
+      "total_tax_old_regime": 75400,
+      "cess_new_regime": 0,
+      "cess_old_regime": 2900
+    },
+    "R-0018": {
+      "regime_recommendation": "new_regime",
+      "tax_saving_amount": 75400,
+      "new_regime_is_better": true
+    },
+    "R-0022": {
+      "total_interest": 2262,
+      "interest_234A": 0,
+      "interest_234B": {
+        "applicable": true,
+        "shortfall": 75400,
+        "months": 3,
+        "interest_amount": 2262,
+        "note": "Return filed by due date so 234A = 0. 234B: April 1 to July 15 = 3 months (April, May, June = 3 full or part months)"
+      },
+      "interest_234C": {
+        "applicable": false,
+        "reason": "Salary taxpayer \u2014 employer TDS satisfies advance tax obligation"
+      }
+    },
+    "R-0023": {
+      "outcome": "demand",
+      "refund_amount": null,
+      "demand_amount": 7662
+    }
+  }
+}

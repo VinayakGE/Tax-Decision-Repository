@@ -1,0 +1,19 @@
+{
+  "table_id": "2024.cess",
+  "title": "Health and Education Cess — AY2025-26",
+  "description": "Health and Education Cess rate applicable on income tax plus surcharge. Referenced by rules as TaxTable:2024.cess.",
+  "assessment_year": "AY2025-26",
+  "finance_act": "Finance Act 2018 (unchanged since)",
+  "authority": "Finance Act First Schedule — Education Cess (renamed Health and Education Cess from AY2018-19)",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+
+  "cess": {
+    "rate": 0.04,
+    "name": "Health and Education Cess",
+    "applicable_on": "income_tax_after_rebate + surcharge",
+    "formula": "cess = (income_tax_after_rebate + surcharge) * 0.04",
+    "no_deduction_available": true,
+    "note": "4% H&E Cess replaced 3% Education Cess + 1% Secondary and Higher Education Cess from AY2018-19. The rate has not changed since. No deduction is allowed against cess paid."
+  }
+}

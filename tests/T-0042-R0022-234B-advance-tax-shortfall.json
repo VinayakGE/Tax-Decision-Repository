@@ -1,0 +1,42 @@
+{
+  "id": "T-0042",
+  "title": "R-0022: 234B interest — freelancer paid no advance tax, ₹80K liability",
+  "target_type": "rule",
+  "target_ref": "R-0022",
+  "test_type": "positive",
+  "input": {
+    "total_tax_due": 80000,
+    "tds_credit_from_26AS": 0,
+    "advance_tax_paid": 0,
+    "return_filed_date": "2025-07-15",
+    "due_date": "2025-07-31",
+    "income_type": "freelance_business"
+  },
+  "expected_output": {
+    "interest_234A": 0,
+    "interest_234B": {
+      "applicable": true,
+      "shortfall": 80000,
+      "months": 3,
+      "interest_amount": 2400,
+      "note": "Return filed by due date so 234A = 0. 234B: April 1 to July 15 = 3 months (April, May, June = 3 full or part months)"
+    },
+    "interest_234C": {
+      "applicable": true,
+      "installment_defaults": [
+        { "due_date": "June 15, 2024", "required_cumulative": 12000, "paid": 0, "shortfall": 12000, "months": 3, "interest": 360 },
+        { "due_date": "September 15, 2024", "required_cumulative": 36000, "paid": 0, "shortfall": 36000, "months": 3, "interest": 1080 },
+        { "due_date": "December 15, 2024", "required_cumulative": 60000, "paid": 0, "shortfall": 60000, "months": 3, "interest": 1800 },
+        { "due_date": "March 15, 2025", "required_cumulative": 80000, "paid": 0, "shortfall": 80000, "months": 1, "interest": 800 }
+      ],
+      "total_interest_234C": 4040
+    },
+    "total_interest": 6440,
+    "interest_applicable": true
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Freelancer with ₹80K tax liability, no advance tax paid. 234B triggers because advance tax < 90% of liability. 234C also applies for each installment default. 234A does not apply as return filed before due date (31 Jul 2025). Total interest ₹6,440 added to demand."
+}

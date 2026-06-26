@@ -1,0 +1,16 @@
+{
+  "case_id": "GM-0004",
+  "description": "Freelancer \u2014 business income only, no advance tax, TDS insufficient. Demand case with 234B + 234C interest.",
+  "generated_at": "2026-06-26T06:28:28.832118Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "business_income",
+    "no_advance_tax",
+    "234b",
+    "234c",
+    "demand",
+    "new_regime"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

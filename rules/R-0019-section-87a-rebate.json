@@ -1,0 +1,38 @@
+{
+  "id": "R-0019",
+  "title": "Section 87A Rebate — Reduce Tax for Low-Income Taxpayers",
+  "description": "Applies the Section 87A rebate to reduce income tax for taxpayers whose total income falls within the prescribed limit. The rebate amount and income limit differ between the New Regime and Old Regime. Critically, the rebate applies only to slab-computed tax — it does not reduce tax on special-rate income (LTCG under 112A, STCG under 111A, lottery under 115BB, VDA under 115BBH). All threshold and rebate values come from TaxTable:2024.rebates.87A.",
+  "logic": {
+    "if": "total_income is available (gross_total_income from R-0015) AND slab_tax is computed (from R-0016 or R-0017)",
+    "then": "For New Regime: rebate_limit = TaxTable:2024.rebates.87A.new_regime.income_limit (₹12,00,000); max_rebate = TaxTable:2024.rebates.87A.new_regime.max_rebate (₹60,000); if total_income <= rebate_limit: rebate_87A_new = min(slab_tax_new_regime, max_rebate); else: rebate_87A_new = 0. For Old Regime: rebate_limit = TaxTable:2024.rebates.87A.old_regime.income_limit (₹5,00,000); max_rebate = TaxTable:2024.rebates.87A.old_regime.max_rebate (₹12,500); if total_income <= rebate_limit: rebate_87A_old = min(slab_tax_old_regime, max_rebate); else: rebate_87A_old = 0. Compute: tax_after_rebate_new = slab_tax_new_regime - rebate_87A_new + sum(special_rate_tax_new_regime); tax_after_rebate_old = slab_tax_old_regime - rebate_87A_old + sum(special_rate_tax_old_regime). Output: { rebate_87A_new_regime, rebate_87A_old_regime, tax_after_rebate_new_regime, tax_after_rebate_old_regime }",
+    "else": "if total_income or slab_tax unavailable: block on R-0015/R-0016/R-0017 outputs."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 87A",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2024",
+    "effective_from": "2024-04-01",
+    "url": null
+  },
+  "effective_date": "2024-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "rebate",
+    "87a",
+    "low-income",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": [],
+  "decision_refs": ["D-002"],
+  "test_refs": ["T-0036", "T-0037"],
+  "change_refs": ["CH-0008"],
+  "notes": "The rebate limit comparison uses total_income (gross_total_income before deductions) for Old Regime. For New Regime, the comparison uses total_income after standard deduction (i.e., taxable_income_new_regime) — confirmed by CBDT clarification that the ₹12L limit applies to total income as defined under Section 2(45), which is income after deductions under Chapter VI-A and standard deduction. The rebate does NOT offset STCG 111A, LTCG 112A, lottery, or VDA tax — these are computed at flat rates and are not eligible for rebate regardless of total income level."
+}

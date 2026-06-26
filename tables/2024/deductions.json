@@ -1,0 +1,121 @@
+{
+  "table_id": "2024.deductions",
+  "title": "Deduction Limits — AY2025-26",
+  "description": "Maximum deduction limits for Chapter VI-A and other deductions. Referenced by Wave 3B rules as TaxTable:2024.deductions. These limits apply under the Old Regime only unless explicitly noted.",
+  "assessment_year": "AY2025-26",
+  "finance_act": "Finance Act 2024",
+  "authority": "Chapter VI-A, Income Tax Act 1961",
+  "version": "1.0.0",
+  "last_updated": "2026-06-26",
+  "note": "Wave 3B (Tax Adjustment Engine) rules will reference this table. Deductions are not available under the New Regime except where noted.",
+
+  "standard_deduction": {
+    "new_regime": 75000,
+    "old_regime": 50000,
+    "section": "16(ia)"
+  },
+
+  "chapter_via": {
+    "80C": {
+      "limit": 150000,
+      "section": "80C",
+      "eligible_instruments": [
+        "PPF", "ELSS", "NSC", "5-year_bank_FD", "life_insurance_premium",
+        "home_loan_principal", "tuition_fees_2_children", "sukanya_samriddhi",
+        "senior_citizens_savings_scheme", "EPF_employee_contribution"
+      ],
+      "note": "Aggregate limit ₹1.5L across all 80C instruments"
+    },
+    "80CCC": {
+      "limit": 150000,
+      "section": "80CCC",
+      "note": "Annuity plan from LIC or other insurer. Included within the ₹1.5L aggregate limit of 80C."
+    },
+    "80CCD_1": {
+      "limit": 150000,
+      "section": "80CCD(1)",
+      "note": "Employee/self-employed NPS contribution. Included within ₹1.5L aggregate 80C limit."
+    },
+    "80CCD_1B": {
+      "limit": 50000,
+      "section": "80CCD(1B)",
+      "note": "Additional NPS contribution over and above ₹1.5L limit. This deduction is available under New Regime too.",
+      "new_regime_available": true
+    },
+    "80CCD_2": {
+      "limit": null,
+      "limit_formula": "min(employer_nps_contribution, 0.14 * basic_salary_if_central_govt_employee, 0.10 * basic_salary_otherwise)",
+      "section": "80CCD(2)",
+      "note": "Employer NPS contribution. Available under New Regime. 14% for Central Govt employees, 10% otherwise.",
+      "new_regime_available": true
+    },
+    "80D": {
+      "self_below_60": { "limit": 25000, "note": "Health insurance premium for self/family if taxpayer < 60 years" },
+      "self_senior": { "limit": 50000, "note": "Health insurance premium for self/family if taxpayer ≥ 60 years" },
+      "parents_below_60": { "limit": 25000, "note": "Health insurance premium for parents if parents < 60 years" },
+      "parents_senior": { "limit": 50000, "note": "Health insurance premium for parents if parents ≥ 60 years" },
+      "max_total": 100000,
+      "section": "80D"
+    },
+    "80E": {
+      "limit": null,
+      "section": "80E",
+      "note": "Interest on education loan for higher education. No monetary cap. Available for 8 years from year of first repayment."
+    },
+    "80G": {
+      "limit": null,
+      "limit_formula": "Depends on sub-section — 100%/50% of donation, some with 10%-of-adjusted-gross-income cap",
+      "section": "80G",
+      "note": "Donations to approved institutions. See Section 80G sub-clauses for applicable percentage and cap."
+    },
+    "80TTA": {
+      "limit": 10000,
+      "section": "80TTA",
+      "applicable_to": "Savings bank account interest",
+      "not_available_to": "Senior citizens — they use 80TTB instead"
+    },
+    "80TTB": {
+      "limit": 50000,
+      "section": "80TTB",
+      "applicable_to": "Interest income (savings bank, FD, RD) for senior citizens ≥ 60 years",
+      "note": "Replaces 80TTA for senior citizens. Cannot claim both."
+    }
+  },
+
+  "salary_exemptions": {
+    "HRA_10_13A": {
+      "limit": null,
+      "formula": "min(actual_HRA_received, 50%_basic_if_metro_or_40%_basic, actual_rent_paid_minus_10%_basic)",
+      "section": "10(13A)",
+      "metro_cities": ["Delhi", "Mumbai", "Kolkata", "Chennai"],
+      "note": "Old Regime only. Not available under New Regime."
+    },
+    "LTA_10_5": {
+      "limit": null,
+      "formula": "Actual travel cost (economy class / AC-2 rail) for domestic travel with family",
+      "section": "10(5)",
+      "note": "2 journeys per block of 4 years. Old Regime only."
+    }
+  },
+
+  "house_property": {
+    "interest_24b_SOP": {
+      "limit": 200000,
+      "section": "24(b)",
+      "condition": "Self-Occupied Property",
+      "note": "Pre-construction interest is allowed in 5 equal instalments from year of completion."
+    },
+    "interest_24b_LOP": {
+      "limit": null,
+      "section": "24(b)",
+      "condition": "Let-Out Property",
+      "note": "Actual interest deductible without limit; losses can be set off against other heads up to ₹2L."
+    },
+    "standard_deduction_30pct": {
+      "rate": 0.30,
+      "section": "24(a)",
+      "applicable_on": "net_annual_value",
+      "note": "30% standard deduction on net annual value for let-out property."
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "R-0018",
+  "title": "Regime Comparator — New vs Old Regime Total Tax",
+  "description": "Compares the total tax liability under the New Regime (R-0017) and the Old Regime (R-0016) after all applicable adjustments (rebate, surcharge, cess) to produce a regime recommendation. This rule does not decide the regime — that is R-0005, which states New Regime is default. This rule computes the tax differential and flags whether switching to Old Regime would reduce the taxpayer's liability. Used by the Explanation Engine to present 'You save ₹X under New Regime' or 'Old Regime saves ₹X — consider switching if eligible.'",
+  "logic": {
+    "if": "total_tax_new_regime is available (from R-0017 → R-0019 → R-0020 → R-0021) AND total_tax_old_regime is available (from R-0016 → R-0019 → R-0020 → R-0021)",
+    "then": "1. Compute: tax_saving_under_new = total_tax_old_regime - total_tax_new_regime. 2. If tax_saving_under_new > 0: new_regime_is_better = true; regime_recommendation = new_regime; savings_amount = tax_saving_under_new. 3. If tax_saving_under_new < 0: new_regime_is_better = false; regime_recommendation = old_regime; savings_amount = abs(tax_saving_under_new). 4. If tax_saving_under_new == 0: regime_recommendation = new_regime (tie goes to default per R-0005); savings_amount = 0. 5. Output: { regime_recommendation, new_regime_total_tax, old_regime_total_tax, tax_saving_amount, new_regime_is_better }. 6. Flag for Explanation Engine: if new_regime_is_better == false AND taxpayer has old_regime_eligible_deductions > 0, include note: 'Taxpayer may benefit from Old Regime — verify deduction eligibility.'",
+    "else": "if either regime's total tax is not computed: block on upstream R-0016/R-0017 → R-0021 outputs."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 115BAC(6) — taxpayer option to choose regime at filing",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2023 (New Regime made default from AY2024-25)",
+    "effective_from": "2024-04-01",
+    "url": null
+  },
+  "effective_date": "2024-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "regime-comparator",
+    "new-regime",
+    "old-regime",
+    "regime-selection",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": [],
+  "decision_refs": ["D-002"],
+  "test_refs": ["T-0034", "T-0035"],
+  "change_refs": ["CH-0008"],
+  "notes": "This rule runs after R-0019 (rebate), R-0020 (cess), and R-0021 (surcharge) for both regimes, so it compares the true all-in tax figures. It does not override R-0005 (New Regime is default) — it provides comparison data only. The taxpayer retains the right to choose Old Regime if beneficial. For salary taxpayers, the employer deducts TDS based on the regime the employee declares at the start of the year; a mismatch between declaration and filing regime may create demand or excess TDS."
+}

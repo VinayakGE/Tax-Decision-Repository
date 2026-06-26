@@ -44,7 +44,7 @@ Gold standard cases are stored in `benchmarks/gss/` using the same schema as `ca
 
 ---
 
-## The Eleven Metrics
+## The Twelve Metrics
 
 ### M-00: Decision Coverage ★ North-Star KPI
 
@@ -268,6 +268,35 @@ P95_Processing_Time = 95th percentile of same
 
 ---
 
+### M-11: Explainability Score ★ Release Blocker
+
+**What it measures:** The percentage of final outputs where every decision, computation, and validation step has a complete evidence and rule trace — meaning the output can be fully explained from first principles without any gap.
+
+```
+Explainability_Score = (outputs with complete trace) / total_outputs × 100
+```
+
+An output has a "complete trace" if:
+1. Every computed value (taxable income, slab tax, rebate, cess, refund) references the rule that computed it
+2. Every rule references the evidence leaf that triggered it
+3. No orphaned nodes exist in the lineage DAG (R-0014 validation)
+4. Every TDS credit in the final position references its 26AS entry
+5. The Explanation Engine (Stage 13) can narrate a complete, step-by-step justification
+
+**Target:** 100% — no partial credit.
+
+**Why this is a release blocker:**
+
+Jarviz's core promise is "Prove your return before you file it." A system that computes a refund of ₹56,310 but cannot explain how it arrived at that figure — tracing every rupee to its evidence source — has not delivered on that promise. An unexplained computation is indistinguishable from a wrong computation.
+
+M-11 < 100% means the engine produced at least one conclusion it cannot fully justify. Even if that conclusion happens to be numerically correct, it violates the fundamental invariant of a traceable tax decision system. This is a release blocker regardless of the magnitude of the gap.
+
+**Measurement method:** `evidence_lineage.all_nodes_traced` flag from R-0014 output, crossed against `explanation_engine.trace_complete` flag from Stage 13 for each GSS case.
+
+**Recovery path:** If M-11 < 100%, identify which outputs have incomplete traces, trace the gap to the specific rule or stage that failed to log its computation, and fix the lineage registration before re-running the benchmark.
+
+---
+
 ### M-10: Human Override Rate
 
 **What it measures:** The fraction of cases where a human (CA or taxpayer) rejected Jarviz's final recommendation and filed differently.
@@ -344,13 +373,20 @@ Every release produces a JAB report in `benchmarks/reports/JAB-vX.Y.Z.json`.
       "target": 1.0,
       "passed": true
     },
-    "M07_avg_questions": {
+    "M07_evidence_integrity_score": {
+      "value": 97.0,
+      "target": 95.0,
+      "passed": true,
+      "cases_passed": 97,
+      "cases_failed": 3
+    },
+    "M08_avg_questions": {
       "value": 2.7,
       "target": 3.0,
       "passed": true,
       "p95_questions": 6
     },
-    "M08_processing_time_ms": {
+    "M09_processing_time_ms": {
       "p50": 6200,
       "p95": 14800,
       "target_p50": 8000,
@@ -358,12 +394,19 @@ Every release produces a JAB report in `benchmarks/reports/JAB-vX.Y.Z.json`.
       "passed": true,
       "stages_1_to_12_p50": 980
     },
-    "M09_human_override_rate": {
+    "M10_human_override_rate": {
       "value": null,
       "target": 2.0,
       "passed": null,
       "status": "pending",
       "cases_with_outcome_data": 0
+    },
+    "M11_explainability": {
+      "value": 100.0,
+      "target": 100.0,
+      "passed": true,
+      "outputs_with_complete_trace": 100,
+      "outputs_with_incomplete_trace": 0
     }
   },
   "overall_passed": true,
@@ -378,11 +421,12 @@ Every release produces a JAB report in `benchmarks/reports/JAB-vX.Y.Z.json`.
 
 | Condition | Action |
 |-----------|--------|
-| All 8 measurable metrics pass | Release APPROVED |
-| Any of M01, M02, M03, M05 fail | Release BLOCKED — these are core accuracy metrics |
+| All measurable metrics pass | Release APPROVED |
+| Any of M01, M02, M03, M05 fail | Release BLOCKED — core accuracy metrics |
+| M11 (Explainability) < 100% | Release BLOCKED — traceable output is a core promise |
 | M04, M06, M07, M08 fail | Release WARNED — engineering discretion to override |
-| M09 pending (first release) | Permitted — mark as pending |
-| M09 > 2% after live data available | Release BLOCKED |
+| M10 pending (first release) | Permitted — mark as pending |
+| M10 > 2% after live data available | Release BLOCKED |
 
 ---
 

@@ -1,0 +1,39 @@
+{
+  "id": "R-0023",
+  "title": "Refund vs Demand Calculation — Final Tax Position",
+  "description": "Computes the taxpayer's final tax position by netting total tax liability (including interest under 234A/B/C) against all advance taxes paid and TDS credits. Produces either a refund claim amount or a self-assessment tax demand. TDS credits are only taken from 26AS (R-0009 / R-0011 rules confirm 26AS is the authoritative source for TDS credit). This rule produces the single number that drives the most important taxpayer question: 'Will I get money back or do I owe?'",
+  "logic": {
+    "if": "total_tax_liability is computed (total_tax_new_regime or total_tax_old_regime per regime_recommendation from R-0018) AND tds_credits are verified (from 26AS via R-0009/R-0011)",
+    "then": "1. total_tax_due = total_tax_chosen_regime + total_interest (from R-0022). 2. total_taxes_paid = sum(advance_tax_paid) + sum(tds_credits_from_26AS) + sum(self_assessment_tax_paid). Note: only TDS appearing in 26AS is creditable (R-0009 rule: Prefill TDS not in 26AS = unclaimed_credit_risk). 3. net_position = total_taxes_paid - total_tax_due. 4. If net_position > 0: outcome = refund; refund_amount = net_position; file_for_refund = true. 5. If net_position < 0: outcome = demand; demand_amount = abs(net_position); pay_before_filing = true; note: self-assessment tax must be paid before the return can be filed (Section 140A). 6. If net_position == 0: outcome = nil_balance; no_payment_required = true. 7. Output: { outcome, refund_amount (if refund), demand_amount (if demand), total_tax_due, total_taxes_paid, tds_credit_breakdown, computation_trace }",
+    "else": "if total_tax_liability is unavailable: block on R-0020/R-0021 outputs. If tds_credits are unverified (26AS not loaded): cannot compute final position — return position_pending reason=26AS_required."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 140A (self-assessment tax), Section 199 (TDS credit), Section 237 (refund), Section 244A (interest on refund)",
+    "proviso": null,
+    "notification": null,
+    "circular": "CBDT Circular 2/2021 (TDS credit: only 26AS entries claimable)",
+    "finance_act": null,
+    "effective_from": "2021-01-01",
+    "url": null
+  },
+  "effective_date": "2021-01-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "refund",
+    "demand",
+    "tds-credit",
+    "final-position",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": ["E-002"],
+  "decision_refs": ["D-004"],
+  "test_refs": ["T-0044", "T-0045"],
+  "change_refs": ["CH-0008"],
+  "notes": "This rule is the terminal step of Wave 3A. Its output is the primary deliverable of the Tax Computation Engine. Key constraint: TDS credit is restricted to amounts appearing in 26AS — Prefill-only TDS entries are explicitly excluded (R-0009 enforcement). If 26AS is unavailable, this rule cannot complete — the taxpayer must not be advised on refund/demand without confirmed TDS credits. If refund_amount > 0 and return is filed after the due date, the department may not pay interest on the refund under Section 244A if the refund is less than 10% of total tax determined — this edge case is flagged but not computed here."
+}

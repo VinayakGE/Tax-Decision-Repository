@@ -1,0 +1,23 @@
+{
+  "id": "T-0051",
+  "title": "R-0028: Deduction aggregator — 80C reduces old-regime taxable income",
+  "target_type": "rule",
+  "target_ref": "R-0028",
+  "test_type": "positive",
+  "input": {
+    "taxable_income_old_pre_deductions": 950000,
+    "deduction_80C": 150000
+  },
+  "expected_output": {
+    "taxable_income_old_regime": 800000,
+    "total_deductions_old": 150000,
+    "deduction_breakdown": {
+      "80C": 150000
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Pre-deduction old income ₹9.5L. 80C ₹1.5L. Final taxable old = 9.5L - 1.5L = ₹8L."
+}

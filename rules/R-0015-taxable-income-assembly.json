@@ -1,0 +1,38 @@
+{
+  "id": "R-0015",
+  "title": "Taxable Income Assembly — Aggregate Gross Income by Head Before Computation",
+  "description": "Assembles the final taxable income figure for each regime from classified and validated income items. Takes the output of the income classification engine (Wave 1) and evidence integrity checks (Wave 2) and produces a single taxable income object ready for the slab engine. Applies the standard deduction for the selected regime. Special-rate income items (LTCG, STCG, lottery, VDA) are segregated and not included in the slab-taxable income figure. Wave 3B deductions (Chapter VI-A) will be subtracted here once the Tax Adjustment Engine is active; in the current version, only standard deduction is applied.",
+  "logic": {
+    "if": "income_classification_complete == true AND evidence_integrity_checks_passed == true",
+    "then": "1. Aggregate gross income per head: head_1 = sum(salary_items); head_2 = sum(house_property_items); head_3 = sum(business_profession_items); head_4_special = segregate capital_gains by section (111A, 112A, 112, other); head_5 = sum(other_sources_items excluding VDA and lottery); head_5_special = VDA (115BBH) + lottery (115BB). 2. Apply standard deduction to head_1: standard_deduction_new = TaxTable:2024.tax_slabs.new_regime.standard_deduction (₹75,000); standard_deduction_old = TaxTable:2024.tax_slabs.old_regime.standard_deduction (₹50,000). 3. Compute slab-taxable income (excludes special-rate items): taxable_income_new_regime = max(0, head_1 - standard_deduction_new) + head_2 + head_3 + head_5; taxable_income_old_regime = max(0, head_1 - standard_deduction_old) + head_2 + head_3 + head_5. 4. Output: { taxable_income_new_regime, taxable_income_old_regime, special_rate_items: [{ section, amount, rate_table_ref }], gross_total_income }. Note: When Wave 3B rules are active, Chapter VI-A deductions will be subtracted from taxable income before this rule produces its output.",
+    "else": "Halt: if income_classification_complete == false, return assembly_blocked reason=classification_incomplete. If evidence_integrity_checks_passed == false, return assembly_blocked reason=integrity_failure. Do not proceed to slab computation."
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 14 (heads of income), Section 16(ia) (standard deduction)",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2024",
+    "effective_from": "2024-04-01",
+    "url": null
+  },
+  "effective_date": "2024-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "tax-computation",
+    "taxable-income",
+    "income-aggregation",
+    "standard-deduction",
+    "wave-3a",
+    "module-tax-computation"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003"],
+  "decision_refs": ["D-002", "D-004"],
+  "test_refs": ["T-0028", "T-0029"],
+  "change_refs": ["CH-0008"],
+  "notes": "This rule sits at the boundary between Wave 1/2 (classification and integrity) and Wave 3A (computation). Its inputs are the outputs of R-0006 through R-0014. Its outputs feed directly into R-0016 (Old Regime slab) and R-0017 (New Regime slab). Standard deduction amounts come from TaxTable:2024.tax_slabs; they must never be hard-coded here. Special-rate income is ring-fenced here and flows directly to the relevant special-rate rule (R-0016/R-0017 reference them but apply flat rates, not slabs)."
+}
