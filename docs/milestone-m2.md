@@ -18,27 +18,48 @@ The cases are not test inputs. They are the first independent body of evidence f
 
 ## The Objective
 
+**M2 is achieved when the engine can account for every observed disagreement with independent evidence. Agreement is one valid outcome; documented, legally justified disagreement is another. Unexplained disagreement is not.**
+
 The objective is not maximum agreement with independent references.
 
 **The objective is: maximize justified agreement while minimizing unjustified disagreement.**
 
 These are different optimization targets. An engine that replicates CPC-accepted returns 100% of the time — including returns where CPC accepted a filing error — is not more correct than an engine that disagrees in documented, legally defensible ways. Chasing agreement without justification produces compliance with practice rather than compliance with statute. For a regulated decision engine, those can diverge.
 
+Notice what this objective does not contain: a match-rate threshold. A corpus that deliberately chose more difficult, diverse cases should not fail M2 simply because harder cases produced more Rule Gaps. Harder cases produce more learning per case. The milestone rewards epistemic completeness, not superficial agreement.
+
 ---
 
-## Success Criteria
+## Exit Criteria (binary gates — all must be satisfied)
 
-M2 is achieved when all five criteria are met simultaneously.
+These are pass/fail. The milestone is not complete until all are satisfied simultaneously.
 
-| Criterion | Target | Measure |
+| Gate | Criterion | Why this gate |
 |---|---|---|
-| **Corpus coverage** | ≥ 10 real cases spanning ≥ 5 distinct income category combinations | See Coverage Matrix below |
-| **True matches increasing** | ≥ 1 case per income category where engine = independent reference with no active rule gaps | Match rate per category, not aggregate |
-| **Rule gaps decreasing** | No Rule Gap reaches RC-0020 still at Observed or Explained without a closure decision | Every RG has a closure_stage ≥ Explained with an estimated implementation timeline |
-| **Defects approaching zero** | Zero known defects remain at Implemented or later stages without Verified status | Defect closure table |
-| **Unexplained disagreements approaching zero** | Every disagreement in every real case has a named epistemic status | 100% classification rate across all cases |
+| **G1: Corpus** | ≥ 20 independently validated real cases, spanning ≥ 5 distinct income category combinations | Minimum empirical basis. Fewer cases cannot reliably expose the rule space. |
+| **G2: Defects** | Zero known Defects remain unresolved (Observed, Explained, or Implemented without Verified) | No known implementation errors may remain open. |
+| **G3: Classification** | Every disagreement in every real case has a named Outcome Classification | 100% classification rate. No unexplained deltas. |
+| **G4: Rule Gaps** | Every Rule Gap is either at Implemented+, or explicitly accepted into the roadmap with a documented timeline | No unknown engineering work. Rule Gaps not yet implemented must be acknowledged, not ignored. |
+| **G5: Accepted Mismatches** | Every Accepted Mismatch is documented with its competing statutory interpretations and the legal reasoning for the engine's position | Disagreements must be intentional and traceable. Undocumented Accepted Mismatches are not acceptable. |
 
-**The criterion that matters most is the last one.** A system where every disagreement is classified — even if some are Rule Gaps or Accepted Mismatches — has achieved a kind of epistemic maturity that a high match rate alone cannot demonstrate.
+No match-rate gate. No minimum True Match percentage. A corpus with 20 cases that exposed 15 Rule Gaps and documented them all has satisfied G3 and G4 and is more valuable than a corpus with 20 cases that avoided difficult territory to maintain a high match rate.
+
+---
+
+## Health Indicators (continuous — not pass/fail)
+
+These describe the maturity and trajectory of the corpus. They do not determine whether M2 has been reached, but they should be tracked with each case.
+
+| Indicator | Desired direction | Notes |
+|---|---|---|
+| True Match rate | Increasing | Measures rule coverage maturity |
+| Accepted Mismatch rate | Stable and documented | High rate may indicate systematic gap between statute and practice |
+| Rule Gap count | Decreasing | As rules are implemented |
+| Defect count | Approaching zero | With each case cycle |
+| Coverage breadth | Increasing | New income heads, new regime/deduction combinations |
+| Unexplained delta per case | Approaching zero | Measures diagnostic completeness |
+
+A corpus where True Match rate is increasing, Rule Gap count is decreasing, and every disagreement is classified is a healthy corpus — regardless of the absolute match rate.
 
 ---
 
@@ -103,9 +124,31 @@ The endpoint is not a system where everything agrees. It is a system where every
 
 A calculator's accountability is output equivalence: produce the same number.
 
-A decision engine's accountability is reasoning equivalence: trace every difference in output to a named difference in reasoning about the source material.
+A decision engine's accountability is *reasoning equivalence*: trace every difference in output to a named difference in reasoning about the source material. Disagreement is no longer opaque — it becomes an object the system can reason about.
 
 M2 is where Jarviz becomes a decision engine rather than a calculator. It doesn't happen when the match rate crosses a threshold. It happens when the system can account for every disagreement with an independent reference, including those where the disagreement is the correct outcome.
+
+### The reasoning comparison artifact
+
+Because reasoning is the accountable unit, every fully-diagnosed case should eventually support two distinct conclusions rather than one:
+
+**Conclusion 1 — Decision:**
+> Refund: ₹1,42,500
+
+**Conclusion 2 — Reasoning Comparison:**
+> - Salary treatment: equivalent  
+> - Standard deduction: equivalent  
+> - 80CCD(2): equivalent  
+> - Perquisites: *different*  
+>   → Status: Accepted Mismatch (IG-001)  
+>   → Engine position: Section 17(2) default — perquisites taxable absent exemption evidence  
+>   → Filed return: perquisites omitted  
+>   → CPC action: accepted filed treatment  
+>   → Resolution: await authoritative evidence on exemption status
+
+This is qualitatively richer than a pass/fail comparison. It tells the reader not just that the engine agrees or disagrees, but *where* in the reasoning the divergence occurs and *why* the divergence is either accepted or under investigation.
+
+The reasoning comparison artifact is the mechanism that makes reasoning equivalence concrete rather than aspirational.
 
 ---
 
