@@ -28,7 +28,8 @@ PARSERS_DONE        = 2   # manual + AIS (Form16 is scaffolded)
 # Milestone record — set date when criteria confirmed, None if pending
 MILESTONES = {
     "M1_engine_ready_for_evidence": "2026-06-26",  # Architecture, runtime, DVF, schema, LV all operational
-    "M2_real_case_batch_complete":  None,           # 20 real cases processed, LV match rate ≥ 80%
+    "M2_real_case_batch_complete":  None,           # 20 real cases, LV match ≥ 80%, every defect resolved
+    "M2_5_ca_validation":           None,           # 2–3 CAs independently reviewed representative cases
     "M3_closed_beta":               None,           # First external CA firm using the engine
     "M4_public_mvp":                None,           # First paying user
 }
