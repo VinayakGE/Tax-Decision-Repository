@@ -1,6 +1,10 @@
 # Evidence Doctrine
 
-*Engineering principles for building trustworthy decision systems through independent evidence.*
+**A trustworthy decision system is one in which every layer, including the methodology itself, remains accountable to independent evidence.**
+
+This is not a design goal. It is the definition. Everything in this document is a consequence of that sentence.
+
+*"Remains" is the operative word. Accountability is not historical certification — a layer validated once against a prior state of reality. It is ongoing. The methodology can drift. The doctrine can drift. Knowledge drift affects every layer. The question is not "was this correct?" but "is this still correct?"*
 
 ---
 
