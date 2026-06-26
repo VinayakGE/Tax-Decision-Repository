@@ -1,0 +1,33 @@
+{
+  "id": "T-0009",
+  "title": "AIS FD interest classifies to Head 5 — Other Sources without confirmation",
+  "target_type": "rule",
+  "target_ref": "R-0006",
+  "test_type": "positive",
+  "input": {
+    "evidence_item": {
+      "source": "AIS — interest (FD/RD/securities)",
+      "tds_section": null,
+      "ais_category": "interest_fd",
+      "gross_amount": 18000,
+      "bank_name": "HDFC Bank",
+      "account_type": "Fixed Deposit"
+    }
+  },
+  "expected_output": {
+    "income_head": "head_5_other_sources",
+    "sub_classification": "fd_rd_interest",
+    "requires_confirmation": false,
+    "classification_status": "classified",
+    "applicable_rule": "R-0006",
+    "deduction_eligible": {
+      "80TTA": false,
+      "80TTB": "if_senior_citizen"
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "FD interest from AIS is unambiguously Head 5. No confirmation question required. Engine 2 proceeds directly to include ₹18,000 under Other Sources. Matches the income profile in C-000001."
+}

@@ -44,7 +44,40 @@ Gold standard cases are stored in `benchmarks/gss/` using the same schema as `ca
 
 ---
 
-## The Nine Metrics
+## The Ten Metrics
+
+### M-00: Decision Coverage ★ North-Star KPI
+
+**What it measures:** The percentage of uploaded cases that Jarviz can resolve end-to-end without escalating to manual review.
+
+```
+Decision_Coverage = (cases_resolved_without_escalation) / total_cases × 100
+```
+
+A case requires escalation — and is excluded from the numerator — if any of the following occur:
+
+| Escalation Trigger | Meaning |
+|--------------------|---------|
+| Pattern confidence < 50% | No pattern could be matched; case is structurally outside the repository's knowledge |
+| Confidence band D or E | Critical evidence missing; pipeline halted before any decision |
+| `unclassified_pending` income items remain after intake | Engine 2 could not classify all income even after asking questions |
+| Engine 1 returns `cannot_determine` | ITR form cannot be determined from available evidence |
+| Any validation fires `requires_human_review: true` | A human decision is required before the return can proceed |
+
+**Targets:**
+
+| Milestone | Target |
+|-----------|--------|
+| v2.0.0 (500 rules, 500 GSS cases) | ≥ 85% |
+| v3.0.0 (1,000+ rules) | ≥ 95% |
+
+**Why this is the north-star metric:**
+
+Accuracy (M-01) measures correctness of what Jarviz decides. Coverage (M-00) measures how much of the real world Jarviz can handle at all. A system that achieves 99.9% accuracy on the 20% of cases it can handle is not a product. Decision Coverage tells you the fraction of actual taxpayers who can use Jarviz without a CA to fill the gaps.
+
+**Measurement method:** `operational_metrics.escalated` flag in the DEL for each GSS case. A case is `escalated: false` if all 14 pipeline stages completed with `status: completed` or `success`, no intake question went unanswered, and no decision returned `cannot_determine`.
+
+---
 
 ### M-01: ITR Form Accuracy
 

@@ -1,0 +1,245 @@
+{
+  "id": "R-0006",
+  "title": "Income Classification Authority — Canonical Evidence-to-Head Mapping",
+  "description": "Defines the canonical mapping from evidence source and TDS section to income head under the Income Tax Act, 1961. Every rupee of income must be assigned to exactly one of the five heads before the Tax Calculator can run. This rule is the authoritative reference for all classification decisions — rules R-0007 and above cite this mapping when determining head assignment. Where requires_confirmation is true, Engine 2 must ask the user or examine additional evidence before confirming the head.",
+  "logic": {
+    "if": "an income evidence item is presented with an identifiable source reference (document type, TDS section, or AIS category)",
+    "then": "apply lookup_table to assign income_head and sub_classification; if requires_confirmation is true, hold the item as classification_pending and trigger the relevant intake question before proceeding to the Tax Calculator",
+    "else": "mark the item as unclassified_pending; add to conflict_log with type classification_mismatch; reduce Evidence Completeness Score by the item's weight; trigger intake question IQ-CLASS-001",
+    "lookup_table": [
+      {
+        "evidence_source": "Form 16 (Employer TDS certificate)",
+        "tds_section": "192",
+        "ais_category": "salary",
+        "income_head": "head_1_salary",
+        "sub_classification": "gross_salary",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Form 16 is the primary authority for salary. AIS salary entry is secondary and must reconcile with Form 16."
+      },
+      {
+        "evidence_source": "26AS TDS credit u/s 192",
+        "tds_section": "192",
+        "ais_category": null,
+        "income_head": "head_1_salary",
+        "sub_classification": "gross_salary",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "TDS u/s 192 is always salary. Cross-check against Form 16."
+      },
+      {
+        "evidence_source": "AIS — salary",
+        "tds_section": null,
+        "ais_category": "salary",
+        "income_head": "head_1_salary",
+        "sub_classification": "gross_salary",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Secondary source. Reconcile amount against Form 16. If mismatch > 1%, trigger V-001."
+      },
+      {
+        "evidence_source": "AIS — interest (savings bank)",
+        "tds_section": null,
+        "ais_category": "interest_savings",
+        "income_head": "head_5_other_sources",
+        "sub_classification": "savings_bank_interest",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Section 56(2). Eligible for 80TTA deduction up to ₹10,000 under Old Regime."
+      },
+      {
+        "evidence_source": "AIS — interest (FD/RD/securities)",
+        "tds_section": null,
+        "ais_category": "interest_fd",
+        "income_head": "head_5_other_sources",
+        "sub_classification": "fd_rd_interest",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Section 56(2). Fully taxable. 80TTB applies for seniors (Old Regime). TDS u/s 194A may have been deducted."
+      },
+      {
+        "evidence_source": "26AS TDS credit u/s 193",
+        "tds_section": "193",
+        "ais_category": null,
+        "income_head": "head_5_other_sources",
+        "sub_classification": "interest_on_securities",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Interest on debentures, government securities. Section 56(2)."
+      },
+      {
+        "evidence_source": "26AS TDS credit u/s 194A",
+        "tds_section": "194A",
+        "ais_category": null,
+        "income_head": "head_5_other_sources",
+        "sub_classification": "fd_rd_interest",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Bank TDS on FD/RD. Gross up: if TDS is 10% of actual interest, compute gross = TDS / 0.10."
+      },
+      {
+        "evidence_source": "AIS — dividend",
+        "tds_section": null,
+        "ais_category": "dividend",
+        "income_head": "head_5_other_sources",
+        "sub_classification": "dividend_indian_company",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Section 56(2)(i). Taxable at slab rate from AY2021-22. TDS u/s 194 if aggregate > ₹5,000."
+      },
+      {
+        "evidence_source": "AIS — rent received",
+        "tds_section": null,
+        "ais_category": "rent",
+        "income_head": "head_2_house_property",
+        "sub_classification": "let_out_property",
+        "requires_confirmation": true,
+        "confirmation_reason": "Must confirm: property count, whether self-occupied portion exists, municipal taxes paid, and home loan interest on this property.",
+        "notes": "Section 22. GAV → NAV (minus municipal tax) → 30% standard deduction → interest u/s 24b."
+      },
+      {
+        "evidence_source": "26AS TDS credit u/s 194I",
+        "tds_section": "194I",
+        "ais_category": null,
+        "income_head": "head_2_house_property",
+        "sub_classification": "let_out_property",
+        "requires_confirmation": true,
+        "confirmation_reason": "194I applies to rent on both immovable property and plant/machinery. Confirm nature of asset.",
+        "notes": "If asset is plant/machinery, classify under Head 3 (Business) or Head 5 instead."
+      },
+      {
+        "evidence_source": "26AS TDS credit u/s 194C",
+        "tds_section": "194C",
+        "ais_category": null,
+        "income_head": "head_3_business_or_profession",
+        "sub_classification": "contractor_receipts_pending_confirmation",
+        "requires_confirmation": true,
+        "confirmation_reason": "194C covers contractor payments. Must confirm: is this individual acting as contractor for business? If presumptive, classify under 44AD. If regular business, classify as actual profits.",
+        "notes": "Cannot determine 44AD vs regular business from TDS section alone."
+      },
+      {
+        "evidence_source": "26AS TDS credit u/s 194J",
+        "tds_section": "194J",
+        "ais_category": null,
+        "income_head": "head_3_business_or_profession",
+        "sub_classification": "professional_receipts_pending_confirmation",
+        "requires_confirmation": true,
+        "confirmation_reason": "194J applies to professional fees and technical services. Must confirm: (a) specified profession → 44ADA; (b) technical services → business income; (c) director sitting fees → salary.",
+        "notes": "Section 194J(1)(ba) introduced lower 2% rate for technical services — distinguish from 10% professional fee TDS."
+      },
+      {
+        "evidence_source": "AIS — business receipts",
+        "tds_section": null,
+        "ais_category": "business_receipts",
+        "income_head": "head_3_business_or_profession",
+        "sub_classification": "requires_44AD_or_44ADA_or_regular",
+        "requires_confirmation": true,
+        "confirmation_reason": "Must determine: turnover amount, digital vs cash split, profession type (if applicable), whether books of accounts are maintained.",
+        "notes": "Determines ITR form (ITR-3 vs ITR-4) and applicable section (44AD, 44ADA, 44AE, or regular)."
+      },
+      {
+        "evidence_source": "Broker statement / Consolidated Account Statement (CAS)",
+        "tds_section": null,
+        "ais_category": null,
+        "income_head": "head_4_capital_gains",
+        "sub_classification": "detailed_by_asset_and_holding_period",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Primary source for capital gains. Do NOT use AIS as primary for CG — AIS shows gross sale value, not net gain. Holding period determines section: 111A (equity STCG), 112A (equity LTCG), 112 (other LTCG), slab (other STCG). AY2025-26: split transactions by 23 July 2024 for different rates."
+      },
+      {
+        "evidence_source": "AIS — capital gains (sale consideration)",
+        "tds_section": null,
+        "ais_category": "capital_gains",
+        "income_head": "head_4_capital_gains",
+        "sub_classification": "requires_broker_statement_for_net_gain",
+        "requires_confirmation": true,
+        "confirmation_reason": "AIS shows sale consideration only, not cost of acquisition. Must obtain broker statement or CAS to compute actual gain.",
+        "notes": "If broker statement unavailable, ask user to provide cost and date of acquisition for each AIS capital gains entry."
+      },
+      {
+        "evidence_source": "Form 26QB / AIS — property sale",
+        "tds_section": "194IA",
+        "ais_category": "property_sale",
+        "income_head": "head_4_capital_gains",
+        "sub_classification": "immovable_property_stcg_or_ltcg",
+        "requires_confirmation": true,
+        "confirmation_reason": "Must confirm: (a) date of acquisition to determine holding period (STCG if < 24 months, LTCG if ≥ 24 months); (b) cost of acquisition and improvement; (c) stamp duty value (for Section 50C).",
+        "notes": "LTCG on property: 12.5% without indexation from 23 Jul 2024 (Finance Act 2024). Pre-23 Jul 2024 transactions: 20% with indexation or 12.5% without, whichever is lower."
+      },
+      {
+        "evidence_source": "AIS — Virtual Digital Assets (crypto/NFT)",
+        "tds_section": "194S",
+        "ais_category": "vda",
+        "income_head": "head_5_other_sources",
+        "sub_classification": "vda_115BBH",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Section 115BBH — 30% flat rate. No deduction except cost of acquisition. Losses cannot be set off against any other income. TDS u/s 194S at 1% on transfer value."
+      },
+      {
+        "evidence_source": "AIS — lottery / game show winnings",
+        "tds_section": "194B",
+        "ais_category": "lottery",
+        "income_head": "head_5_other_sources",
+        "sub_classification": "lottery_115BB",
+        "requires_confirmation": false,
+        "confirmation_reason": null,
+        "notes": "Section 115BB — 30% flat rate. No deduction. No basic exemption offset. Disqualifies ITR-1."
+      },
+      {
+        "evidence_source": "AIS — foreign remittances / foreign income",
+        "tds_section": null,
+        "ais_category": "foreign",
+        "income_head": "requires_escalation",
+        "sub_classification": "NR_or_Schedule_FSI_or_Schedule_FA",
+        "requires_confirmation": true,
+        "confirmation_reason": "Foreign income requires residential status determination first. If RNOR or NR, only Indian-sourced income is taxable. If ROR, global income is taxable. DTAA claim must be checked.",
+        "notes": "Foreign income + foreign assets → ITR-2 mandatory (Schedule FA). DTAA benefits require Tax Residency Certificate (TRC)."
+      },
+      {
+        "evidence_source": "AIS — agricultural income",
+        "tds_section": null,
+        "ais_category": "agricultural",
+        "income_head": "exempt_but_partial_integration",
+        "sub_classification": "agricultural_income_section_10_1",
+        "requires_confirmation": true,
+        "confirmation_reason": "Agricultural income is exempt u/s 10(1) but is used for rate-purpose partial integration if > ₹5,000 AND non-agricultural income exceeds basic exemption limit.",
+        "notes": "Not taxable directly, but affects the marginal rate on non-agricultural income if thresholds are crossed."
+      }
+    ]
+  },
+  "authority": {
+    "act": "Income Tax Act, 1961",
+    "section": "Section 14",
+    "proviso": null,
+    "notification": null,
+    "circular": null,
+    "finance_act": "Finance Act 2024",
+    "effective_from": "1962-04-01",
+    "url": null
+  },
+  "effective_date": "1962-04-01",
+  "sunset_date": null,
+  "assessment_years": ["AY2025-26"],
+  "version": "1.0.0",
+  "status": "active",
+  "tags": [
+    "income-classification",
+    "head-of-income",
+    "foundational",
+    "salary",
+    "business",
+    "capital-gains",
+    "house-property",
+    "other-sources",
+    "tds-section",
+    "ais",
+    "wave-1"
+  ],
+  "evidence_refs": ["E-001", "E-002", "E-003", "E-004", "E-005", "E-007"],
+  "decision_refs": ["D-001"],
+  "test_refs": ["T-0007", "T-0008", "T-0009", "T-0010"],
+  "change_refs": ["CH-0006"],
+  "notes": "This is a foundational rule. Rules R-0007 and above reference this mapping when asserting income head assignments. The lookup_table is definitive — no income may be classified to a head not listed here. Any evidence type not in this table is treated as unclassified_pending and triggers escalation."
+}

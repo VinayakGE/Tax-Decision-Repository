@@ -5,6 +5,27 @@ Format: `[CH-XXXX] YYYY-MM-DD — Type — Summary`
 
 ---
 
+## v2.0.0-dev — AY2025-26 (2026-06-26)
+
+**Phase 5: Knowledge Expansion begins. R-0006 — first Wave 1 rule.**
+
+### Added
+- [CH-0006] `rules/R-0006-income-classification-authority.json` — Canonical evidence-to-income-head mapping: 20-entry lookup table covering Form 16, 26AS TDS sections (192, 193, 194A, 194C, 194I, 194J, 194IA, 194S, 194B), AIS categories (salary, interest, dividend, rent, business receipts, capital gains, VDA, lottery, agricultural, foreign), with `requires_confirmation` flags for ambiguous cases
+- [CH-0006] `tests/T-0007` — Form 16 → Head 1 Salary (positive)
+- [CH-0006] `tests/T-0008` — 26AS u/s 194J → Head 3 requires confirmation (positive — confirmation path)
+- [CH-0006] `tests/T-0009` — AIS FD interest → Head 5 Other Sources (positive)
+- [CH-0006] `tests/T-0010` — Unknown source → unclassified_pending escalation (negative)
+
+### Updated
+- [CH-0006] `docs/benchmark-jab.md` — Added M-00 Decision Coverage as north-star KPI (≥85% target for v2.0); total metrics now 10
+- [CH-0006] `schemas/benchmark-schema.json` — Added M00_decision_coverage metric with escalation breakdown
+- [CH-0006] `schemas/rule-schema.json` — Extended logic object to support optional `lookup_table` array for mapping-type rules
+- [CH-0006] `GOVERNANCE.md` — Replaced flat rule priority list with Wave 1-4 structure (Wave 1: decision-critical, Wave 2: reconciliation, Wave 3: computation, Wave 4: edge cases)
+- [CH-0006] `registry/rule-registry.json` — Added R-0006 entry
+- [CH-0006] `registry/index.json` — Rules: 5→6 active, Tests: 3→7 pending
+
+---
+
 ## v1.3.1 — AY2025-26 (2026-06-26)
 
 **Governance Charter — the last document before Phase 5.**

@@ -1,0 +1,28 @@
+{
+  "id": "T-0007",
+  "title": "Form 16 evidence classifies to Head 1 — Salary",
+  "target_type": "rule",
+  "target_ref": "R-0006",
+  "test_type": "positive",
+  "input": {
+    "evidence_item": {
+      "source": "Form 16 (Employer TDS certificate)",
+      "tds_section": "192",
+      "ais_category": "salary",
+      "gross_amount": 840000,
+      "employer_tan": "BLRX12345A"
+    }
+  },
+  "expected_output": {
+    "income_head": "head_1_salary",
+    "sub_classification": "gross_salary",
+    "requires_confirmation": false,
+    "classification_status": "classified",
+    "applicable_rule": "R-0006"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "The canonical positive case for Head 1 classification. Form 16 with Section 192 TDS is the highest-confidence salary evidence. No confirmation question should be triggered."
+}

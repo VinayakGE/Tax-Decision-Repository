@@ -74,18 +74,69 @@ That milestone — not rule count — is what demonstrates the architecture work
 
 ## Rule Authoring Priority for Epic 1
 
-Encode rules in this sequence, highest-frequency topics first:
+Rules are encoded in four waves, ordered by decision impact — not by section frequency. A perfect HRA calculation is useless if the engine filed the wrong form.
 
-1. Salary (Head 1 — deductions, exemptions, perquisites)
-2. TDS (credit computation, 26AS matching)
-3. ITR eligibility (extensions of R-0001 through R-0004)
-4. Presumptive taxation (44AD, 44ADA, 44AE — thresholds, disqualifiers)
-5. Interest income (Head 5 — savings, FD, 80TTA, 80TTB)
-6. House property (SOP vs LOP, interest deduction, loss set-off)
-7. Capital gains (all asset classes, holding periods, AY2025-26 rate splits)
-8. Deductions (80C family, 80D, 80E, 80G, 80CCD)
-9. Foreign assets and DTAA
-10. Audit and edge cases (44AB, 234B/234C, revised returns)
+### Wave 1 — Decision-Critical Rules (R-0006 to ~R-0050)
+
+These answer: **"Can I file this return correctly?"** No computation rule runs until Wave 1 is complete.
+
+- Income classification authority (R-0006 — done)
+- Salary vs business vs professional income distinction
+- Full ITR eligibility matrix (extensions of R-0001 through R-0004)
+- New vs Old regime eligibility and opt-out rules
+- Presumptive taxation eligibility: 44AD, 44ADA, 44AE (thresholds, disqualifiers, opt-out lock-in)
+- Residential status determination (ROR, RNOR, NR)
+- Director status impact on ITR eligibility
+- Unlisted equity holder impact on ITR eligibility
+- Foreign assets / foreign income — ITR-2 mandatory
+- Capital gains existence — ITR form upgrade triggers
+- Agricultural income threshold — partial integration rules
+
+### Wave 2 — Reconciliation Rules (~R-0051 to R-0150)
+
+These answer: **"Is this return internally consistent?"** No filing recommendation is complete without reconciliation.
+
+- AIS ↔ 26AS reconciliation (income amounts, TDS credits)
+- AIS ↔ Prefill JSON reconciliation
+- 26AS ↔ Form 16 TDS reconciliation (extension of V-001)
+- Duplicate income detection across evidence sources
+- Missing TDS credit rules
+- Missing interest income detection (extension of V-002)
+- PAN mismatch in evidence documents
+- Bank account pre-validation for refunds (extension of V-003)
+- Advance tax default detection (extension of V-005)
+
+### Wave 3 — Computation Rules (~R-0151 to R-0400)
+
+These answer: **"How much tax?"** Only reached after Wave 1 and Wave 2 are stable.
+
+- Salary deductions: standard deduction, exempt allowances, HRA, LTA, perquisites
+- House property: SOP vs LOP, NAV computation, 30% standard deduction, 24(b) interest
+- 80C family deductions (80C, 80CCC, 80CCD)
+- 80D health insurance deduction
+- 80CCD additional NPS deduction
+- 80G donations
+- 80TTA / 80TTB interest deductions
+- Special rate computations: 111A, 112A, 112, 115BB, 115BBH
+- Rebate u/s 87A (both regimes)
+- Surcharge computation and marginal relief
+- Cess computation
+- Section 234B / 234C interest
+
+### Wave 4 — Edge Cases (~R-0401+)
+
+These handle the long tail of complex situations.
+
+- ESOP: perquisite on allotment, capital gain on sale
+- Crypto and VDA: 115BBH, 194S TDS
+- Share buyback
+- RSUs and stock options for MNC employees
+- DTAA claims (relief u/s 90 / 90A / 91)
+- Section 89 relief for salary arrears
+- Clubbing of minor's income
+- Loss set-off and carry forward rules
+- Search and reassessment scenarios
+- Revised return rules
 
 ---
 

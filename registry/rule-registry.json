@@ -68,6 +68,19 @@
       "section_refs": ["SEC-004"],
       "test_refs": ["T-0008"],
       "file": "rules/R-0005-new-regime-default.json"
+    },
+    {
+      "id": "R-0006",
+      "title": "Income Classification Authority — Canonical Evidence-to-Head Mapping",
+      "status": "active",
+      "lifecycle_stage": "active",
+      "version": "1.0.0",
+      "assessment_years": ["AY2025-26"],
+      "tags": ["income-classification", "head-of-income", "foundational", "salary", "business", "capital-gains", "house-property", "other-sources", "tds-section", "ais", "wave-1"],
+      "decision_refs": ["D-001"],
+      "section_refs": ["SEC-001"],
+      "test_refs": ["T-0007", "T-0008", "T-0009", "T-0010"],
+      "file": "rules/R-0006-income-classification-authority.json"
     }
   ]
 }

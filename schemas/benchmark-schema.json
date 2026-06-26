@@ -39,6 +39,7 @@
     "metrics": {
       "type": "object",
       "required": [
+        "M00_decision_coverage",
         "M01_itr_accuracy",
         "M02_refund_accuracy",
         "M03_classification_accuracy",
@@ -51,6 +52,29 @@
       ],
       "additionalProperties": false,
       "properties": {
+        "M00_decision_coverage": {
+          "type": "object",
+          "required": ["value", "target", "passed", "cases_escalated", "cases_resolved"],
+          "additionalProperties": false,
+          "properties": {
+            "value": { "type": "number", "minimum": 0, "maximum": 100 },
+            "target": { "type": "number", "const": 85.0, "description": "85% target for v2.0.0" },
+            "passed": { "type": "boolean" },
+            "cases_escalated": { "type": "integer", "minimum": 0 },
+            "cases_resolved": { "type": "integer", "minimum": 0 },
+            "escalation_breakdown": {
+              "type": "object",
+              "properties": {
+                "no_pattern_match": { "type": "integer", "minimum": 0 },
+                "confidence_band_D_or_E": { "type": "integer", "minimum": 0 },
+                "unclassified_income": { "type": "integer", "minimum": 0 },
+                "cannot_determine_itr": { "type": "integer", "minimum": 0 },
+                "human_review_required": { "type": "integer", "minimum": 0 }
+              }
+            },
+            "details": { "type": ["string", "null"] }
+          }
+        },
         "M01_itr_accuracy": {
           "type": "object",
           "required": ["value", "target", "passed", "critical_misses", "over_filing_misses"],

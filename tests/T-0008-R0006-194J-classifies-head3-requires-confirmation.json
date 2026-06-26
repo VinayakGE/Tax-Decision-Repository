@@ -1,0 +1,29 @@
+{
+  "id": "T-0008",
+  "title": "26AS TDS u/s 194J classifies to Head 3 but requires confirmation",
+  "target_type": "rule",
+  "target_ref": "R-0006",
+  "test_type": "positive",
+  "input": {
+    "evidence_item": {
+      "source": "26AS TDS credit u/s 194J",
+      "tds_section": "194J",
+      "ais_category": null,
+      "gross_amount": 320000,
+      "deductor_name": "Acme Tech Solutions Pvt Ltd"
+    }
+  },
+  "expected_output": {
+    "income_head": "head_3_business_or_profession",
+    "sub_classification": "professional_receipts_pending_confirmation",
+    "requires_confirmation": true,
+    "confirmation_reason": "194J applies to professional fees and technical services. Must confirm: (a) specified profession → 44ADA; (b) technical services → business income; (c) director sitting fees → salary.",
+    "classification_status": "classification_pending",
+    "applicable_rule": "R-0006"
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "TDS u/s 194J alone is insufficient to distinguish a specified professional (44ADA), a technical services contractor (business under 44AD), or director sitting fees (salary). The rule correctly flags requires_confirmation. This triggers an intake question before income is classified."
+}

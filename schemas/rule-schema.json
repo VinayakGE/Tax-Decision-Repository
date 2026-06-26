@@ -53,6 +53,25 @@
         "else": {
           "type": "string",
           "description": "Outcome when condition is false (optional)."
+        },
+        "lookup_table": {
+          "type": "array",
+          "description": "Optional structured lookup table for classification or mapping rules. Each entry is a row in the canonical mapping.",
+          "items": {
+            "type": "object",
+            "required": ["evidence_source", "income_head", "sub_classification", "requires_confirmation"],
+            "additionalProperties": false,
+            "properties": {
+              "evidence_source": { "type": "string" },
+              "tds_section": { "type": ["string", "null"] },
+              "ais_category": { "type": ["string", "null"] },
+              "income_head": { "type": "string" },
+              "sub_classification": { "type": "string" },
+              "requires_confirmation": { "type": "boolean" },
+              "confirmation_reason": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] }
+            }
+          }
         }
       }
     },
