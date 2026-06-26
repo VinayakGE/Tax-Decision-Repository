@@ -1,5 +1,5 @@
 {
-  "_comment": "RC-0002 — Replication study: same taxpayer, prior year return. Full-salary year with JP Morgan. New features vs RC-0001: high salary (₹19L+), VDA income u/s 115BBH (crypto, 94S TDS), professional tax deduction 16(iii), perquisites ₹6,541, employer TDS computed under old regime with wrong std deduction. Filed within original due date.",
+  "_comment": "RC-0002 — Replication study: same taxpayer, prior year return. Full-salary year with JP Morgan. New features vs RC-0001: high salary (₹19L+), VDA income u/s 115BBH (crypto, 94S TDS), professional tax deduction 16(iii), perquisites ₹6,541, employer TDS computed under old regime with wrong std deduction. Filed within original due date. CPC 143(1) intimation obtained — verified against government computation.",
 
   "schema_version": "1.0.0",
   "case_id": "RC-0002",
@@ -7,7 +7,7 @@
   "anonymized": true,
   "assessment_year": "AY2025-26",
   "submitted_by": "self",
-  "verified": false,
+  "verified": true,
 
   "taxpayer": {
     "name": "Anonymized-01",
@@ -23,26 +23,31 @@
           "gross_salary": 1903450,
           "employer": "Employer-A (anonymized)",
           "tan": "ANON-A-001",
-          "note": "Salary ₹18,96,909 + Perquisites ₹6,541 = ₹19,03,450. Employer computed TDS under old regime, applied std deduction ₹50,000 (wrong — AY2025-26 should be ₹75,000) and 80C ₹57,450. Engine should use correct ₹75,000 regardless of employer's TDS computation."
+          "note": "Salary ₹18,96,909 + Perquisites ₹6,541 = ₹19,03,450 gross in Form 16. However CPC accepted taxable salary as ₹18,21,909 (= ₹18,96,909 − ₹75,000 std deduction), meaning perquisites ₹6,541 were NOT included in CPC's salary figure — likely excluded at source or treated separately. Employer computed TDS under old regime, applied std deduction ₹50,000 (wrong — AY2025-26 should be ₹75,000) and 80C ₹57,450 (invalid under new regime). Engine should use correct ₹75,000 regardless of employer's TDS computation."
         }
       ],
       "head_2_house_property": [],
       "head_3_business": [],
-      "head_4_capital_gains": [],
-      "head_5_other_sources": [
+      "head_4_capital_gains": [
         {
           "nature": "VDA",
-          "description": "Virtual Digital Asset income u/s 115BBH — consideration received from Crypto Platform (anonymized), TDS deducted u/s 94S. Cost of acquisition not available from prefill/AIS data; VDA profit (taxable income) cannot be determined from available evidence.",
+          "description": "Virtual Digital Asset income u/s 115BBH — taxed at 30% flat + cess. In ITR-2, VDA flows to capital gains head (line 03 in CPC intimation = ₹3,818). Taxpayer had cost of acquisition — profit determined as ₹3,818 on consideration ₹1,62,608. Tax = ₹1,145 (30% × ₹3,818 + 4% cess).",
+          "amount": 3818,
           "consideration": 162608,
-          "amount": null,
-          "_rule_gap": "Section 115BBH not implemented. VDA taxed at 30% flat + cess (no deductions except cost of acquisition). No set-off of VDA losses against any other income. TDS: 1% on consideration (94S)."
-        },
+          "tds_section": "94S",
+          "_rule_gap": "RG-003: Section 115BBH not implemented. Engine computes 0 for VDA; actual VDA tax = ₹1,145."
+        }
+      ],
+      "head_5_other_sources": [
         { "nature": "SAV", "description": "Savings Bank Interest", "amount": 496 },
-        { "nature": "DIV", "description": "Dividend",               "amount": 4 }
+        { "nature": "DIV", "description": "Dividend", "amount": 4 },
+        { "nature": "TAX", "description": "Prior year 244A refund interest — shown in prefill incDeductionsOthIncCPC as ₹1,743 (AY2024-25 refund interest). Taxable as other sources.", "amount": 1743 }
       ]
     },
 
     "professional_tax_paid": 2400,
+
+    "employer_nps_80ccd2": 70000,
 
     "basic_salary": null,
     "hra_actual": null,
@@ -72,35 +77,53 @@
   },
 
   "human_expected": {
-    "_comment": "New regime. Salary: 19,03,450 − 75,000 (16ia std) − 2,400 (16iii prof tax) = 18,26,050. Other sources: 500 (SAV 496 + DIV 4). VDA income excluded from slab computation — taxed separately at 30%+cess u/s 115BBH; cost of acquisition unknown so total VDA tax cannot be determined. All VDA-dependent fields (total_tax, outcome, refund, demand) set null. taxable_income_new_regime = salary income + other sources = 18,26,050 + 500 = 18,26,550.",
-    "taxable_income_new_regime": 1826550,
+    "_comment": "New regime. CPC-verified figures from 143(1) intimation. Salary (CPC): ₹18,21,909 (= ₹18,96,909 − ₹75,000 std deduction; perquisites ₹6,541 excluded by CPC). Capital gains (VDA): ₹3,818. Other sources: ₹2,243 (SAV ₹496 + DIV ₹4 + prior year refund interest ₹1,743). Chapter VI-A deduction (80CCD(2) employer NPS): ₹70,000. Taxable income = ₹18,21,909 + ₹3,818 + ₹2,243 − ₹70,000 = ₹17,57,970. Tax: slab tax on ₹17,54,152 (excl VDA) + VDA tax ₹1,145 + surcharge ₹0 + cess 4% = ₹2,26,087. TDS ₹3,58,652 + 244A interest ₹9,938 = refund ₹1,42,500.",
+    "taxable_income_new_regime": 1757970,
     "taxable_income_old_regime": null,
-    "total_tax_new_regime": null,
+    "total_tax_new_regime": 226087,
     "total_tax_old_regime": null,
     "regime_recommendation": "new_regime",
-    "outcome": null,
-    "refund_amount": null,
-    "demand_amount": null,
+    "outcome": "refund",
+    "refund_amount": 142500,
+    "demand_amount": 0,
     "total_interest": 0
   },
 
   "lv_classification": "rule_gap",
 
-  "notes": "HIGH SALARY YEAR. Full-time employment at JP Morgan throughout the year. Key differences from RC-0001: (1) Single employer with large salary — tests high-income slab computation and regime comparison at ₹19L+ income. (2) VDA income (crypto): Neblio Technologies paid ₹1,62,608 consideration under 94S at 1% TDS (₹1,633). Section 115BBH taxes VDA at 30% flat + cess with NO deductions except cost of acquisition. Cost not available from prefill/AIS; profit unknown. Engine rule gap — 115BBH not implemented. (3) Professional tax ₹2,400 u/s 16(iii): deductible under both regimes. Engine does not implement 16iii — engine will over-report taxable income by ₹2,400. (4) Perquisites ₹6,541 included in gross salary — taxable at full value, no exemption claimed. (5) Employer TDS error: employer applied std deduction ₹50,000 (wrong for AY2025-26) and 80C ₹57,450 (invalid under new regime). Employer under-deducted TDS compared to correct new regime computation. Engine will correctly apply ₹75,000 std deduction. (6) No HRA, no Chapter VI-A deductions under new regime. Under old regime, 80C ₹57,450 applies (employer-declared) but taxpayer likely filed under new regime. EXPECTED ENGINE OUTPUT vs HUMAN: taxable_income_new_regime: engine will produce 1828950 (1903450 − 75000 + 500, missing 2400 prof tax) vs human 1826550. Delta: +2400 (16iii professional tax rule gap). VDA TDS credit ₹1,633 (94S) will need to be applied to VDA tax separately. Total TDS ₹3,58,652.",
+  "notes": "HIGH SALARY YEAR. Full-time employment at JP Morgan throughout the year. CPC 143(1) intimation obtained for AY2025-26 — all figures government-verified. Key differences from RC-0001 and engine rule gaps: (1) Single employer with large salary — tests high-income slab computation and regime comparison at ₹19L+ income. (2) VDA income (crypto): Neblio Technologies paid ₹1,62,608 consideration under 94S at 1% TDS (₹1,633). VDA PROFIT WAS KNOWN — ₹3,818 (not null as initially recorded). Section 115BBH taxes VDA at 30% flat + cess with NO deductions except cost of acquisition. Tax = ₹1,145. In ITR-2, VDA flows to capital gains head (line 03 in intimation). RG-003: Engine 115BBH not implemented — engine computes ₹0 for VDA. (3) Professional tax ₹2,400 u/s 16(iii): deductible under both regimes. RG-004: Engine does not implement 16(iii). Note: taxpayer also did NOT claim this deduction in the filed ITR (Form 24Q shows 16iii = ₹2,400 but ITR computation did not include it — CPC accepted without this deduction). (4) Perquisites ₹6,541: included in gross salary per Form 16 (₹18,96,909 + ₹6,541 = ₹19,03,450) but CPC's salary figure is ₹18,21,909 = ₹18,96,909 − ₹75,000, meaning perquisites were NOT included in the CPC computation. Engine will include them — overstating salary by ₹6,541. (5) Employer NPS 80CCD(2): ₹70,000 employer NPS contribution claimed and accepted by CPC. RG-005: Engine does not implement 80CCD(2) — understates deductions by ₹70,000. (6) Prior year refund interest ₹1,743 (244A from AY2024-25): taxable as other sources. Shown in prefill incDeductionsOthIncCPC. Engine case did not initially include this. (7) Employer TDS error: employer applied std deduction ₹50,000 (wrong for AY2025-26) and 80C ₹57,450 (invalid under new regime). Engine correctly applies ₹75,000. (8) 244A interest ₹9,938 added to refund (6% on ₹1,32,570 refund for ~15 months). (9) CPC waived 234C interest of ₹132 → total interest = ₹0. TOTAL TDS ₹3,58,652.",
 
   "entity_pressure_observed": [],
 
   "_investigation_log": {
     "run_date": "2026-06-26",
+    "cpc_intimation": {
+      "source": "Section 143(1) CPC intimation AY2025-26",
+      "intimation_date": "2026-01-08",
+      "figures": {
+        "salary_income": 1821909,
+        "capital_gains_vda": 3818,
+        "other_sources": 2243,
+        "chapter_via_deduction": 70000,
+        "total_income": 1757970,
+        "tax_computed": 226087,
+        "tds_credit": 358652,
+        "interest_244A": 9938,
+        "refund": 142500,
+        "interest_234C_waived": 132
+      },
+      "cpc_adjustments": "No adjustments to declared income or deductions. All figures accepted as filed. 234C interest waived from ₹132 to ₹0."
+    },
     "defects_found": [
       "D-002: r0022_interest_234abc read tds_credit_from_26AS (scalar key, never populated) instead of summing tds_credits_from_26AS (list). For RC-0001 this was hidden because total_tax=0 so 0>=0.90*0. RC-0002 has total_tax=₹2,48,232 so the wrong tds=0 caused engine to charge ₹19,982 interest (234B) instead of 0. Fix: sum items from tds_credits_from_26AS. 13 GMs regenerated.",
       "D-003: wave3a.py other_total sum used item.get('amount', 0) which returns None when 'amount': null is present in JSON (dict.get default only applies when key is absent, not when value is None). VDA entry with null amount caused TypeError. Fix: use item.get('amount') or 0."
     ],
     "rule_gaps_observed": [
-      "RG-003: Section 115BBH (VDA income) not implemented — engine computes 0 for VDA income; actual VDA consideration ₹1,62,608, profit unknown. VDA-dependent fields (total_tax, outcome, refund, demand) cannot be verified.",
-      "RG-004: Section 16(iii) professional tax deduction not implemented — engine over-reports taxable_income_new_regime by ₹2,400 (engine: ₹18,28,950 vs human: ₹18,26,550).",
-      "RG-001: Section 288A rounding not applied — minor delta expected but not observable here since taxable income delta is dominated by RG-004.",
-      "RG-002: demand_amount not produced — engine returns None."
+      "RG-003: Section 115BBH (VDA income) not implemented — engine computes 0 for VDA income; actual VDA profit ₹3,818, tax ₹1,145. VDA flows to capital gains head in ITR-2.",
+      "RG-004: Section 16(iii) professional tax deduction not implemented — engine over-reports taxable salary by ₹2,400. Note: taxpayer also did not claim this in the filed ITR; CPC accepted without it.",
+      "RG-005: Section 80CCD(2) employer NPS not implemented — engine misses ₹70,000 deduction that is valid under new regime (115BAC allows 80CCD(2)). Only Chapter VI-A deduction available under new regime besides standard deduction.",
+      "RG-001: Section 288A rounding not applied — minor delta expected.",
+      "RG-002: demand_amount not produced — engine returns None instead of 0."
     ],
     "engine_actual_output": {
       "taxable_income_new_regime": 1828950,
@@ -114,9 +137,11 @@
       "regime_recommendation": "new_regime"
     },
     "delta_analysis": {
-      "taxable_income_new_regime": "+2400 — RG-004: Section 16(iii) professional tax not deducted by engine",
-      "total_tax_new_regime": "cannot verify — total_tax includes assumption that VDA income=0 (RG-003); actual VDA tax unknown",
-      "total_interest": "0 — matches human (D-002 fix applied; return filed within due date; TDS ₹3,58,652 > 90% of tax ₹2,48,232)"
+      "taxable_income_new_regime": "Engine ₹18,28,950 vs CPC ₹17,57,970 — delta +₹70,980 decomposes as: +₆,541 (perquisites included by engine, excluded by CPC) +₇0,000 (80CCD(2) employer NPS missing in engine — RG-005) −₃,818 (VDA income missing in engine — RG-003) −₁,743 (prior year refund interest missing from initial case evidence). Net: 6541+70000−3818−1743 = +70980 ✓",
+      "total_tax_new_regime": "Engine ₹2,48,232 vs CPC ₹2,26,087 — delta driven by taxable income differences above plus missing VDA tax ₹1,145 (RG-003) and missing 80CCD(2) deduction (RG-005).",
+      "outcome": "Both predict refund — matches.",
+      "refund_amount": "Engine ₹1,10,420 vs CPC ₹1,42,500 — delta ₹32,080. Engine missing 244A interest credit ₹9,938 and over-computing tax by ₹22,145 (taxable income error).",
+      "total_interest": "0 — matches CPC (D-002 fix applied; return filed within due date; TDS ₹3,58,652 > 90% of tax ₂,48,232). CPC also waived 234C ₹132."
     }
   }
 }
