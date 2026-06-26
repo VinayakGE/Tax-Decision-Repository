@@ -4,6 +4,43 @@
 
 ---
 
+## Doctrine 0: No System Can Fully Validate Its Own Foundational Assumptions
+
+A system cannot establish the correctness of assumptions that originate from within itself using only artifacts derived from those assumptions.
+
+This is not a formal mathematical statement (Gödel's incompleteness theorem operates in a different domain). It is an epistemic constraint on engineering practice, closer in spirit to Popper's falsificationism: a theory cannot be confirmed from within its own framework, only potentially falsified from outside it.
+
+Applied to decision systems: you cannot *establish* correctness by running tests derived from the same interpretation that produced the implementation. You can only accumulate external evidence that the system has not yet been falsified.
+
+Every software project has this constraint. Most never acknowledge it. The consequence of acknowledging it is the methodology described in this document.
+
+---
+
+## Three Kinds of Truth
+
+A trustworthy decision system must answer three distinct questions, each requiring a different kind of evidence:
+
+| Layer | Question | Evidence source |
+|---|---|---|
+| **Logical Truth** | Does the implementation correctly follow its own rules? | Unit tests |
+| **Behavioral Truth** | Does the implementation continue behaving the same way over time? | Golden masters, regression tests |
+| **Empirical Truth** | Does the implementation agree with independently established reality? | CPC 143(1) intimations, CA computations, official assessments |
+
+These layers are not redundant — they answer different questions. Unit tests do not become obsolete when real cases exist. Real cases do not replace golden masters. But they are not independent: **Empirical Truth can retroactively invalidate Behavioral Truth baselines**.
+
+When an empirical observation reveals that the implementation has been wrong since before the behavioral baselines were generated, those baselines must be recomputed from the corrected state — not patched. Patching a golden master to the correct value while leaving the implementation wrong would restore consistency without establishing correctness.
+
+**Defect D-001** demonstrates this cascade. The empirical finding (CPC-accepted return requiring ₹75,000 standard deduction) revealed that the implementation was wrong. Correcting the implementation then required regenerating 15 golden masters, because all 15 had been generated from the incorrect baseline. The empirical correction propagated backward through the behavioral layer and reset it.
+
+The dependency ordering is:
+
+```
+Correct Logical Truth → stable Behavioral baselines
+Empirical Truth exposes Logical errors → Behavioral baselines must be recomputed, not patched
+```
+
+---
+
 ## The Core Problem: Circularity of Validation
 
 Traditional decision-system engineering assumes this model:
@@ -40,9 +77,11 @@ Correction
 
 ## The Five Doctrines
 
+These follow from Doctrine 0. Each one is an engineering decision about how to operate within the constraint that no closed system can fully validate itself.
+
 **Doctrine 1** — *Synthetic evidence establishes consistency, not confidence.*
 
-A system that passes 1,000 synthetic tests is consistent. It is not verified. The tests and the implementation share the same source of error.
+A system that passes 1,000 synthetic tests is consistent. It is not verified. The tests and the implementation share the same source of error. This is not a criticism of synthetic tests — they are necessary for the Logical Truth layer. It is a statement about what they cannot establish.
 
 **Doctrine 2** — *Independent evidence establishes confidence.*
 
@@ -50,11 +89,11 @@ An independent source is one whose computation is not derived from the same ment
 
 **Doctrine 3** — *Interpretation uncertainty must never be silently encoded as deterministic logic.*
 
-When the correct treatment of an observation is not yet known, the observation becomes an Interpretation Gap. Implementing a guess as a rule converts uncertainty into false confidence and may cause the system to learn the wrong behavior.
+When the correct treatment of an observation is not yet known, the observation becomes an Interpretation Gap. Implementing a guess as a rule converts uncertainty into false confidence and may cause the system to learn the wrong behavior. An Interpretation Gap may close with no code change — if evidence later confirms that the engine behavior was already correct.
 
 **Doctrine 4** — *Every implemented rule should eventually trace back to independent evidence.*
 
-A rule with no independent case behind it has unknown accuracy. It has been verified consistent (tests pass) but not verified correct (no independent reference confirms it produces the right answer).
+A rule with no independent case behind it has unknown accuracy. It has been verified consistent (tests pass) but not verified correct (no independent reference confirms it produces the right answer). Consistency is not correctness.
 
 **Doctrine 5** — *The validation corpus defines the boundary of verified knowledge. Expand it deliberately, not randomly.*
 
@@ -218,14 +257,16 @@ Each real case's `_investigation_log` carries the observation and explanation. T
 
 ## Relationship to Testing
 
-This doctrine does not diminish the role of the synthetic test suite. The two layers are complementary and operate at different levels:
+This doctrine does not diminish the role of the synthetic test suite. The three layers are complementary and each answers a different question:
 
-| Layer | What it verifies | What it cannot detect |
-|---|---|---|
-| Unit tests | Rule logic is internally correct | Axioms encoded in rules are wrong |
-| Golden master tests | Engine output is stable across changes | Baseline output was wrong when GMs were generated |
-| Independent case validation | Engine output matches independent real-world computation | — |
+| Layer | What it establishes | What it cannot detect | Independence from implementation |
+|---|---|---|---|
+| Unit tests | Rule logic follows its own axioms | Axioms encoded in rules are wrong | None — shares same source interpretation |
+| Golden master tests | Engine output is stable across changes | Baseline output was wrong at generation time | Partial — shares assumptions at generation time |
+| Independent case validation | Engine output matches independently established reality | — | Complete — no shared assumptions |
 
-The layers are ordered by independence from the implementation. Unit tests share 100% of the implementation's assumptions. Golden masters share the assumptions at generation time. Independent cases share none.
+The layers are ordered by independence from the implementation. This ordering determines what each layer can establish: unit tests establish Logical Truth, golden masters establish Behavioral Truth, independent cases establish Empirical Truth.
 
-All three layers are necessary. The absence of the third layer leaves the system in a state where it can know it is consistent but cannot know it is correct.
+All three layers are necessary. The presence of layers 1 and 2 without layer 3 leaves the system in a state where it can know it is consistent but cannot know it is correct. That distinction is not philosophical — it is the difference between a system that has never been shown to be wrong and a system that has been shown to be right.
+
+For regulated decision engines specifically, "has not been shown to be wrong" is not sufficient. A government authority (CPC, tax tribunal, appellate body) will measure the system against independently established computation, not against internal consistency. The empirical layer is therefore not optional for this class of system — it is the only layer that answers the question a regulated outcome actually poses.
