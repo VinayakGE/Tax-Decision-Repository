@@ -144,7 +144,10 @@ def r0015_taxable_income_assembly(ctx: EvidenceContext) -> None:
     std_deduction_new = min(std_new, salary_total) if salary_total > 0 else 0
     std_deduction_old = min(std_old, salary_after_sec10) if salary_after_sec10 > 0 else 0
 
-    taxable_new = max(0, slab_income_new - std_deduction_new)
+    # 80CCD(2) employer NPS: available under both regimes; R-0041 computes it before this rule.
+    d80ccd2 = ctx.get("deduction_80CCD2", 0) or 0
+
+    taxable_new = max(0, slab_income_new - std_deduction_new - d80ccd2)
     taxable_old = max(0, slab_income_old - std_deduction_old)
 
     ctx.update({

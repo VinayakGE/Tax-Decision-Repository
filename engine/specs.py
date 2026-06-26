@@ -19,6 +19,7 @@ from engine.rules.wave3a import (
     r0023_refund_vs_demand,
 )
 from engine.rules.wave3b import (
+    r0041_deduction_80ccd2,
     r0024_deduction_80c,
     r0039_deduction_80ccd1b,
     r0035_80d_evidence_completeness,
@@ -80,7 +81,7 @@ WAVE3A_SPECS = [
     RuleSpec(
         rule_id="R-0015",
         requires=["classified_income", "evidence_integrity_checks_passed",
-                  "total_salary_sec10_exemption"],
+                  "total_salary_sec10_exemption", "deduction_80CCD2"],
         produces=["taxable_income_new_regime", "taxable_income_old_pre_deductions",
                   "gross_total_income", "total_income"],
         fn=r0015_taxable_income_assembly,
@@ -138,6 +139,12 @@ WAVE3A_SPECS = [
 
 WAVE3B_SPECS = [
     RuleSpec(
+        rule_id="R-0041",
+        requires=["regime_chosen"],
+        produces=["deduction_80CCD2"],
+        fn=r0041_deduction_80ccd2,
+    ),
+    RuleSpec(
         rule_id="R-0024",
         requires=["regime_chosen"],
         produces=["deduction_80C"],
@@ -175,7 +182,8 @@ WAVE3B_SPECS = [
     ),
     RuleSpec(
         rule_id="R-0028",
-        requires=["taxable_income_old_pre_deductions", "deduction_80C", "deduction_80CCD1B", "deduction_80D"],
+        requires=["taxable_income_old_pre_deductions", "deduction_80CCD2",
+                  "deduction_80C", "deduction_80CCD1B", "deduction_80D"],
         produces=["taxable_income_old_regime", "total_deductions_old", "deduction_breakdown"],
         fn=r0028_deduction_aggregator,
     ),

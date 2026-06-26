@@ -1,20 +1,73 @@
 """
 Wave 3B — Tax Adjustment Engine.
-Deductions reduce taxable income under Chapter VI-A (old regime).
-Each rule is responsible for exactly one deduction section.
+Deductions reduce taxable income under Chapter VI-A (old regime), and under
+both regimes where noted.
 
 Execution order (managed by scheduler):
-  R-0024  80C investments          → deduction_80C
-  R-0039  80CCD(1B) NPS            → deduction_80CCD1B
+  R-0041  80CCD(2) employer NPS    → deduction_80CCD2        [BOTH regimes]
+  R-0024  80C investments          → deduction_80C           [old regime only]
+  R-0039  80CCD(1B) NPS            → deduction_80CCD1B       [old regime only]
   R-0035  80D evidence completeness → deduction_80d_evidence_status
   R-0036  80D self / family cap     → deduction_80d_self
   R-0037  80D parents cap           → deduction_80d_parents
   R-0038  80D total                 → deduction_80D
   R-0028  Deduction Aggregator      → taxable_income_old_regime  (final, used by R-0016)
+
+Note: R-0041 must be scheduled before R-0015 (taxable_income_assembly) because
+80CCD(2) reduces the new-regime taxable income computed there. The scheduler's
+topological sort handles this automatically — R-0015 declares deduction_80CCD2
+as a required input.
 """
 
 from engine.context import EvidenceContext
 from engine import tables
+
+
+# ---------------------------------------------------------------------------
+# R-0041: Section 80CCD(2) — Employer NPS Contribution
+# ---------------------------------------------------------------------------
+
+def r0041_deduction_80ccd2(ctx: EvidenceContext) -> None:
+    """
+    Section 80CCD(2): employer's contribution to NPS on behalf of the employee.
+    Available under BOTH new and old regimes (Section 115BAC(2) explicitly permits it).
+    This rule runs before R-0015 so the new-regime taxable income assembly can apply it.
+
+    Limit: min(employer_contribution, 10% of basic_salary) for non-govt employees;
+           min(employer_contribution, 14% of basic_salary) for central govt employees.
+    When basic_salary is not available, the declared amount is accepted as-is —
+    the taxpayer is responsible for computing the applicable limit correctly.
+    """
+    employer_nps = ctx.get("employer_nps_80ccd2") or 0
+    if not employer_nps:
+        ctx.update({
+            "deduction_80CCD2": 0,
+            "deduction_80CCD2_declared": 0,
+            "deduction_80CCD2_limit_applied": False,
+        })
+        return
+
+    employer_nps = int(employer_nps)
+    basic_salary = ctx.get("basic_salary")
+
+    if basic_salary is not None:
+        basic_salary = int(basic_salary)
+        # 10% for private/other employers; 14% for central government (not tracked separately yet)
+        limit = int(basic_salary * 0.10)
+        deduction = min(employer_nps, limit)
+        limit_applied = employer_nps > limit
+    else:
+        # basic_salary unknown: accept declared amount; limit unverifiable
+        deduction = employer_nps
+        limit = None
+        limit_applied = False
+
+    ctx.update({
+        "deduction_80CCD2": deduction,
+        "deduction_80CCD2_declared": employer_nps,
+        "deduction_80CCD2_limit": limit,
+        "deduction_80CCD2_limit_applied": limit_applied,
+    })
 
 
 # ---------------------------------------------------------------------------
@@ -213,20 +266,24 @@ def r0038_80d_total(ctx: EvidenceContext) -> None:
 def r0028_deduction_aggregator(ctx: EvidenceContext) -> None:
     """
     Sum all Chapter VI-A deductions and compute final old-regime taxable income.
-    New regime taxable income is unaffected — it flows from R-0015 directly.
+    New regime taxable income is handled in R-0015 (80CCD(2)) and R-0015 directly.
 
+    80CCD(2) is included here for old-regime because it is available under both regimes.
     Designed to grow: add new deduction keys to breakdown as rules are added.
     """
     pre = ctx.get("taxable_income_old_pre_deductions", 0) or 0
 
+    d80ccd2 = ctx.get("deduction_80CCD2", 0) or 0
     d80c = ctx.get("deduction_80C", 0) or 0
     d80ccd1b = ctx.get("deduction_80CCD1B", 0) or 0
     d80d = ctx.get("deduction_80D", 0) or 0
 
-    total = d80c + d80ccd1b + d80d
+    total = d80ccd2 + d80c + d80ccd1b + d80d
     taxable_old_final = max(0, pre - total)
 
     breakdown = {}
+    if d80ccd2:
+        breakdown["80CCD2"] = d80ccd2
     if d80c:
         breakdown["80C"] = d80c
     if d80ccd1b:

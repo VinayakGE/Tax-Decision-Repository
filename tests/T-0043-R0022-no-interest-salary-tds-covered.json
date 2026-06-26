@@ -6,7 +6,7 @@
   "test_type": "negative",
   "input": {
     "total_tax_due": 55000,
-    "tds_credit_from_26AS": 55000,
+    "tds_credits_from_26AS": [{"tan": "TEST-001", "section": "192", "amount": 55000, "employer": "Test Employer"}],
     "advance_tax_paid": 0,
     "return_filed_date": "2025-07-20",
     "due_date": "2025-07-31",
