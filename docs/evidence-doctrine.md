@@ -342,3 +342,47 @@ The regulatory clock does not respect sprint cycles. It fires in February when t
 A system without the empirical layer has no mechanism to detect evidence regression. A system with it has a natural detection mechanism: the first independent case from the new period that exercises the affected rule will expose the drift.
 
 The practical consequence is that **every Finance Act change should be followed by targeted corpus expansion** — at least one real case exercising the changed rules in the new period, verified against CPC computation, to close the evidence regression loop.
+
+---
+
+## Two Kinds of Statements
+
+The repository contains two fundamentally different kinds of statements, and they must not be conflated.
+
+**Engineering statements** describe what the system does or should do. They can be implemented immediately when supported by appropriate evidence.
+
+> *"R-0040 implements Section 288A rounding."*
+
+**Methodological statements** describe how the system is allowed to change. They cannot be implemented — only promoted, through evidence accumulated over time.
+
+> *"Evidence thresholds should scale with blast radius."*
+
+Engineering statements change software. Methodological statements change how software is allowed to change. The evidence bar for a methodological statement is higher than for an engineering statement, because its blast radius spans every rule governed by it.
+
+---
+
+## Candidate Doctrines
+
+Candidate Doctrines are methodological observations that are plausible and well-reasoned but have not yet accumulated sufficient independent evidence to be elevated to doctrine. They follow the same lifecycle as rule gaps: Observed → Explained → Implemented → Verified. Promotion requires repeated independent confirmation, not argument.
+
+A candidate doctrine that is never promoted is not a failure. It may be falsified, refined, or simply remain at candidate status because the evidence never reaches threshold. That outcome is more honest than premature promotion.
+
+---
+
+### CD-001 — Evidence Threshold Scales with Blast Radius
+
+**Status:** Candidate — Observation
+
+**Statement:** The confidence required to change any layer of the system shall be proportional to the blast radius of that change. A rule change affects bounded computations. A methodology change affects all rules governed by that methodology. A doctrine change affects the entire learning process. The evidence bar rises accordingly.
+
+**Origin:** Engineering discussion following RC-0001 and RC-0002 (2026-06-26)
+
+**Evidence:** Reasoned argument from the structure of the system. The principle is internally coherent with Doctrines 0–5 and would be derivable from them. It has not yet been tested against independent system-evolution events.
+
+**Independent confirmations:** 0
+
+**Counter-evidence observed:** None
+
+**Promotion criteria:** Observe multiple independent system-evolution events where respecting or violating blast-radius-proportional evidence thresholds produced measurably different outcomes. Sustained pattern across different rule classes, methodology updates, and doctrine changes. Absence of systematic counter-examples.
+
+**Note:** CD-001 cannot grant itself doctrine status. Elevating it requires exactly the kind of evidence it describes — which means it must wait for reality to provide that evidence. This is not circular. It is the methodology acting consistently on itself.
