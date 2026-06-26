@@ -115,15 +115,16 @@
       "cpc_adjustments": "No adjustments to declared income or deductions. All figures accepted as filed. 234C interest waived from ₹132 to ₹0."
     },
     "defects_found": [
-      "D-002: r0022_interest_234abc read tds_credit_from_26AS (scalar key, never populated) instead of summing tds_credits_from_26AS (list). For RC-0001 this was hidden because total_tax=0 so 0>=0.90*0. RC-0002 has total_tax=₹2,48,232 so the wrong tds=0 caused engine to charge ₹19,982 interest (234B) instead of 0. Fix: sum items from tds_credits_from_26AS. 13 GMs regenerated.",
-      "D-003: wave3a.py other_total sum used item.get('amount', 0) which returns None when 'amount': null is present in JSON (dict.get default only applies when key is absent, not when value is None). VDA entry with null amount caused TypeError. Fix: use item.get('amount') or 0."
+      "D-002: r0022_interest_234abc read tds_credit_from_26AS (scalar key, never populated) instead of summing tds_credits_from_26AS (list). For RC-0001 this was hidden because total_tax=0 so 0>=0.90*0. RC-0002 has total_tax=₹2,48,232 so the wrong tds=0 caused engine to charge ₹19,982 interest (234B) instead of 0. Fix: sum items from tds_credits_from_26AS. 13 GMs regenerated. closure_stage: Verified (RC-0002 confirmed fix).",
+      "D-003: wave3a.py other_total sum used item.get('amount', 0) which returns None when 'amount': null is present in JSON (dict.get default only applies when key is absent, not when value is None). VDA entry with null amount caused TypeError. Fix: use item.get('amount') or 0. closure_stage: Verified (RC-0002 confirmed fix).",
+      "D-004 (side-find): T-0043 unit test used tds_credit_from_26AS (singular scalar, pre-D-002 key) — test was silently broken after D-002 fix. Found during RG-005 implementation when running full test suite. Fix: updated T-0043 to use tds_credits_from_26AS list format. closure_stage: Verified (107/107 pass)."
     ],
     "rule_gaps_observed": [
-      "RG-003: Section 115BBH (VDA income) not implemented — engine computes 0 for VDA income; actual VDA profit ₹3,818, tax ₹1,145. VDA flows to capital gains head in ITR-2.",
-      "RG-004: Section 16(iii) professional tax deduction not implemented — engine over-reports taxable salary by ₹2,400. Note: taxpayer also did not claim this in the filed ITR; CPC accepted without it.",
-      "RG-005: Section 80CCD(2) employer NPS not implemented — engine misses ₹70,000 deduction that is valid under new regime (115BAC allows 80CCD(2)). Only Chapter VI-A deduction available under new regime besides standard deduction.",
-      "RG-001: Section 288A rounding not applied — minor delta expected.",
-      "RG-002: demand_amount not produced — engine returns None instead of 0."
+      "RG-003: Section 115BBH (VDA income) not implemented — engine computes 0 for VDA income; actual VDA profit ₹3,818, tax ₹1,145. VDA flows to capital gains head in ITR-2. closure_stage: Explained.",
+      "RG-004: Section 16(iii) professional tax deduction not implemented — engine over-reports taxable salary by ₹2,400. Note: taxpayer also did not claim this in the filed ITR; CPC accepted without it. closure_stage: Explained.",
+      "RG-005: Section 80CCD(2) employer NPS not implemented — engine misses ₹70,000 deduction that is valid under new regime (115BAC allows 80CCD(2)). IMPLEMENTED in commit 4f8ea12 via R-0041. Engine taxable_income_new_regime reduced by ₹64,439 (₹70,000 deduction − ₹3,818 VDA and ₹1,743 interest now correctly included). closure_stage: Implemented. Awaiting Verified (needs independent case exercising 80CCD(2)).",
+      "RG-001: Section 288A rounding not applied — minor delta expected. closure_stage: Explained.",
+      "RG-002: demand_amount not produced — engine returns None instead of 0. closure_stage: Explained."
     ],
     "engine_actual_output": {
       "taxable_income_new_regime": 1828950,
