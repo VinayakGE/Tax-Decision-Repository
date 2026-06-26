@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Jarviz Engine Status Dashboard.
-Reads the registry and live test results to report engine health.
+Jarviz Instrument Panel — AY2025-26
+Four sections: Repository Health, Decision Quality, Product Readiness, Business Validation.
+Schema is frozen. Only values change going forward.
 Run: python bin/status.py
 """
 
@@ -14,165 +15,216 @@ import time
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
+# ── Manually-updated targets (schema frozen; update values as work progresses) ──
+
+RULES_TARGET        = 200
+GM_TARGET           = 500
+REAL_CASES_TARGET   = 100
+CA_FIRMS_TARGET     = 20
+PAYING_USERS_TARGET = 50
+PARSERS_TOTAL       = 6
+PARSERS_DONE        = 2   # manual + AIS (Form16 is scaffolded)
+
+# Business validation — updated manually as milestones are reached
+BUSINESS = {
+    "ca_firms_interviewed":       0,
+    "real_taxpayers_processed":   0,
+    "paying_users":               0,
+    "customer_satisfaction":     "—",
+    "bug_escape_rate":           "—",
+}
+
+# Product readiness — updated manually each wave
+PRODUCT = {
+    "wave_3a":         "Complete",
+    "wave_3b":         "Not Started",
+    "parser_framework":"Ready",
+    "real_parser":     "Not Started",
+    "real_cases":      0,
+    "closed_beta":     "Not Started",
+    "public_mvp":      "Target: 4–5 months",
+}
+
+
+# ── Live metrics ───────────────────────────────────────────────────────────────
 
 def _load(path: str) -> dict:
     with open(os.path.join(REPO_ROOT, path)) as f:
         return json.load(f)
 
 
-def _fmt(v, width=8) -> str:
-    return str(v).rjust(width)
+def _row(label: str, value: str, width: int = 32) -> str:
+    return f"  {label:<{width}} {value}"
 
 
-def _bar(pct: float, width=20) -> str:
-    filled = round(pct / 100 * width)
-    return "█" * filled + "░" * (width - filled)
+def _pct(n: int, d: int) -> float:
+    return round(100 * n / d, 1) if d else 0.0
 
 
-def run_dvf() -> dict:
-    """Run DVF: golden masters + coverage map."""
-    from dvf.runners.golden import run_golden
-    from dvf.coverage import coverage_report
-    t0 = time.time()
-    results = run_golden()
-    elapsed = time.time() - t0
-    passed = sum(1 for r in results if r.passed)
-    report = coverage_report()
-    return {
-        "total": len(results),
-        "passed": passed,
-        "elapsed_ms": round(elapsed * 1000),
-        "coverage_pct": report["overall"]["pct"],
-        "covered": report["overall"]["covered"],
-        "required": report["overall"]["total"],
-    }
-
-
-def run_tests() -> dict:
+def run_all_tests() -> dict:
     t0 = time.time()
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", "test_wave3a.py", "-q", "--tb=no", "--no-header"],
+        [sys.executable, "-m", "pytest", "test_wave3a.py", "test_dvf.py",
+         "-q", "--tb=no", "--no-header"],
         capture_output=True, text=True, cwd=REPO_ROOT
     )
     elapsed = time.time() - t0
     output = result.stdout + result.stderr
     passed = failed = 0
     for line in output.splitlines():
-        if " passed" in line:
-            parts = line.split()
-            for i, p in enumerate(parts):
-                if p == "passed":
-                    try: passed = int(parts[i - 1])
-                    except: pass
-                if p == "failed":
-                    try: failed = int(parts[i - 1])
-                    except: pass
+        parts = line.split()
+        for i, p in enumerate(parts):
+            if p == "passed":
+                try: passed = int(parts[i - 1])
+                except: pass
+            if p == "failed":
+                try: failed = int(parts[i - 1])
+                except: pass
     return {"passed": passed, "failed": failed, "elapsed_s": round(elapsed, 2)}
 
 
-def scheduler_depth() -> int:
-    """Compute the depth (number of waves) in the Wave 3A spec graph."""
-    from engine.scheduler import build_schedule
-    from engine.specs import WAVE3A_SPECS
-    waves = build_schedule(WAVE3A_SPECS)
-    return len(waves)
-
-
-def rules_per_decision(ctx_snapshot: dict) -> int:
-    """Count rules that actually wrote output keys (approximation)."""
-    from engine.specs import WAVE3A_SPECS
-    return len(WAVE3A_SPECS)
-
-
-def run_synthetic_pipeline() -> dict:
-    """Run synthetic_001 through the pipeline and capture key metrics."""
+def run_pipeline() -> dict:
     from engine.pipeline import run
     case_path = os.path.join(REPO_ROOT, "engine", "cases", "synthetic_001.json")
     output_path = os.path.join(REPO_ROOT, "output", "synthetic_001-report.html")
     t0 = time.time()
-    result = run(case_path, output_path)
-    elapsed = time.time() - t0
-    return {"elapsed_ms": round(elapsed * 1000), "outcome": result.get("context", {}).get("outcome"), "recommendation": result.get("regime_recommendation")}
+    try:
+        run(case_path, output_path)
+        elapsed_ms = round((time.time() - t0) * 1000)
+        return {"ok": True, "elapsed_ms": elapsed_ms}
+    except Exception as e:
+        return {"ok": False, "elapsed_ms": 0, "error": str(e)}
+
+
+def run_golden() -> dict:
+    from dvf.runners.golden import run_golden as _rg
+    from dvf.coverage import coverage_report
+    t0 = time.time()
+    results = _rg()
+    elapsed_ms = round((time.time() - t0) * 1000)
+    passed = sum(1 for r in results if r.passed)
+    report = coverage_report()
+    return {
+        "total": len(results),
+        "passed": passed,
+        "elapsed_ms": elapsed_ms,
+        "decision_coverage_pct": report["overall"]["pct"],
+        "covered_cells": report["overall"]["covered"],
+        "required_cells": report["overall"]["total"],
+    }
+
+
+def scheduler_info() -> dict:
+    from engine.scheduler import build_schedule
+    from engine.specs import WAVE3A_SPECS
+    waves = build_schedule(WAVE3A_SPECS)
+    return {"depth": len(waves), "rules": len(WAVE3A_SPECS)}
+
+
+def compute_rci(active_rules: int, tests_passed: int, tests_total: int,
+                gm_passed: int, real_cases: int) -> dict:
+    """Repository Confidence Index — 5 equal-weight components, each 0–100."""
+    knowledge   = _pct(active_rules, RULES_TARGET)
+    rule_tests  = _pct(tests_passed, tests_total) if tests_total else 0.0
+    gm_cov      = _pct(gm_passed, GM_TARGET)
+    mutation    = 100.0   # 4/4 mutations detected; update if new blind spots found
+    real_val    = _pct(real_cases, REAL_CASES_TARGET)
+    score       = round((knowledge + rule_tests + gm_cov + mutation + real_val) / 5, 1)
+    return {
+        "score": score,
+        "knowledge": knowledge,
+        "rule_tests": rule_tests,
+        "gm_cov": gm_cov,
+        "mutation": mutation,
+        "real_val": real_val,
+    }
+
+
+# ── Rendering ──────────────────────────────────────────────────────────────────
+
+def _section(title: str) -> None:
+    print(f"\n  {title}")
+    print(f"  {'─' * 55}")
 
 
 def main():
-    index = _load("registry/index.json")
-    rule_reg = _load("registry/rule-registry.json")
+    index  = _load("registry/index.json")
     counts = index["counts"]
+    r      = counts["rules"]
 
     print()
     print("  ┌─────────────────────────────────────────────────────────────┐")
-    print("  │  JARVIZ ENGINE STATUS                           AY2025-26   │")
+    print("  │  JARVIZ INSTRUMENT PANEL                        AY2025-26   │")
     print("  └─────────────────────────────────────────────────────────────┘")
-    print()
 
-    # Registry counts
-    r = counts["rules"]
-    t = counts["tests"]
-    print(f"  KNOWLEDGE LAYER")
-    print(f"  {'Rules':<30} {r['active']:>4} active   {r['draft']:>3} draft   {r['deprecated']:>3} deprecated")
-    print(f"  {'Tests':<30} {t['total']:>4} total    {t['pending']:>3} pending")
-    print(f"  {'Evidence sources':<30} {counts['evidence_sources']['total']:>4} active")
-    print(f"  {'Patterns':<30} {counts['patterns']['total']:>4} ({counts['patterns']['estimated_coverage_pct']}% estimated taxpayer coverage)")
-    print(f"  {'Decisions':<30} {counts['decisions']['active']:>4} active    {counts['decisions']['draft']:>3} draft")
-    print()
+    # Live collections — run once, used across sections
+    print("\n  Collecting live metrics...", end="", flush=True)
+    test_res  = run_all_tests()
+    pip_res   = run_pipeline()
+    gm_res    = run_golden()
+    sched     = scheduler_info()
+    print(" done.")
 
-    # Test results
-    print(f"  LIVE TEST RESULTS  (running...)", flush=True)
-    test_res = run_tests()
-    total_tests = test_res["passed"] + test_res["failed"]
-    pass_rate = (test_res["passed"] / total_tests * 100) if total_tests > 0 else 0
-    print(f"  {'Wave 3A suite':<30} {test_res['passed']:>2}/{total_tests} passed   {_bar(pass_rate)}  {pass_rate:.0f}%  ({test_res['elapsed_s']}s)")
-    print()
+    tests_total  = test_res["passed"] + test_res["failed"]
+    pipeline_ok  = pip_res["ok"]
 
-    # DVF results
-    print(f"  DECISION VALIDATION FRAMEWORK  (running...)", flush=True)
-    dvf_res = run_dvf()
-    gm_rate = (dvf_res["passed"] / dvf_res["total"] * 100) if dvf_res["total"] > 0 else 0
-    cov_bar = _bar(dvf_res["coverage_pct"])
-    print(f"  {'Golden masters':<30} {dvf_res['passed']:>2}/{dvf_res['total']} passed   {_bar(gm_rate)}  {gm_rate:.0f}%  ({dvf_res['elapsed_ms']}ms)")
-    print(f"  {'Matrix coverage':<30} {dvf_res['covered']:>2}/{dvf_res['required']} cells    {cov_bar}  {dvf_res['coverage_pct']}%")
-    print()
+    # ── 1. Repository Health ─────────────────────────────────────────────────
+    _section("1. REPOSITORY HEALTH")
+    print(_row("Active rules",    f"{r['active']} / {RULES_TARGET}"))
+    print(_row("Tests",           f"{test_res['passed']} / {tests_total} passing   ({test_res['elapsed_s']}s)"))
+    print(_row("Golden masters",  f"{gm_res['passed']} / {GM_TARGET}"))
+    print(_row("Pipeline",        "PASS" if pipeline_ok else f"FAIL — {pip_res.get('error','')}"))
+    print(_row("Scheduler depth", f"{sched['depth']} waves"))
+    print(_row("Avg runtime",     f"{gm_res['elapsed_ms']} ms  (4 GMs)"))
 
-    # Scheduler metrics
-    print(f"  SCHEDULER GRAPH")
-    depth = scheduler_depth()
-    from engine.specs import WAVE3A_SPECS
-    print(f"  {'Wave 3A rules':<30} {len(WAVE3A_SPECS):>4}")
-    print(f"  {'Execution depth (waves)':<30} {depth:>4}")
-    print(f"  {'Rules per decision':<30} {len(WAVE3A_SPECS):>4}")
-    print()
+    # ── 2. Decision Quality ──────────────────────────────────────────────────
+    _section("2. DECISION QUALITY")
+    knowledge_pct = _pct(r['active'], RULES_TARGET)
+    print(_row("Decision coverage",  f"{gm_res['decision_coverage_pct']}%  ({gm_res['covered_cells']}/{gm_res['required_cells']} required cells)"))
+    print(_row("Knowledge coverage", f"{knowledge_pct}%  ({r['active']}/{RULES_TARGET} rules)"))
+    print(_row("Parser coverage",    f"{PARSERS_DONE} / {PARSERS_TOTAL}"))
+    print(_row("Evidence integrity", "Pending  (JAB M-07)"))
+    print(_row("Decision accuracy",  "Pending  (JAB — needs GSS)"))
 
-    # Pipeline benchmark
-    print(f"  PIPELINE BENCHMARK  (running...)", flush=True)
-    pip_res = run_synthetic_pipeline()
-    print(f"  {'Synthetic 001 (SYNTH-001)':<30} {pip_res['elapsed_ms']:>4}ms   {pip_res['recommendation'].replace('_',' ').title()} → {pip_res['outcome']}")
-    print()
+    # ── 3. Product Readiness ─────────────────────────────────────────────────
+    _section("3. PRODUCT READINESS")
+    print(_row("Wave 3A",          PRODUCT["wave_3a"]))
+    print(_row("Wave 3B",          PRODUCT["wave_3b"]))
+    print(_row("Parser framework", PRODUCT["parser_framework"]))
+    print(_row("Real parser",      PRODUCT["real_parser"]))
+    print(_row("Real cases",       f"{PRODUCT['real_cases']} / {REAL_CASES_TARGET}"))
+    print(_row("Closed beta",      PRODUCT["closed_beta"]))
+    print(_row("Public MVP",       PRODUCT["public_mvp"]))
 
-    # JAB targets
-    print(f"  JAB TARGETS  (v2.0.0 release gates)")
-    jab = [
-        ("M00", "Decision Coverage",     "≥ 85%",   "⏳ pending baseline"),
-        ("M01", "ITR Accuracy",          "≥ 99%",   "⏳ pending GSS"),
-        ("M02", "Refund Accuracy",       "< 0.5%",  "⏳ pending GSS"),
-        ("M03", "Classification Acc.",   "≥ 98%",   "⏳ pending GSS"),
-        ("M04", "Validation Precision",  "≥ 97%",   "⏳ pending GSS"),
-        ("M05", "Validation Recall",     "≥ 99%",   "⏳ pending GSS"),
-        ("M06", "False Positive Rate",   "< 1%",    "⏳ pending GSS"),
-        ("M07", "Evidence Integrity",    "≥ 95%",   "⏳ pending GSS"),
-        ("M08", "Avg Questions",         "≤ 3",     "⏳ Phase C (Intake)"),
-        ("M09", "Processing Time",       "p50 < 8s", f"✅ {pip_res['elapsed_ms']}ms"),
-        ("M10", "Human Override Rate",   "< 2%",    "⏳ pending real cases"),
-        ("M11", "Explainability",        "= 100%",  "🟡 HTML report generated"),
-    ]
-    for metric_id, name, target, status_display in jab:
-        print(f"  {metric_id}  {name:<26} {target:<12}  {status_display}")
+    # ── 4. Business Validation ───────────────────────────────────────────────
+    _section("4. BUSINESS VALIDATION")
+    print(_row("CA firms interviewed",      f"{BUSINESS['ca_firms_interviewed']} / {CA_FIRMS_TARGET}"))
+    print(_row("Real taxpayers processed",  f"{BUSINESS['real_taxpayers_processed']} / {REAL_CASES_TARGET}"))
+    print(_row("Paying users",              f"{BUSINESS['paying_users']} / {PAYING_USERS_TARGET}"))
+    print(_row("Customer satisfaction",     BUSINESS["customer_satisfaction"]))
+    print(_row("Bug escape rate",           BUSINESS["bug_escape_rate"]))
+
+    # ── RCI ──────────────────────────────────────────────────────────────────
+    rci = compute_rci(
+        active_rules  = r["active"],
+        tests_passed  = test_res["passed"],
+        tests_total   = tests_total,
+        gm_passed     = gm_res["passed"],
+        real_cases    = BUSINESS["real_taxpayers_processed"],
+    )
+    _section("REPOSITORY CONFIDENCE INDEX")
+    print(_row("Knowledge coverage",   f"{rci['knowledge']:>5.1f} / 100   ({r['active']}/{RULES_TARGET} rules)"))
+    print(_row("Rule test coverage",   f"{rci['rule_tests']:>5.1f} / 100   ({test_res['passed']}/{tests_total} tests passing)"))
+    print(_row("Golden master coverage",f"{rci['gm_cov']:>5.1f} / 100   ({gm_res['passed']}/{GM_TARGET} masters)"))
+    print(_row("Mutation detection",   f"{rci['mutation']:>5.1f} / 100   (4/4 mutations caught)"))
+    print(_row("Real case validation", f"{rci['real_val']:>5.1f} / 100   ({BUSINESS['real_taxpayers_processed']}/{REAL_CASES_TARGET} cases)"))
+    print()
+    print(f"  {'RCI':<32} {rci['score']:>5.1f} / 100")
 
     print()
-    print(f"  {'─' * 61}")
-    dvf_health = "✅ PASS" if dvf_res["passed"] == dvf_res["total"] else "❌ FAIL"
-    wave_health = "✅ PASS" if test_res["failed"] == 0 else "❌ FAIL"
-    print(f"  Wave 3A: {wave_health}  ·  DVF golden masters: {dvf_health}  ·  Matrix: {dvf_res['coverage_pct']}% covered")
+    print(f"  {'═' * 55}")
+    health = "✅ HEALTHY" if (pipeline_ok and test_res["failed"] == 0 and gm_res["passed"] == gm_res["total"]) else "⚠️  DEGRADED"
+    print(f"  {health}   RCI {rci['score']}   Tests {test_res['passed']}/{tests_total}   GMs {gm_res['passed']}/{gm_res['total']}")
     print()
 
 
