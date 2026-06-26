@@ -1,0 +1,28 @@
+{
+  "id": "T-0056",
+  "title": "R-0029: Old regime, both rent_paid and city_type missing → INCOMPLETE with two fields",
+  "target_type": "rule",
+  "target_ref": "R-0029",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "classified_income": {
+      "head_1_salary": [{ "gross_salary": 1000000 }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "hra_actual": 200000,
+    "basic_salary": 500000
+  },
+  "expected_output": {
+    "hra_evidence_status": {
+      "status": "INCOMPLETE",
+      "missing_fields": ["rent_paid", "city_type"]
+    }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Two required fields absent — both appear in missing_fields and suggested_questions."
+}

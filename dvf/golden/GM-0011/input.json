@@ -1,0 +1,23 @@
+{
+  "case_id": "GM-0011",
+  "description": "HRA candidate 3 = 0: rent paid (₹30k) is less than 10% of basic (₹50k), so c3=0 and hra_exemption=0 despite complete evidence. Old regime with ₹1L 80C.",
+  "taxpayer": { "name": "Deepa Nair", "age": 35, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1000000, "employer": "Wipro Ltd", "tan": "PUNA12345C" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "basic_salary": 500000,
+    "hra_actual": 200000,
+    "rent_paid": 30000,
+    "city_type": "Bangalore",
+    "investments_80C": 100000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "PUNA12345C", "section": "192", "amount": 60000, "employer": "Wipro Ltd" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

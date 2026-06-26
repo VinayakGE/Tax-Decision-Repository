@@ -1,0 +1,23 @@
+{
+  "case_id": "GM-0010",
+  "description": "HRA non-metro: c2 (40% of basic) is the limiting candidate. ₹12L salary, Hyderabad, ₹26k/month rent → c1=₹3L, c2=₹2.4L (40% × ₹6L), c3=₹2.52L. Old regime with ₹1L 80C.",
+  "taxpayer": { "name": "Kiran Reddy", "age": 40, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1200000, "employer": "TCS Ltd", "tan": "CHND56789B" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "basic_salary": 600000,
+    "hra_actual": 300000,
+    "rent_paid": 312000,
+    "city_type": "Hyderabad",
+    "investments_80C": 100000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "CHND56789B", "section": "192", "amount": 60000, "employer": "TCS Ltd" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}

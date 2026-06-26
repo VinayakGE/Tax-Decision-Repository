@@ -1,0 +1,22 @@
+{
+  "id": "T-0070",
+  "title": "R-0033: INCOMPLETE evidence → hra_exemption = 0",
+  "target_type": "rule",
+  "target_ref": "R-0033",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "INCOMPLETE", "missing_fields": ["city_type"], "suggested_questions": [] },
+    "hra_candidate_1": 0,
+    "hra_candidate_2": 0,
+    "hra_candidate_3": 0
+  },
+  "expected_output": {
+    "hra_exemption": 0,
+    "hra_limiting_candidate": null
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Missing evidence → conservative zero exemption. Suggested questions will prompt user for city_type."
+}

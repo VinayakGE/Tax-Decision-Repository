@@ -1,0 +1,18 @@
+{
+  "id": "T-0067",
+  "title": "R-0032: INCOMPLETE status → hra_candidate_3 = 0",
+  "target_type": "rule",
+  "target_ref": "R-0032",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "INCOMPLETE", "missing_fields": ["rent_paid"], "suggested_questions": [] }
+  },
+  "expected_output": {
+    "hra_candidate_3": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Cannot compute candidate 3 without rent_paid."
+}

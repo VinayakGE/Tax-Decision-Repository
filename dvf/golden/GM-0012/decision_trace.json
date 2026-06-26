@@ -102,14 +102,17 @@
   "rule_outputs": {
     "R-0029": {
       "hra_evidence_status": {
-        "status": "NOT_APPLICABLE",
-        "reason": "HRA exemption u/s 10(13A) is not available under the New Regime",
-        "missing_fields": [],
-        "suggested_questions": []
+        "status": "INCOMPLETE",
+        "missing_fields": [
+          "city_type"
+        ],
+        "suggested_questions": [
+          "Is your rented accommodation in a metro city (Delhi, Mumbai, Kolkata, or Chennai)?"
+        ]
       }
     },
     "R-0024": {
-      "deduction_80C": 0
+      "deduction_80C": 100000
     },
     "R-0031": {
       "hra_candidate_2": 0
@@ -129,27 +132,29 @@
       "income_adjustment_breakdown": {}
     },
     "R-0015": {
-      "taxable_income_new_regime": 425000,
-      "taxable_income_old_pre_deductions": 450000,
-      "gross_total_income": 500000,
-      "total_income": 500000
+      "taxable_income_new_regime": 925000,
+      "taxable_income_old_pre_deductions": 950000,
+      "gross_total_income": 1000000,
+      "total_income": 1000000
     },
     "R-0028": {
-      "taxable_income_old_regime": 450000,
-      "total_deductions_old": 0,
-      "deduction_breakdown": {}
+      "taxable_income_old_regime": 850000,
+      "total_deductions_old": 100000,
+      "deduction_breakdown": {
+        "80C": 100000
+      }
     },
     "R-0017": {
-      "slab_tax_new_regime": 6250,
-      "total_before_rebate_new_regime": 6250
+      "slab_tax_new_regime": 42500,
+      "total_before_rebate_new_regime": 42500
     },
     "R-0016": {
-      "slab_tax_old_regime": 7500,
-      "total_before_rebate_old_regime": 7500
+      "slab_tax_old_regime": 82500,
+      "total_before_rebate_old_regime": 82500
     },
     "R-0019": {
       "tax_after_rebate_new_regime": 0,
-      "tax_after_rebate_old_regime": 0,
+      "tax_after_rebate_old_regime": 82500,
       "rebate_applied": true
     },
     "R-0021": {
@@ -159,16 +164,19 @@
     },
     "R-0020": {
       "total_tax_new_regime": 0,
-      "total_tax_old_regime": 0,
+      "total_tax_old_regime": 85800,
       "cess_new_regime": 0,
-      "cess_old_regime": 0
+      "cess_old_regime": 3300
     },
     "R-0022": {
-      "total_interest": 0,
+      "total_interest": 2574,
       "interest_234A": 0,
       "interest_234B": {
-        "applicable": false,
-        "reason": "TDS by employer covers \u2265 90% of tax liability (Section 209A exemption)"
+        "applicable": true,
+        "shortfall": 85800,
+        "months": 3,
+        "interest_amount": 2574,
+        "note": "Return filed by due date so 234A = 0. 234B: April 1 to July 15 = 3 months (April, May, June = 3 full or part months)"
       },
       "interest_234C": {
         "applicable": false,
@@ -177,13 +185,13 @@
     },
     "R-0018": {
       "regime_recommendation": "new_regime",
-      "tax_saving_amount": 0,
+      "tax_saving_amount": 85800,
       "new_regime_is_better": true
     },
     "R-0023": {
-      "outcome": "refund",
-      "refund_amount": 10000,
-      "demand_amount": null
+      "outcome": "demand",
+      "refund_amount": null,
+      "demand_amount": 28374
     }
   }
 }

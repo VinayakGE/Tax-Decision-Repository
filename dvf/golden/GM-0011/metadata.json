@@ -1,0 +1,16 @@
+{
+  "case_id": "GM-0011",
+  "description": "HRA candidate 3 = 0: rent paid (\u20b930k) is less than 10% of basic (\u20b950k), so c3=0 and hra_exemption=0 despite complete evidence. Old regime with \u20b91L 80C.",
+  "generated_at": "2026-06-26T11:07:04.581556Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "salary",
+    "old_regime",
+    "hra_c3_zero",
+    "low_rent",
+    "income_adjustment_engine",
+    "demand"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

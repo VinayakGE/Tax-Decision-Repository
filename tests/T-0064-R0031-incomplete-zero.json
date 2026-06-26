@@ -1,0 +1,18 @@
+{
+  "id": "T-0064",
+  "title": "R-0031: INCOMPLETE status → hra_candidate_2 = 0",
+  "target_type": "rule",
+  "target_ref": "R-0031",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "INCOMPLETE", "missing_fields": ["city_type"], "suggested_questions": [] }
+  },
+  "expected_output": {
+    "hra_candidate_2": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Cannot compute metro percentage without city_type."
+}

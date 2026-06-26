@@ -67,7 +67,8 @@ REQUIRED_COVERAGE = [
     MatrixCell("salary_only",    "general",    "above_12L_to_15L","new_regime", "none",     "on_time"),  # GM-0002
     MatrixCell("salary_only",    "senior",     "below_5L",        "new_regime", "none",     "on_time"),  # GM-0003
     MatrixCell("business_only",  "general",    "above_12L_to_15L","new_regime", "none",     "on_time"),  # GM-0004
-    MatrixCell("salary_only",    "general",    "7L_to_12L",       "old_regime", "none",     "on_time"),  # GM-0005
+    MatrixCell("salary_only",    "general",    "7L_to_12L",       "old_regime", "none",     "on_time"),  # GM-0005, GM-0011, GM-0012
+    MatrixCell("salary_only",    "general",    "above_12L_to_15L","old_regime", "none",     "on_time"),  # GM-0009, GM-0010
     # These are targets — golden masters don't exist yet
     MatrixCell("salary_only",    "super_senior","below_5L",       "new_regime", "none",     "on_time"),
     MatrixCell("salary_ltcg",    "general",    "above_12L_to_15L","new_regime", "ltcg_112A","on_time"),
@@ -84,6 +85,10 @@ GM_COVERAGE_MAP = {
     "GM-0003": MatrixCell("salary_only",   "senior",  "below_5L",         "new_regime", "none", "on_time"),
     "GM-0004": MatrixCell("business_only", "general", "above_12L_to_15L", "new_regime", "none", "on_time"),
     "GM-0005": MatrixCell("salary_only",   "general", "7L_to_12L",        "old_regime", "none", "on_time"),
+    "GM-0009": MatrixCell("salary_only",   "general", "above_12L_to_15L", "old_regime", "none", "on_time"),
+    "GM-0010": MatrixCell("salary_only",   "general", "above_12L_to_15L", "old_regime", "none", "on_time"),
+    "GM-0011": MatrixCell("salary_only",   "general", "7L_to_12L",        "old_regime", "none", "on_time"),
+    "GM-0012": MatrixCell("salary_only",   "general", "7L_to_12L",        "old_regime", "none", "on_time"),
 }
 
 

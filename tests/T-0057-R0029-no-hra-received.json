@@ -1,0 +1,26 @@
+{
+  "id": "T-0057",
+  "title": "R-0029: Old regime, hra_actual absent → NOT_APPLICABLE (no HRA in CTC)",
+  "target_type": "rule",
+  "target_ref": "R-0029",
+  "test_type": "positive",
+  "input": {
+    "regime_chosen": "old_regime",
+    "classified_income": {
+      "head_1_salary": [{ "gross_salary": 1000000 }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "basic_salary": 500000,
+    "rent_paid": 180000,
+    "city_type": "Mumbai"
+  },
+  "expected_output": {
+    "hra_evidence_status": { "status": "NOT_APPLICABLE" }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Taxpayer pays rent but hra_actual is absent — employer did not provide HRA. No exemption possible."
+}

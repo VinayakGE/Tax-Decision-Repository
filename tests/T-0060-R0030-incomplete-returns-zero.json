@@ -1,0 +1,19 @@
+{
+  "id": "T-0060",
+  "title": "R-0030: INCOMPLETE status → hra_candidate_1 = 0",
+  "target_type": "rule",
+  "target_ref": "R-0030",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "INCOMPLETE", "missing_fields": ["city_type"], "suggested_questions": [] },
+    "hra_actual": 250000
+  },
+  "expected_output": {
+    "hra_candidate_1": 0
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Incomplete evidence — all candidates zero so final exemption is also zero."
+}

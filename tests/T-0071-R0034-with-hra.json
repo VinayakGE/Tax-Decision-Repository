@@ -1,0 +1,19 @@
+{
+  "id": "T-0071",
+  "title": "R-0034: hra_exemption > 0 → total_salary_sec10_exemption set and breakdown populated",
+  "target_type": "rule",
+  "target_ref": "R-0034",
+  "test_type": "positive",
+  "input": {
+    "hra_exemption": 204000
+  },
+  "expected_output": {
+    "total_salary_sec10_exemption": 204000,
+    "income_adjustment_breakdown": { "HRA_10_13A": 204000 }
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Aggregator writes the final sec10 total that R-0015 consumes to reduce old-regime slab income."
+}

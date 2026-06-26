@@ -102,54 +102,58 @@
   "rule_outputs": {
     "R-0029": {
       "hra_evidence_status": {
-        "status": "NOT_APPLICABLE",
-        "reason": "HRA exemption u/s 10(13A) is not available under the New Regime",
+        "status": "COMPLETE",
         "missing_fields": [],
         "suggested_questions": []
       }
     },
     "R-0024": {
-      "deduction_80C": 0
+      "deduction_80C": 100000
     },
     "R-0031": {
-      "hra_candidate_2": 0
+      "hra_candidate_2": 240000,
+      "hra_city_is_metro": false
     },
     "R-0032": {
-      "hra_candidate_3": 0
+      "hra_candidate_3": 252000
     },
     "R-0030": {
-      "hra_candidate_1": 0
+      "hra_candidate_1": 300000
     },
     "R-0033": {
-      "hra_exemption": 0,
-      "hra_limiting_candidate": null
+      "hra_exemption": 240000,
+      "hra_limiting_candidate": "c2"
     },
     "R-0034": {
-      "total_salary_sec10_exemption": 0,
-      "income_adjustment_breakdown": {}
+      "total_salary_sec10_exemption": 240000,
+      "income_adjustment_breakdown": {
+        "HRA_10_13A": 240000
+      }
     },
     "R-0015": {
-      "taxable_income_new_regime": 425000,
-      "taxable_income_old_pre_deductions": 450000,
-      "gross_total_income": 500000,
-      "total_income": 500000
+      "taxable_income_new_regime": 1125000,
+      "taxable_income_old_pre_deductions": 910000,
+      "gross_total_income": 1200000,
+      "total_income": 1200000
     },
     "R-0028": {
-      "taxable_income_old_regime": 450000,
-      "total_deductions_old": 0,
-      "deduction_breakdown": {}
+      "taxable_income_old_regime": 810000,
+      "total_deductions_old": 100000,
+      "deduction_breakdown": {
+        "80C": 100000
+      }
     },
     "R-0017": {
-      "slab_tax_new_regime": 6250,
-      "total_before_rebate_new_regime": 6250
+      "slab_tax_new_regime": 68750,
+      "total_before_rebate_new_regime": 68750
     },
     "R-0016": {
-      "slab_tax_old_regime": 7500,
-      "total_before_rebate_old_regime": 7500
+      "slab_tax_old_regime": 74500,
+      "total_before_rebate_old_regime": 74500
     },
     "R-0019": {
-      "tax_after_rebate_new_regime": 0,
-      "tax_after_rebate_old_regime": 0,
+      "tax_after_rebate_new_regime": 8750,
+      "tax_after_rebate_old_regime": 74500,
       "rebate_applied": true
     },
     "R-0021": {
@@ -158,17 +162,20 @@
       "surcharge_amount": 0
     },
     "R-0020": {
-      "total_tax_new_regime": 0,
-      "total_tax_old_regime": 0,
-      "cess_new_regime": 0,
-      "cess_old_regime": 0
+      "total_tax_new_regime": 9100,
+      "total_tax_old_regime": 77480,
+      "cess_new_regime": 350,
+      "cess_old_regime": 2980
     },
     "R-0022": {
-      "total_interest": 0,
+      "total_interest": 2324,
       "interest_234A": 0,
       "interest_234B": {
-        "applicable": false,
-        "reason": "TDS by employer covers \u2265 90% of tax liability (Section 209A exemption)"
+        "applicable": true,
+        "shortfall": 77480,
+        "months": 3,
+        "interest_amount": 2324,
+        "note": "Return filed by due date so 234A = 0. 234B: April 1 to July 15 = 3 months (April, May, June = 3 full or part months)"
       },
       "interest_234C": {
         "applicable": false,
@@ -177,13 +184,13 @@
     },
     "R-0018": {
       "regime_recommendation": "new_regime",
-      "tax_saving_amount": 0,
+      "tax_saving_amount": 68380,
       "new_regime_is_better": true
     },
     "R-0023": {
-      "outcome": "refund",
-      "refund_amount": 10000,
-      "demand_amount": null
+      "outcome": "demand",
+      "refund_amount": null,
+      "demand_amount": 19804
     }
   }
 }

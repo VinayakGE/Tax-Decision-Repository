@@ -1,0 +1,16 @@
+{
+  "case_id": "GM-0012",
+  "description": "HRA INCOMPLETE: city_type not provided. R-0029 produces INCOMPLETE status \u2192 hra_exemption=0 despite hra_actual=\u20b92L and rent_paid=\u20b91.8L. Engine produces suggested_questions for intake.",
+  "generated_at": "2026-06-26T11:07:04.582802Z",
+  "engine_version": "1.0.0",
+  "coverage_tags": [
+    "salary",
+    "old_regime",
+    "hra_incomplete",
+    "missing_city_type",
+    "income_adjustment_engine",
+    "demand"
+  ],
+  "source": "synthetic",
+  "verified_by": "dvf/generate.py"
+}

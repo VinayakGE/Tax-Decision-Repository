@@ -1,0 +1,22 @@
+{
+  "id": "T-0061",
+  "title": "R-0031: Metro city name 'Mumbai' → 50% of basic_salary",
+  "target_type": "rule",
+  "target_ref": "R-0031",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "basic_salary": 600000,
+    "city_type": "Mumbai"
+  },
+  "expected_output": {
+    "hra_candidate_2": 300000,
+    "hra_city_is_metro": true,
+    "hra_metro_rate_applied": 0.5
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Metro cities per Section 10(13A): Delhi, Mumbai, Kolkata, Chennai."
+}

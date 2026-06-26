@@ -1,0 +1,21 @@
+{
+  "id": "T-0063",
+  "title": "R-0031: city_type='metro' label → treated as metro, 50% of basic",
+  "target_type": "rule",
+  "target_ref": "R-0031",
+  "test_type": "positive",
+  "input": {
+    "hra_evidence_status": { "status": "COMPLETE", "missing_fields": [], "suggested_questions": [] },
+    "basic_salary": 500000,
+    "city_type": "metro"
+  },
+  "expected_output": {
+    "hra_candidate_2": 250000,
+    "hra_city_is_metro": true
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "Rule accepts both city names ('Mumbai') and classification labels ('metro'/'non_metro')."
+}

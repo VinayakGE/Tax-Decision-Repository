@@ -1,0 +1,19 @@
+{
+  "id": "T-0072",
+  "title": "R-0034: hra_exemption = 0 → total_salary_sec10_exemption = 0, breakdown empty",
+  "target_type": "rule",
+  "target_ref": "R-0034",
+  "test_type": "positive",
+  "input": {
+    "hra_exemption": 0
+  },
+  "expected_output": {
+    "total_salary_sec10_exemption": 0,
+    "income_adjustment_breakdown": {}
+  },
+  "actual_output": null,
+  "status": "pending",
+  "last_run": null,
+  "assessment_year": "AY2025-26",
+  "notes": "No exemptions active — R-0015 sees zero and applies full gross salary to old-regime slab."
+}

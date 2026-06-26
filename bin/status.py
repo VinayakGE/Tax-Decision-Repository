@@ -37,7 +37,7 @@ BUSINESS = {
 # Product readiness — updated manually each wave
 PRODUCT = {
     "wave_3a":         "Complete",
-    "wave_3b":         "In Progress  (80C complete)",
+    "wave_3b":         "In Progress  (80C + HRA complete)",
     "parser_framework":"Ready",
     "real_parser":     "Not Started",
     "real_cases":      0,

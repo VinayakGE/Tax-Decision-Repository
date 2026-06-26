@@ -1,0 +1,23 @@
+{
+  "case_id": "GM-0009",
+  "description": "HRA metro: c3 (rent test) is the limiting candidate. ₹12L salary, Mumbai, ₹22k/month rent → c1=c2=₹3L but c3=₹2.04L. Old regime with ₹1.5L 80C.",
+  "taxpayer": { "name": "Priya Mehta", "age": 32, "age_bracket": "general" },
+  "evidence": {
+    "classified_income": {
+      "head_1_salary": [{ "source": "Form 16", "gross_salary": 1200000, "employer": "Infosys Ltd", "tan": "BANG98765A" }],
+      "head_2_house_property": [], "head_3_business": [],
+      "head_4_capital_gains": [], "head_5_other_sources": []
+    },
+    "basic_salary": 600000,
+    "hra_actual": 300000,
+    "rent_paid": 264000,
+    "city_type": "Mumbai",
+    "investments_80C": 150000,
+    "evidence_integrity_checks_passed": true,
+    "income_classification_complete": true,
+    "tds_credits_from_26AS": [{ "tan": "BANG98765A", "section": "192", "amount": 60000, "employer": "Infosys Ltd" }],
+    "advance_tax_paid": 0, "self_assessment_tax_paid": 0,
+    "regime_chosen": "old_regime",
+    "return_filed_date": "2025-07-15", "due_date": "2025-07-31", "income_type": "salary_only"
+  }
+}
