@@ -123,8 +123,9 @@ def r0015_taxable_income_assembly(ctx: EvidenceContext) -> None:
             slab_rate_cg += amount
 
     # Other sources (FD interest, etc.) — not special-rate
+    # Use `or 0` to handle explicit null amounts (e.g. VDA income where profit is unknown)
     other_total = sum(
-        item.get("amount", 0) for item in classified.get("head_5_other_sources", [])
+        item.get("amount") or 0 for item in classified.get("head_5_other_sources", [])
     )
 
     # gross_total_income uses full salary (known approximation — HRA exemption is excluded
@@ -399,7 +400,7 @@ def r0022_interest_234abc(ctx: EvidenceContext) -> None:
         total_tax = ctx.get(
             "total_tax_new_regime" if regime == "new_regime" else "total_tax_old_regime", 0
         )
-    tds = ctx.get("tds_credit_from_26AS", 0)
+    tds = sum(item.get("amount", 0) for item in ctx.get("tds_credits_from_26AS", []))
     advance = ctx.get("advance_tax_paid", 0)
     filed_date = ctx.get("return_filed_date", "")
     due_date = ctx.get("due_date", "2025-07-31")
