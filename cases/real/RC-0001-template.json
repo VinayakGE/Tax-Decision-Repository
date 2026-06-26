@@ -1,7 +1,8 @@
 {
-  "_comment": "Real Case Template — AY2025-26. Replace all placeholder values. Remove fields that don't apply. human_expected must be independently computed (from ITR portal, CA computation, or manual working).",
+  "_comment": "Real Case Template — schema v1.0.0. See docs/real-case-schema.md for field definitions. Remove null fields that don't apply to this case.",
 
-  "case_id": "RC-0001",
+  "schema_version": "1.0.0",
+  "case_id": "RC-XXXX",
   "source": "real",
   "anonymized": true,
   "assessment_year": "AY2025-26",
@@ -9,7 +10,7 @@
   "verified": false,
 
   "taxpayer": {
-    "name": "Anonymized-01",
+    "name": "Anonymized-XX",
     "age": 35,
     "age_bracket": "general"
   },
@@ -19,8 +20,8 @@
       "head_1_salary": [
         {
           "source": "Form 16",
-          "gross_salary": 1000000,
-          "employer": "Employer Name (anonymized)",
+          "gross_salary": 0,
+          "employer": "Employer (anonymized)",
           "tan": "XXXX00000X"
         }
       ],
@@ -45,7 +46,7 @@
     "income_classification_complete": true,
 
     "tds_credits_from_26AS": [
-      { "tan": "XXXX00000X", "section": "192", "amount": 0, "employer": "Employer Name (anonymized)" }
+      { "tan": "XXXX00000X", "section": "192", "amount": 0, "employer": "Employer (anonymized)" }
     ],
     "advance_tax_paid": 0,
     "self_assessment_tax_paid": 0,
@@ -57,7 +58,7 @@
   },
 
   "human_expected": {
-    "_comment": "Fill in the fields you have. Only declared fields are validated. Tolerance: ±1 rupee for amounts.",
+    "_comment": "Fill in what you independently computed. Omit or set null for unknowns. Tolerance ±₹1.",
     "taxable_income_old_regime": null,
     "taxable_income_new_regime": null,
     "total_tax_old_regime": null,
@@ -65,8 +66,11 @@
     "regime_recommendation": null,
     "outcome": null,
     "refund_amount": null,
-    "demand_amount": null
+    "demand_amount": null,
+    "total_interest": null
   },
+
+  "lv_classification": "unclassified",
 
   "notes": "",
   "entity_pressure_observed": []
