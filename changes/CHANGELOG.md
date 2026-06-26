@@ -5,6 +5,18 @@ Format: `[CH-XXXX] YYYY-MM-DD — Type — Summary`
 
 ---
 
+## v1.3.1 — AY2025-26 (2026-06-26)
+
+**Governance Charter — the last document before Phase 5.**
+
+### Added
+- [CH-0005] `GOVERNANCE.md` — Repository Governance Charter: seven permanent principles, release quality profile format, Phase 5 epic priorities, rule authoring sequence for Epic 1
+
+### Updated
+- [CH-0005] `registry/version-registry.json` — Added quality profile blocks to all four version entries (active_rules, deprecated_rules, active_cases, total_tests, jab_score, finance_act_version, gss_case_count)
+
+---
+
 ## v1.3.0 — AY2025-26 (2026-06-26)
 
 **Processing Pipeline, five Sprint 1 engines, JAB, Decision Replay, DEL, and tax tables. Architecture feature-frozen.**

@@ -1,20 +1,74 @@
 {
   "$schema": "../schemas/registry-index-schema.json",
   "type": "version-registry",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "last_updated": "2026-06-26",
-  "description": "Snapshot history of the repository by version and Assessment Year. Each entry corresponds to a git tag.",
+  "description": "Snapshot history of the repository by version and Assessment Year. Each entry corresponds to a git tag. From v1.3.0, every entry includes a quality profile per the Governance Charter.",
   "versions": [
     {
       "tag": "v1.0.0-AY2025-26",
       "assessment_year": "AY2025-26",
       "date": "2026-06-26",
-      "summary": "Initial knowledge architecture. Directory structure, all schemas, 5 seed rules (R-0001 to R-0005), 1 decision tree (DT-001), 3 validations, 1 synthetic case, 3 tests, 2 AI prompts, all registries, dependency graph, confidence model, conflict resolver, lifecycle model, and rule authoring guide.",
-      "rule_count": 5,
-      "decision_count": 5,
-      "validation_count": 3,
-      "case_count": 1,
-      "change_refs": ["CH-0001", "CH-0002"]
+      "summary": "Initial knowledge architecture. Directory structure, all schemas, 5 seed rules (R-0001 to R-0005), 1 decision tree (DT-001), 3 validations, 1 synthetic case, 3 tests, 2 AI prompts.",
+      "quality_profile": {
+        "active_rules": 5,
+        "deprecated_rules": 0,
+        "active_cases": 0,
+        "total_tests": 3,
+        "jab_score": null,
+        "finance_act_version": 2024,
+        "gss_case_count": 0
+      },
+      "change_refs": ["CH-0001"]
+    },
+    {
+      "tag": "v1.1.0-AY2025-26",
+      "assessment_year": "AY2025-26",
+      "date": "2026-06-26",
+      "summary": "Scalability modules: Repository Index, Dependency Graph (Section 44AD and 115BAC), Rule Lifecycle, Confidence Model, Conflict Resolver, Rule Authoring Guide. ARCHITECTURE.md extended to Section 15.",
+      "quality_profile": {
+        "active_rules": 5,
+        "deprecated_rules": 0,
+        "active_cases": 1,
+        "total_tests": 3,
+        "jab_score": null,
+        "finance_act_version": 2024,
+        "gss_case_count": 0
+      },
+      "change_refs": ["CH-0002"]
+    },
+    {
+      "tag": "v1.2.0-AY2025-26",
+      "assessment_year": "AY2025-26",
+      "date": "2026-06-26",
+      "summary": "Pattern Repository: 8 filing patterns (PAT-001 through PAT-008) covering approximately 95% of individual filers. Pattern schema, pattern-matching doc, pattern registry.",
+      "quality_profile": {
+        "active_rules": 5,
+        "deprecated_rules": 0,
+        "active_cases": 1,
+        "total_tests": 3,
+        "jab_score": null,
+        "finance_act_version": 2024,
+        "gss_case_count": 0
+      },
+      "change_refs": ["CH-0003"]
+    },
+    {
+      "tag": "v1.3.0-AY2025-26",
+      "assessment_year": "AY2025-26",
+      "date": "2026-06-26",
+      "summary": "Processing Pipeline (14 stages), 5 Sprint 1 engine specs, Jarviz Accuracy Benchmark (JAB), Decision Replay, Decision Execution Log (DEL), AY2025-26 tax tables, replay/benchmark schemas. Architecture feature-frozen. Governance Charter published.",
+      "quality_profile": {
+        "active_rules": 5,
+        "deprecated_rules": 0,
+        "active_cases": 1,
+        "total_tests": 3,
+        "jab_score": null,
+        "finance_act_version": 2024,
+        "gss_case_count": 0
+      },
+      "change_refs": ["CH-0004", "CH-0005"],
+      "notes": "Architecture declared feature-frozen. GOVERNANCE.md published. Phase 5 (Knowledge Expansion) begins at next commit."
     }
   ]
 }
